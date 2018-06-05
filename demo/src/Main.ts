@@ -38,6 +38,42 @@ class Main extends egret.DisplayObjectContainer {
 
     private canClick:boolean = true;
 
+    private mapContainer:egret.DisplayObjectContainer;
+
+    private nowHeight:number = 0;
+
+    private heightAddSpeed:number = 0.02;
+
+    private physicalTimeFix:number = 1.3;
+
+    private factor:number = 80;
+
+    private unitHeight:number = 2.4;
+
+    private unitWidth:number = 2;
+
+    private unitNum:number = 20;
+
+    private changeUnitNum:number = 5;
+
+    private humanLength:number = 0.7;
+
+    private humanRadius:number = 0.3;
+
+    private jumpAngle:number = Math.PI * 0.25 + 0.15;
+
+    private jumpForce:number[] = [100,150];
+
+    private jumpForceTick:number = 3;
+
+    private jumpDisableTick:number = 10;
+
+    private friction:number = 0;
+
+    private relaxation:number = 10;
+
+    private humanSleepXFix:number = -0.003;
+
     public constructor() {
         super();
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
@@ -88,8 +124,6 @@ class Main extends egret.DisplayObjectContainer {
      */
     private createGameScene(): void {
 
-        
-
         let mat:p2.Material = new p2.Material(1);
 
         let bg:egret.Shape = new egret.Shape();
@@ -98,8 +132,11 @@ class Main extends egret.DisplayObjectContainer {
         bg.graphics.endFill();
         this.addChild(bg);
 
+        this.mapContainer = new egret.DisplayObjectContainer();
+
+        this.addChild(this.mapContainer);
+
         //egret.Profiler.getInstance().run();
-        var factor: number = 50;
 
         //创建world
         var world: p2.World = new p2.World();
@@ -114,48 +151,35 @@ class Main extends egret.DisplayObjectContainer {
         
         world.addBody(planeBody);
 
-        // let vertices = [[0,0], [1,0], [1,1]];
-        // let vertices2 = [[0,0], [1,0], [1,-1]];
-
-        let unitWidth:number = 2;
-
-        let unitHeight:number = 2.4;
-
-        let unitNum:number = 10;
-
-        let verticesOrigin = [[unitWidth, unitHeight], [unitHeight - unitWidth, unitHeight],[0, unitWidth],[0,0]];
-
-        // let verticesOrigin = [[0,0], [unitWidth,0], [unitWidth,unitHeight], [unitHeight - unitWidth,unitHeight],[0,unitWidth]];
-
-        // let vertices = [[0,0], [1,0], [1,1.2]];
+        let verticesOrigin = [[this.unitWidth, this.unitHeight], [this.unitHeight - this.unitWidth, this.unitHeight],[0, this.unitWidth],[0,0]];
 
         let conDisplay:egret.Shape = new egret.Shape();
 
         conDisplay.graphics.beginFill(0xff0000);
 
-        conDisplay.graphics.moveTo(unitWidth * unitNum * factor, 0);
+        conDisplay.graphics.moveTo(this.unitWidth * this.unitNum * this.factor, 0);
 
-        conDisplay.graphics.lineTo(unitWidth * unitNum * factor, unitHeight * unitNum * -factor);
+        conDisplay.graphics.lineTo(this.unitWidth * this.unitNum * this.factor, this.unitHeight * this.unitNum * -this.factor);
 
         let vertices = [];
 
-        vertices.push([unitWidth * unitNum, 0]);
+        vertices.push([this.unitWidth * this.unitNum, 0]);
 
-        vertices.push([unitWidth * unitNum, unitHeight * unitNum]);
+        vertices.push([this.unitWidth * this.unitNum, this.unitHeight * this.unitNum]);
 
-        for(let m:number = unitNum - 1 ; m > -1 ; m--){
+        for(let m:number = this.unitNum - 1 ; m > -1 ; m--){
 
             for(let i:number = 1 ; i < verticesOrigin.length ; i++){
                 let arr = verticesOrigin[i];
-                let arr2 = [arr[0] + m * unitWidth,arr[1] + m * unitHeight];
+                let arr2 = [arr[0] + m * this.unitWidth,arr[1] + m * this.unitHeight];
 
                 vertices.push(arr2);
 
-                conDisplay.graphics.lineTo((arr[0] + m * unitWidth) * factor, (arr[1] + m * unitHeight) * -factor);
+                conDisplay.graphics.lineTo((arr[0] + m * this.unitWidth) * this.factor, (arr[1] + m * this.unitHeight) * -this.factor);
             }
         }
 
-        conDisplay.graphics.lineTo(unitWidth * unitNum * factor, 0);
+        conDisplay.graphics.lineTo(this.unitWidth * this.unitNum * this.factor, 0);
 
         conDisplay.graphics.endFill();
 
@@ -163,7 +187,7 @@ class Main extends egret.DisplayObjectContainer {
 
         container.addChild(conDisplay);
 
-        this.addChild(container);
+        this.mapContainer.addChild(container);
 
         // let con:p2.Convex = new p2.Convex({vertices:vertices});
         // con.material = mat;
@@ -204,9 +228,9 @@ class Main extends egret.DisplayObjectContainer {
             }
         }
 
-        conDisplay.x = minX * factor;
+        conDisplay.x = minX * this.factor;
 
-        conDisplay.y = minY * -factor;
+        conDisplay.y = minY * -this.factor;
 
         conBody.position = [-minX, -minY];
 
@@ -217,7 +241,38 @@ class Main extends egret.DisplayObjectContainer {
             if (dt > 1000) {
                 return;
             }
-            world.step(dt / 1000 * 1.3);
+
+            let lastY = self.mapContainer.y;
+
+            self.mapContainer.x -= self.heightAddSpeed * dt * self.unitWidth / self.unitHeight;
+            self.mapContainer.y += self.heightAddSpeed * dt;
+
+            world.step(dt / 1000 * self.physicalTimeFix);
+
+            if(self.human){
+
+                if(self.human.sleepState == p2.Body.SLEEPY || self.human.sleepState == p2.Body.SLEEPING){
+
+                    self.human.position = [self.human.position[0] + self.humanSleepXFix, self.human.position[1]];
+                }
+
+                if(self.human.position[1] * self.factor - self.stage.stageHeight * 0.5 > self.mapContainer.y){
+
+                    let addValue = self.human.position[1] * self.factor - self.stage.stageHeight * 0.5 - self.mapContainer.y;
+
+                    self.mapContainer.x -= addValue * self.unitWidth / self.unitHeight;
+                    self.mapContainer.y += addValue;
+                }
+            }
+
+            let changeHeightValue:number = (self.nowHeight + 1) * self.changeUnitNum * self.unitHeight * self.factor;
+
+            if(lastY < changeHeightValue && self.mapContainer.y >= changeHeightValue){
+
+                self.nowHeight++;
+
+                conBody.position = [conBody.position[0] + self.unitWidth * self.changeUnitNum, conBody.position[1] + self.unitHeight * self.changeUnitNum];
+            }
 
             var stageHeight: number = egret.MainContext.instance.stage.stageHeight;
             var l = world.bodies.length;
@@ -225,8 +280,8 @@ class Main extends egret.DisplayObjectContainer {
                 var boxBody: p2.Body = world.bodies[i];
                 var box: egret.DisplayObject = boxBody.displays[0];
                 if (box) {
-                    box.x = boxBody.position[0] * factor;
-                    box.y = stageHeight - boxBody.position[1] * factor;
+                    box.x = boxBody.position[0] * self.factor;
+                    box.y = stageHeight - boxBody.position[1] * self.factor;
                     box.rotation = 360 - (boxBody.angle + boxBody.shapes[0].angle) * 180 / Math.PI;
                     if (boxBody.sleepState == p2.Body.SLEEPING) {
                         box.alpha = 0.5;
@@ -236,6 +291,7 @@ class Main extends egret.DisplayObjectContainer {
                     }
                 }
             }
+
         }, this);
 
         //鼠标点击添加刚体
@@ -244,9 +300,8 @@ class Main extends egret.DisplayObjectContainer {
 
 
         let conMat2:p2.ContactMaterial = new p2.ContactMaterial(mat, mat);
-        conMat2.friction = 0;
-        conMat2.relaxation = 10;
-        // conMat2.contactSkinSize = 0.0001;
+        conMat2.friction = self.friction;
+        conMat2.relaxation = self.relaxation;
 
         world.addContactMaterial(conMat2);
 
@@ -256,62 +311,63 @@ class Main extends egret.DisplayObjectContainer {
 
             if(!self.human){
 
-                var positionX: number = e.stageX / factor;
-                var positionY: number = (egret.MainContext.instance.stage.stageHeight - e.stageY) / factor;
+                var positionX: number = e.stageX / self.factor;
+                var positionY: number = (egret.MainContext.instance.stage.stageHeight - e.stageY) / self.factor;
 
                 var display: egret.DisplayObject;
                 
                 //添加方形刚体
                 //var boxShape: p2.Shape = new p2.Rectangle(2, 1);
-                var boxShape: p2.Capsule = new p2.Capsule({length: 1, radius: 0.5});
+                var boxShape: p2.Capsule = new p2.Capsule({length: self.humanLength, radius: self.humanRadius});
                 self.human = new p2.Body({ mass: 1, position: [positionX, positionY], angularVelocity: 0 });
                 self.human.addShape(boxShape);
                 world.addBody(self.human);
                 boxShape.material = mat;
 
                 if(self.isDebug){
-                    display = self.createBox(((<p2.Capsule>boxShape).length + (<p2.Capsule>boxShape).radius * 2) * factor,(<p2.Capsule>boxShape).radius * 2 * factor);
+                    display = self.createBox(((<p2.Capsule>boxShape).length + (<p2.Capsule>boxShape).radius * 2) * self.factor,(<p2.Capsule>boxShape).radius * 2 * self.factor);
                 }else{
                     display = self.createBitmapByName("rect");
                 }
-                display.width = ((<p2.Capsule>boxShape).length + (<p2.Capsule>boxShape).radius * 2) * factor;
-                display.height = (<p2.Capsule>boxShape).radius * 2 * factor;
+                display.width = ((<p2.Capsule>boxShape).length + (<p2.Capsule>boxShape).radius * 2) * self.factor;
+                display.height = (<p2.Capsule>boxShape).radius * 2 * self.factor;
                 
 
                 display.anchorOffsetX = display.width / 2;
                 display.anchorOffsetY = display.height / 2;
 
                 self.human.displays = [display];
-                self.addChild(display);
-
-                // self.human.gravityScale = 0;
+                self.mapContainer.addChild(display);
             }
-            else if((world.overlapKeeper.bodiesAreOverlapping(self.human, conBody) || self.human.sleepState != p2.Body.AWAKE) && self.canClick){
+            else if(self.canClick && (world.overlapKeeper.bodiesAreOverlapping(self.human, conBody) || self.human.sleepState != p2.Body.AWAKE)){
 
                 console.log("click jump");
 
-                let forceNum = 0;
-
-                let fun:Function;
+                let tickNum = 0;
                 
-                self.human.angle = Math.PI * 0.25;
+                self.human.angle = self.jumpAngle;
 
                 self.human.angularVelocity = 0;
 
                 self.canClick = false;
 
+                let fun:Function;
+
                 fun = function(dt){
 
-                    self.human.applyForce([100,120],[0,0]);
+                    if(tickNum < self.jumpForceTick){
 
-                    forceNum++;
+                        self.human.applyForce(self.jumpForce,[0,0]);
+                    }
 
-                    if(forceNum > 3){
+                    if(tickNum > self.jumpDisableTick){
 
                         self.canClick = true;
 
                         egret.Ticker.getInstance().unregister(fun, this);
                     }
+
+                    tickNum++;
                 };
 
                 egret.Ticker.getInstance().register(fun, this);
