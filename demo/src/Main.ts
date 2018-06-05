@@ -42,7 +42,8 @@ class Main extends egret.DisplayObjectContainer {
 
     private nowHeight:number = 0;
 
-    private heightAddSpeed:number = 0.02;
+    //*****config
+    private heightAddSpeed:number = 0.05;
 
     private physicalTimeFix:number = 1.3;
 
@@ -52,7 +53,7 @@ class Main extends egret.DisplayObjectContainer {
 
     private unitWidth:number = 2;
 
-    private unitNum:number = 20;
+    private unitNum:number = 10;
 
     private changeUnitNum:number = 5;
 
@@ -66,13 +67,14 @@ class Main extends egret.DisplayObjectContainer {
 
     private jumpForceTick:number = 3;
 
-    private jumpDisableTick:number = 10;
+    private jumpDisableTime:number = 300;
 
     private friction:number = 0;
 
     private relaxation:number = 10;
 
     private humanSleepXFix:number = -0.003;
+    //*****
 
     public constructor() {
         super();
@@ -283,12 +285,12 @@ class Main extends egret.DisplayObjectContainer {
                     box.x = boxBody.position[0] * self.factor;
                     box.y = stageHeight - boxBody.position[1] * self.factor;
                     box.rotation = 360 - (boxBody.angle + boxBody.shapes[0].angle) * 180 / Math.PI;
-                    if (boxBody.sleepState == p2.Body.SLEEPING) {
-                        box.alpha = 0.5;
-                    }
-                    else {
-                        box.alpha = 1;
-                    }
+                    // if (boxBody.sleepState == p2.Body.SLEEPING) {
+                    //     box.alpha = 0.5;
+                    // }
+                    // else {
+                    //     box.alpha = 1;
+                    // }
                 }
             }
 
@@ -343,7 +345,9 @@ class Main extends egret.DisplayObjectContainer {
 
                 console.log("click jump");
 
-                let tickNum = 0;
+                let time = 0;
+
+                let tick = 0;
                 
                 self.human.angle = self.jumpAngle;
 
@@ -355,19 +359,21 @@ class Main extends egret.DisplayObjectContainer {
 
                 fun = function(dt){
 
-                    if(tickNum < self.jumpForceTick){
+                    time += dt;
+
+                    if(tick < self.jumpForceTick){
+
+                        tick++;
 
                         self.human.applyForce(self.jumpForce,[0,0]);
                     }
 
-                    if(tickNum > self.jumpDisableTick){
+                    if(time > self.jumpDisableTime){
 
                         self.canClick = true;
 
                         egret.Ticker.getInstance().unregister(fun, this);
                     }
-
-                    tickNum++;
                 };
 
                 egret.Ticker.getInstance().register(fun, this);
