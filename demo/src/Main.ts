@@ -63,7 +63,7 @@ class Main extends egret.DisplayObjectContainer {
 
     private jumpAngle:number = Math.PI * 0.25 + 0.15;
 
-    private jumpForce:number[] = [100,150];
+    private jumpForce:number[] = [80,145];
 
     private jumpForceTick:number = 3;
 
@@ -73,7 +73,7 @@ class Main extends egret.DisplayObjectContainer {
 
     private relaxation:number = 10;
 
-    private humanSleepXFix:number = -0.003;
+    private humanSleepXFix:number = -0.005;
     //*****
 
     public constructor() {
