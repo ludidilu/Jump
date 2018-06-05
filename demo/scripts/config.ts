@@ -1,50 +1,48 @@
-
 /// 阅读 api.d.ts 查看文档
 ///<reference path="api.d.ts"/>
 
-
-import { UglifyPlugin, IncrementCompilePlugin, CompilePlugin, ManifestPlugin, ExmlPlugin } from 'built-in';
+import * as path from 'path';
+import { UglifyPlugin, IncrementCompilePlugin, CompilePlugin, ManifestPlugin, ExmlPlugin, EmitResConfigFilePlugin, TextureMergerPlugin } from 'built-in';
+import { WxgamePlugin } from './wxgame/wxgame';
+import { BricksPlugin } from './bricks/bricks';
+import { CustomPlugin } from './myplugin';
 
 const config: ResourceManagerConfig = {
 
-    configPath: 'config.res.js',
-
-    resourceRoot: () => "resource",
 
     buildConfig: (params) => {
 
-        const target = params.target;
-        const command = params.command;
-        const projectName = params.projectName;
-        const version = params.version;
+        const { target, command, projectName, version } = params;
 
-        if (params.command == 'build') {
+        if (command == 'build') {
             const outputDir = '.';
             return {
                 outputDir,
                 commands: [
-                    // new ExmlPlugin('debug'),
+                    // new EmitResConfigFilePlugin({
+                    //     output: "resource/default.res.json",
+                    //     typeSelector: config.typeSelector,
+                    //     nameSelector: p => path.basename(p).replace(/\./gi, "_"),
+                    //     groupSelector: p => "preload"
+                    // }),
+                    new ExmlPlugin('debug'), // 非 EUI 项目关闭此设置
                     new IncrementCompilePlugin(),
                 ]
             }
         }
-        else if (params.command == 'publish') {
-            const outputDir = target == "web" ? `bin-release/${version}` : `../${projectName}_${target}`;
+        else if (command == 'publish') {
+            const outputDir = `bin-release/web/${version}`;
             return {
                 outputDir,
                 commands: [
-                    // new ExmlPlugin('default'),
-                    new CompilePlugin(),
+                    new CustomPlugin(),
+                    new CompilePlugin({ libraryType: "release", defines: { DEBUG: false, RELEASE: true } }),
+                    new ExmlPlugin('commonjs'), // 非 EUI 项目关闭此设置
                     new UglifyPlugin([{
                         sources: ["main.js"],
                         target: "main.min.js"
                     }]),
-                    new ManifestPlugin()
-                    // "zip",
-                    // "spritesheet",
-                    // "convertFileName",
-                    // "emitConfigFile",
-                    // "manifest"
+                    new ManifestPlugin({ output: "manifest.json", hash: "crc32" })
                 ]
             }
         }
