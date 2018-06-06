@@ -176,18 +176,20 @@ class Main extends egret.DisplayObjectContainer {
 
         //egret.Profiler.getInstance().run();
 
-        //创建world
-        this.world = new p2.World();
-        this.world.sleepMode = p2.World.BODY_SLEEPING;
+        this.createWorldAndPlane();
 
-        //创建plane
-        var planeShape: p2.Plane = new p2.Plane();
-        var planeBody: p2.Body = new p2.Body();
-        planeBody.addShape(planeShape);
-        planeBody.displays = [];
-        planeShape.material = this.mat;
-        
-        this.world.addBody(planeBody);
+        this.createLadder();
+
+        let conMat2:p2.ContactMaterial = new p2.ContactMaterial(this.mat, this.mat);
+        conMat2.friction = this.friction;
+        conMat2.relaxation = this.relaxation;
+
+        this.world.addContactMaterial(conMat2);
+
+        this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
+    }
+
+    private createLadder():void{
 
         let verticesOrigin = [[this.unitWidth, this.unitHeight], [this.unitHeight - this.unitWidth, this.unitHeight],[0, this.unitWidth],[0,0]];
 
@@ -274,18 +276,25 @@ class Main extends egret.DisplayObjectContainer {
         this.conBody.updateDisplaysPosition();
 
         Human.conBody = this.conBody;
-
-        //鼠标点击添加刚体
-        this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
-
-        let conMat2:p2.ContactMaterial = new p2.ContactMaterial(this.mat, this.mat);
-        conMat2.friction = this.friction;
-        conMat2.relaxation = this.relaxation;
-
-        this.world.addContactMaterial(conMat2);
     }
 
-    private update(dt:number){
+    private createWorldAndPlane():void{
+
+        //创建world
+        this.world = new p2.World();
+        this.world.sleepMode = p2.World.BODY_SLEEPING;
+
+        //创建plane
+        var planeShape: p2.Plane = new p2.Plane();
+        var planeBody: p2.Body = new p2.Body();
+        planeBody.addShape(planeShape);
+        planeBody.displays = [];
+        planeShape.material = this.mat;
+
+        this.world.addBody(planeBody);
+    }
+
+    private update(dt:number):void{
 
         if (dt < 10) {
             return;
