@@ -61,7 +61,7 @@ class Main extends egret.DisplayObjectContainer {
 
     private physicalTimeFix:number = 1.3;
 
-    private factor:number = 20;
+    private factor:number = 80;
 
     private unitHeight:number = 2.4;
 
@@ -93,7 +93,7 @@ class Main extends egret.DisplayObjectContainer {
 
     private enemyJumpProbability:number = 0.01;
 
-    private enemyPropProbability:number = 0.003;
+    private enemyPropProbability:number = 1;
 
     private enemyPropHeightFix:number = 5;
     //*****
@@ -401,6 +401,15 @@ class Main extends egret.DisplayObjectContainer {
         this.nowHeight = 0;
 
         Human.humanArr.length = 0;
+
+        for(let i:number = 0; i < this.enemies.length ; i++){
+
+            let enemy:Enemy = this.enemies[i];
+
+            this.removeHuman(enemy);
+        }
+
+        this.enemies.length = 0;
 
         egret.Ticker.getInstance().unregister(this.update, this);
     }
