@@ -9,6 +9,7 @@
 	"game": [
 		"bin-debug/BodyObj.js",
 		"bin-debug/Human.js",
+		"bin-debug/Enemy.js",
 		"bin-debug/LoadingUI.js",
 		"bin-debug/Main.js"
 	]
