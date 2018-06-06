@@ -8,16 +8,16 @@ class Human extends BodyObj{
 
     private jumpForce:number[];
 
-    public updateDisplaysPosition():void{
+    public updateDisplaysPosition(_dt?:number):void{
 
         if(this.sleepState == p2.Body.SLEEPY || this.sleepState == p2.Body.SLEEPING){
 
-            this.position = [this.position[0] + Human.humanSleepXFix, this.position[1]];
+            this.position = [this.position[0] + Human.humanSleepXFix * _dt, this.position[1]];
 
             this.sleepState = p2.Body.AWAKE;
         }
 
-        super.updateDisplaysPosition();
+        super.updateDisplaysPosition(_dt);
     }
 
     public jump(_jumpAngle:number, _jumpForce:number[], _jumpTick:number):void{

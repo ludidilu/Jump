@@ -2,7 +2,7 @@ class BodyObj extends p2.Body{
 
     public static factor:number;
 
-    public updateDisplaysPosition():void{
+    public updateDisplaysPosition(_dt?:number):void{
 
         if(this.displays && this.displays.length > 0){
 

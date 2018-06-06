@@ -87,7 +87,9 @@ class Main extends egret.DisplayObjectContainer {
 
     private relaxation:number = 10;
 
-    private humanSleepXFix:number = -0.005;
+    private humanSleepXFix:number = -0.0004;
+
+    private humanSleepSpeedLimit:number = 0.3;
     //*****
 
     public constructor() {
@@ -319,7 +321,7 @@ class Main extends egret.DisplayObjectContainer {
         }
         else{
 
-            this.human.updateDisplaysPosition();
+            this.human.updateDisplaysPosition(dt);
         }
     }
 
@@ -356,7 +358,7 @@ class Main extends egret.DisplayObjectContainer {
             //添加方形刚体
             //var boxShape: p2.Shape = new p2.Rectangle(2, 1);
             var boxShape: p2.Capsule = new p2.Capsule({length: this.humanLength, radius: this.humanRadius});
-            this.human = new Human({ mass: 1, position: [positionX, positionY], angularVelocity: 0 });
+            this.human = new Human({ mass: 1, position: [positionX, positionY], angularVelocity: 0, sleepSpeedLimit: this.humanSleepSpeedLimit });
 
             this.human.addShape(boxShape);
             this.world.addBody(this.human);
