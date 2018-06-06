@@ -345,9 +345,7 @@ class Main extends egret.DisplayObjectContainer {
 
                 let enemy:Enemy = this.enemies[i];
 
-                enemy.updateDisplaysPosition();
-
-                console.log("update enemy:" + enemy.id + "   pos:" + enemy.position);
+                enemy.updateDisplaysPosition(dt);
 
                 let enemyDisplay:egret.DisplayObject = enemy.displays[0];
 
@@ -361,7 +359,7 @@ class Main extends egret.DisplayObjectContainer {
                 }
             }
 
-            if(Math.random() < this.enemyPropProbability){
+            if(this.enemies.length == 0 && Math.random() < this.enemyPropProbability){
 
                 let nowLevel:number = Math.floor(this.mapContainer.y / this.factor / this.unitHeight);
 
@@ -377,9 +375,7 @@ class Main extends egret.DisplayObjectContainer {
 
                 enemy.position = [x,y];
 
-                enemy.updateDisplaysPosition();
-
-                console.log("add enemy:" + enemy.id + "   pos:" + enemy.position);
+                enemy.updateDisplaysPosition(dt);
             }
         }
     }
