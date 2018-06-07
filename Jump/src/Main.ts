@@ -29,11 +29,6 @@
 
 class Main extends egret.DisplayObjectContainer {
 
-    /**
-     * 加载进度界面
-     */
-    private loadingView: LoadingUI;
-
     private world:p2.World;
 
     private mat:p2.Material;
