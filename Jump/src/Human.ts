@@ -16,13 +16,18 @@ class Human extends BodyObj{
 
     private jumpForce:number[];
 
-    public updateDisplaysPosition(_dt?:number):void{
+    public updateDisplaysPosition(_dt:number):void{
 
-        if(this.sleepState == p2.Body.SLEEPY || this.sleepState == p2.Body.SLEEPING){
+        if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Human.humanSleepXFix) * _dt * 0.001 && Math.abs(this.previousPosition[1] - this.position[1]) < 0.0001){
 
-            this.position = [this.position[0] + Human.humanSleepXFix * _dt * 0.001, this.position[1]];
+            if(this.velocity[0] > 0){
 
-            this.sleepState = p2.Body.AWAKE;
+                this.position = [this.previousPosition[0] - Human.humanSleepXFix * _dt * 0.001, this.position[1]];
+            }
+            else{
+
+                this.position = [this.previousPosition[0] + Human.humanSleepXFix * _dt * 0.001, this.position[1]];
+            }
         }
 
         super.updateDisplaysPosition(_dt);
@@ -70,7 +75,9 @@ class Human extends BodyObj{
 
         this.angularVelocity = 0;
 
-        egret.Ticker.getInstance().register(this.jumpReal, this);
+        SuperTicker.getInstance().addEventListener(this.jumpReal, this);
+
+        // egret.Ticker.getInstance().register(this.jumpReal, this);
     }
 
     private jumpReal(_dt:number):void{
@@ -90,7 +97,9 @@ class Human extends BodyObj{
 
             this.time = 0;
 
-            egret.Ticker.getInstance().unregister(this.jumpReal, this);
+            SuperTicker.getInstance().removeEventListener(this.jumpReal, this);
+
+            // egret.Ticker.getInstance().unregister(this.jumpReal, this);
         }
     }
 
@@ -104,6 +113,8 @@ class Human extends BodyObj{
     }
 
     protected static initHuman(_human:Human, _world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _color:number):void{
+
+        _human.allowSleep = false;
 
         _human.sleepSpeedLimit = Math.abs(Human.humanSleepXFix);
 

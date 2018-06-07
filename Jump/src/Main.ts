@@ -46,7 +46,11 @@ class Main extends egret.DisplayObjectContainer {
 
     private conBody:BodyObj;
 
+    private bgContainer:egret.DisplayObjectContainer;
+
     private mapContainer:egret.DisplayObjectContainer;
+
+    private uiContainer:egret.DisplayObjectContainer;
 
     private nowHeight:number = 0;
 
@@ -54,8 +58,16 @@ class Main extends egret.DisplayObjectContainer {
 
     private conBodyY:number;
 
+    private mainPanel:MainPanel;
+
+    private alertPanel:AlertPanel;
+
+    private bestScore:number = 0;
+
     //*****config
     private heightAddSpeed:number = 0.625;
+
+    // private heightAddSpeed:number = 0;
 
     private physicalTimeFix:number = 1.3;
 
@@ -89,11 +101,13 @@ class Main extends egret.DisplayObjectContainer {
 
     private relaxation:number = 10;
 
-    private humanSleepXFix:number = -0.4;
+    private humanSleepXFix:number = -0.5;
 
     private enemyJumpProbability:number = 1;
 
     private enemyPropProbability:number = 0.2;
+
+    // private enemyPropProbability:number = 0;
 
     private enemyPropHeightFix:number = 5;
 
@@ -105,50 +119,57 @@ class Main extends egret.DisplayObjectContainer {
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
     }
 
-    private onAddToStage(event: egret.Event) {
-        //设置加载进度界面
-        this.loadingView = new LoadingUI();
-        this.stage.addChild(this.loadingView);
+    private onAddToStage(event: egret.Event):void {
+
+        egret.lifecycle.onPause = () => {
+
+            SuperTicker.getInstance().pause();
+        }
+
+        egret.lifecycle.onResume = () => {
+            
+            SuperTicker.getInstance().resume();
+        }
+
+        egret.registerImplementation("eui.IAssetAdapter", new AssetAdapter());
+        egret.registerImplementation("eui.IThemeAdapter", new ThemeAdapter());
 
         //初始化Resource资源加载库
-        RES.addEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
-        RES.loadConfig("resource/default.res.json", "resource/");
+        // RES.addEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
+        // RES.loadConfig("resource/default.res.json", "resource/");
+
+        this.loadConfig();
     }
-    /**
-     * 配置文件加载完成,开始预加载preload资源组。
-     */
-    private onConfigComplete(event: RES.ResourceEvent): void {
-        RES.removeEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
-        RES.addEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
-        RES.addEventListener(RES.ResourceEvent.GROUP_PROGRESS, this.onResourceProgress, this);
-        RES.loadGroup("preload");
+
+    private async loadConfig():Promise<void>{
+
+        await RES.loadConfig("resource/default.res.json", "resource/");
+        await this.loadTheme();
+        await RES.loadGroup("preload");
+
+        this.createGameScene();
     }
-    /**
-     * preload资源组加载完成
-     */
-    private onResourceLoadComplete(event: RES.ResourceEvent): void {
-        if (event.groupName == "preload") {
-            this.stage.removeChild(this.loadingView);
-            RES.removeEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
-            RES.removeEventListener(RES.ResourceEvent.GROUP_PROGRESS, this.onResourceProgress, this);
-            this.createGameScene();
-        }
+
+    private loadTheme():Promise<{}> {
+        return new Promise((resolve, reject) => {
+            // load skin theme configuration file, you can manually modify the file. And replace the default skin.
+            //加载皮肤主题配置文件,可以手动修改这个文件。替换默认皮肤。
+            let theme = new eui.Theme("resource/default.thm.json", this.stage);
+            theme.addEventListener(eui.UIEvent.COMPLETE, () => {
+                resolve();
+            }, this);
+
+        })
     }
-    /**
-     * preload资源组加载进度
-     */
-    private onResourceProgress(event: RES.ResourceEvent): void {
-        if (event.groupName == "preload") {
-            this.loadingView.setProgress(event.itemsLoaded, event.itemsTotal);
-        }
-    }
-    //debug模式，使用图形绘制
-    private isDebug: boolean = true;
 
     /**
      * 创建游戏场景
      */
     private createGameScene(): void {
+
+        // let mm:MainPanel = new MainPanel();
+
+        // this.addChild(mm);
 
         BodyObj.factor = this.factor;
 
@@ -164,29 +185,71 @@ class Main extends egret.DisplayObjectContainer {
 
         Enemy.jumpProbability = this.enemyJumpProbability;
 
-        this.mat = new p2.Material(1);
+        this.createContainers();
 
-        let bg:egret.Shape = new egret.Shape();
-        bg.graphics.beginFill(0x00ff00);
-        bg.graphics.drawRect(0,0,this.stage.stageWidth, this.stage.stageHeight);
-        bg.graphics.endFill();
-        this.addChild(bg);
+        this.createBg();
+
+        this.createUi();
+        
+        this.createWorldAndPlane();
+
+        this.createLadder();
+        
+        this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
+    }
+
+    private createContainers():void{
+
+        this.bgContainer = new egret.DisplayObjectContainer();
+
+        this.addChild(this.bgContainer);
 
         this.mapContainer = new egret.DisplayObjectContainer();
 
         this.addChild(this.mapContainer);
 
-        //egret.Profiler.getInstance().run();
+        this.uiContainer = new egret.DisplayObjectContainer();
 
-        this.createWorldAndPlane();
+        this.addChild(this.uiContainer);
+    }
 
-        this.createLadder();
+    private createBg():void{
 
-        let conMat2:p2.ContactMaterial = new p2.ContactMaterial(this.mat, this.mat);
-        conMat2.friction = this.friction;
-        conMat2.relaxation = this.relaxation;
+        let bg:egret.Shape = new egret.Shape();
 
-        this.world.addContactMaterial(conMat2);
+        bg.graphics.beginFill(0x00ff00);
+
+        bg.graphics.drawRect(0,0,this.stage.stageWidth, this.stage.stageHeight);
+
+        bg.graphics.endFill();
+
+        this.bgContainer.addChild(bg);
+    }
+
+    private createUi():void{
+
+        this.mainPanel = new MainPanel();
+
+        this.uiContainer.addChild(this.mainPanel);
+
+        this.mainPanel.score.text = this.bestScore.toString();
+
+        this.alertPanel = new AlertPanel();
+
+        this.uiContainer.addChild(this.alertPanel);
+
+        this.alertPanel.visible = false;
+
+        this.alertPanel.bt.addEventListener(egret.TouchEvent.TOUCH_END, this.btClick, this);
+
+        this.alertPanel.bt.label = "Restart";
+    }
+
+    private btClick(e:egret.TouchEvent):void{
+
+        this.reset();
+
+        this.alertPanel.visible = false;
 
         this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
     }
@@ -284,9 +347,18 @@ class Main extends egret.DisplayObjectContainer {
 
     private createWorldAndPlane():void{
 
+        this.mat = new p2.Material(1);
+
         //创建world
         this.world = new p2.World();
         this.world.sleepMode = p2.World.BODY_SLEEPING;
+
+        let conMat2:p2.ContactMaterial = new p2.ContactMaterial(this.mat, this.mat);
+        conMat2.friction = this.friction;
+        conMat2.relaxation = this.relaxation;
+
+        this.world.addContactMaterial(conMat2);
+
 
         //创建plane
         var planeShape: p2.Plane = new p2.Plane();
@@ -339,7 +411,14 @@ class Main extends egret.DisplayObjectContainer {
 
         if(this.human.position[0] > (humanY - 1) * this.unitWidth && this.human.position[0] < humanY * this.unitWidth){
 
-            console.log("get score:" + humanY);
+            // console.log("get score:" + humanY);
+
+            if(humanY > this.bestScore){
+
+                this.bestScore = humanY;
+
+                this.mainPanel.score.text = this.bestScore.toString();
+            }
         }
 
         let p:egret.Point = this.mapContainer.localToGlobal(this.humanDisplay.x, this.humanDisplay.y);
@@ -348,7 +427,13 @@ class Main extends egret.DisplayObjectContainer {
 
             console.log("lose!!!");
 
-            this.reset();
+            SuperTicker.getInstance().removeEventListener(this.update, this);
+
+            this.alertPanel.visible = true;
+
+            this.alertPanel.message.text = "You score is:" + this.bestScore;
+
+            // this.reset();
         }
         else{
 
@@ -424,7 +509,9 @@ class Main extends egret.DisplayObjectContainer {
 
         this.enemies.length = 0;
 
-        egret.Ticker.getInstance().unregister(this.update, this);
+        this.bestScore = 0;
+
+        this.mainPanel.score.text = this.bestScore.toString();
     }
 
     private removeHuman(_human:Human):void{
@@ -451,7 +538,9 @@ class Main extends egret.DisplayObjectContainer {
 
             this.human.position = [positionX, positionY];
 
-            egret.Ticker.getInstance().register(this.update, this);
+            SuperTicker.getInstance().addEventListener(this.update, this);
+
+            // egret.Ticker.getInstance().register(this.update, this);
         }
         else if(this.human.checkCanJump()){
 
@@ -461,35 +550,5 @@ class Main extends egret.DisplayObjectContainer {
 
             console.log("no jump!");
         }
-    }
-
-    /**
-     * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
-     */
-    private createBitmapByName(name: string): egret.Bitmap {
-        var result: egret.Bitmap = new egret.Bitmap();
-        var texture: egret.Texture = RES.getRes(name);
-        result.texture = texture;
-        return result;
-    }
-    /**
-     * 创建一个圆形
-     */
-    private createBall(r: number): egret.Shape {
-        var shape = new egret.Shape();
-        shape.graphics.beginFill(0xfff000);
-        shape.graphics.drawCircle(r, r, r);
-        shape.graphics.endFill();
-        return shape;
-    }
-    /**
-     * 创建一个方形
-     */
-    private createBox(width:number,height:number): egret.Shape {
-        var shape = new egret.Shape();
-        shape.graphics.beginFill(0xfff000);
-        shape.graphics.drawRect(0,0,width,height);
-        shape.graphics.endFill();
-        return shape;
     }
 }

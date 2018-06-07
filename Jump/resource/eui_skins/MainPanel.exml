@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="MainPanelSkin" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
+	<w:Config id="163d89cf95b" ></w:Config>
+	<e:Label id="score" text="Label" x="220" y="0" width="200" size="50" verticalAlign="middle" textAlign="center" height="50" textColor="0x000000" bold="true"/>
+</e:Skin>

@@ -8,7 +8,7 @@ class Enemy extends Human{
 
     public static jumpProbability:number;
 
-    public updateDisplaysPosition(_dt?:number):void{
+    public updateDisplaysPosition(_dt:number):void{
 
         super.updateDisplaysPosition(_dt);
 
