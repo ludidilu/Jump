@@ -12,7 +12,7 @@ class Enemy extends Human{
 
         super.updateDisplaysPosition(_dt);
 
-        if(Math.random() < Enemy.jumpProbability){
+        if(Math.random() < Enemy.jumpProbability * _dt * 0.001){
 
             if(this.checkCanJump()){
 
@@ -21,11 +21,11 @@ class Enemy extends Human{
         }
     }
 
-    public static create(_world:p2.World, _length:number, _radius:number, _humanSleepSpeedLimit:number, _container:egret.DisplayObjectContainer, _mat:p2.Material):Enemy{
+    public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material):Enemy{
         
         let enemy:Enemy = new Enemy({ mass: 1 });
 
-        Human.initHuman(enemy, _world, _length, _radius, _humanSleepSpeedLimit, _container, _mat, 0x0000ff);
+        Human.initHuman(enemy, _world, _length, _radius, _container, _mat, 0x0000ff);
 
         return enemy;
     }

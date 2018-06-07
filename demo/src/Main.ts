@@ -55,7 +55,7 @@ class Main extends egret.DisplayObjectContainer {
     private conBodyY:number;
 
     //*****config
-    private heightAddSpeed:number = 0.000625;
+    private heightAddSpeed:number = 0.625;
 
     // private heightAddSpeed:number = 0;
 
@@ -87,15 +87,21 @@ class Main extends egret.DisplayObjectContainer {
 
     private relaxation:number = 10;
 
-    private humanSleepXFix:number = -0.0004;
+    private humanSleepXFix:number = -0.4;
 
-    private humanSleepSpeedLimit:number = 0.3;
+    // private humanSleepXFix:number = 0;
 
-    private enemyJumpProbability:number = 0.01;
+    private enemyJumpProbability:number = 1;
 
-    private enemyPropProbability:number = 1;
+    // private enemyJumpProbability:number = 0;
+
+    private enemyPropProbability:number = 0.2;
+
+    // private enemyPropProbability:number = 0;
 
     private enemyPropHeightFix:number = 5;
+
+    private maxEnemyNum:number = 2;
     //*****
 
     public constructor() {
@@ -210,7 +216,9 @@ class Main extends egret.DisplayObjectContainer {
         for(let m:number = this.unitNum - 1 ; m > -1 ; m--){
 
             for(let i:number = 1 ; i < verticesOrigin.length ; i++){
+
                 let arr = verticesOrigin[i];
+                
                 let arr2 = [arr[0] + m * this.unitWidth,arr[1] + m * this.unitHeight];
 
                 vertices.push(arr2);
@@ -305,9 +313,9 @@ class Main extends egret.DisplayObjectContainer {
 
         let lastY = this.mapContainer.y;
 
-        this.mapContainer.x -= this.heightAddSpeed * this.factor * dt * this.unitWidth / this.unitHeight;
+        this.mapContainer.x -= this.heightAddSpeed * this.factor * dt * this.unitWidth / this.unitHeight * 0.001;
 
-        this.mapContainer.y += this.heightAddSpeed * this.factor * dt;
+        this.mapContainer.y += this.heightAddSpeed * this.factor * dt * 0.001;
 
         this.world.step(dt / 1000 * this.physicalTimeFix);
 
@@ -368,7 +376,7 @@ class Main extends egret.DisplayObjectContainer {
                 }
             }
 
-            if(this.enemies.length == 0 && Math.random() < this.enemyPropProbability){
+            if(this.enemies.length < this.maxEnemyNum && Math.random() < this.enemyPropProbability * dt * 0.001){
 
                 let nowLevel:number = Math.floor(this.mapContainer.y / this.factor / this.unitHeight);
 
@@ -378,7 +386,7 @@ class Main extends egret.DisplayObjectContainer {
 
                 let y:number = (targetLevel + 1.5) * this.unitHeight;
 
-                let enemy:Enemy = Enemy.create(this.world, this.humanLength, this.humanRadius, this.humanSleepSpeedLimit, this.mapContainer, this.mat);
+                let enemy:Enemy = Enemy.create(this.world, this.humanLength, this.humanRadius, this.mapContainer, this.mat);
 
                 this.enemies.push(enemy);
 
@@ -441,7 +449,7 @@ class Main extends egret.DisplayObjectContainer {
             var positionX: number = e.stageX / this.factor;
             var positionY: number = (egret.MainContext.instance.stage.stageHeight - e.stageY) / this.factor;
 
-            this.human = Human.create(this.world, this.humanLength, this.humanRadius, this.humanSleepSpeedLimit, this.mapContainer, this.mat);
+            this.human = Human.create(this.world, this.humanLength, this.humanRadius, this.mapContainer, this.mat);
 
             this.humanDisplay = this.human.displays[0];
 

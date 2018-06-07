@@ -20,7 +20,7 @@ class Human extends BodyObj{
 
         if(this.sleepState == p2.Body.SLEEPY || this.sleepState == p2.Body.SLEEPING){
 
-            this.position = [this.position[0] + Human.humanSleepXFix * _dt, this.position[1]];
+            this.position = [this.position[0] + Human.humanSleepXFix * _dt * 0.001, this.position[1]];
 
             this.sleepState = p2.Body.AWAKE;
         }
@@ -46,7 +46,7 @@ class Human extends BodyObj{
                     continue;
                 }
 
-                if(this.world.overlapKeeper.bodiesAreOverlapping(this, human)){
+                if(this.world.overlapKeeper.bodiesAreOverlapping(this, human) && this.position[1] > human.position[1]){
 
                     return true;
                 }
@@ -94,18 +94,18 @@ class Human extends BodyObj{
         }
     }
 
-    public static create(_world:p2.World, _length:number, _radius:number, _humanSleepSpeedLimit:number, _container:egret.DisplayObjectContainer, _mat:p2.Material):Human{
+    public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material):Human{
         
         let human:Human = new Human({ mass: 1 });
 
-        Human.initHuman(human, _world, _length, _radius, _humanSleepSpeedLimit, _container, _mat, 0xffff00);
+        Human.initHuman(human, _world, _length, _radius, _container, _mat, 0xffff00);
 
         return human;
     }
 
-    protected static initHuman(_human:Human, _world:p2.World, _length:number, _radius:number, _humanSleepSpeedLimit:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _color:number):void{
+    protected static initHuman(_human:Human, _world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _color:number):void{
 
-        _human.sleepSpeedLimit = _humanSleepSpeedLimit;
+        _human.sleepSpeedLimit = Math.abs(Human.humanSleepXFix);
 
         var boxShape: p2.Capsule = new p2.Capsule({length: _length, radius: _radius});
 
@@ -131,5 +131,7 @@ class Human extends BodyObj{
 
         _human.displays = [humanDisplay];
         _container.addChild(humanDisplay);
+
+        Human.humanArr.push(_human);
     }
 }
