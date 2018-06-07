@@ -1,0 +1,29 @@
+{
+  "engineVersion": "5.2.1",
+  "compilerVersion": "5.2.1",
+  "template": {},
+  "target": {
+    "current": "web"
+  },
+  "modules": [
+    {
+      "name": "egret"
+    },
+    {
+      "name": "game"
+    },
+    {
+      "name": "assetsmanager"
+    },
+    {
+      "name": "eui"
+    },
+    {
+      "name": "promise"
+    },
+    {
+			"name": "physics",
+			"path": "../libsrc"
+		}
+  ]
+}
