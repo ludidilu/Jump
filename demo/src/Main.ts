@@ -57,8 +57,6 @@ class Main extends egret.DisplayObjectContainer {
     //*****config
     private heightAddSpeed:number = 0.625;
 
-    // private heightAddSpeed:number = 0;
-
     private physicalTimeFix:number = 1.3;
 
     private factor:number = 80;
@@ -66,6 +64,10 @@ class Main extends egret.DisplayObjectContainer {
     private unitHeight:number = 2.4;
 
     private unitWidth:number = 2;
+
+    private triangleWidth:number = 0.3;
+
+    private triangleHeight:number = 0.4;
 
     private unitNum:number = 20;
 
@@ -89,15 +91,9 @@ class Main extends egret.DisplayObjectContainer {
 
     private humanSleepXFix:number = -0.4;
 
-    // private humanSleepXFix:number = 0;
-
     private enemyJumpProbability:number = 1;
 
-    // private enemyJumpProbability:number = 0;
-
     private enemyPropProbability:number = 0.2;
-
-    // private enemyPropProbability:number = 0;
 
     private enemyPropHeightFix:number = 5;
 
@@ -197,7 +193,7 @@ class Main extends egret.DisplayObjectContainer {
 
     private createLadder():void{
 
-        let verticesOrigin = [[this.unitWidth, this.unitHeight], [this.unitHeight - this.unitWidth, this.unitHeight],[0, this.unitWidth],[0,0]];
+        let verticesOrigin = [[this.unitWidth, this.unitHeight], [this.triangleWidth, this.unitHeight],[0, this.unitHeight - this.triangleHeight],[0,0]];
 
         let conDisplay:egret.Shape = new egret.Shape();
 
@@ -218,7 +214,7 @@ class Main extends egret.DisplayObjectContainer {
             for(let i:number = 1 ; i < verticesOrigin.length ; i++){
 
                 let arr = verticesOrigin[i];
-                
+
                 let arr2 = [arr[0] + m * this.unitWidth,arr[1] + m * this.unitHeight];
 
                 vertices.push(arr2);
