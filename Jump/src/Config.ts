@@ -28,8 +28,6 @@ class Config{
 
     public jumpForce:number[] = [80,145];
 
-    public jumpForceTime:number = 50;
-
     public jumpDisableTime:number = 300;
 
     public friction:number = 0;

@@ -93,8 +93,6 @@ class Main extends egret.DisplayObjectContainer {
 
         Enemy.jumpForce = this.config.jumpForce;
 
-        Enemy.jumpForceTime = this.config.jumpForceTime;
-
         Enemy.jumpProbability = this.config.enemyJumpProbability;
 
         this.createContainers();
@@ -497,7 +495,7 @@ class Main extends egret.DisplayObjectContainer {
         }
         else if(this.human.checkCanJump()){
 
-            this.human.jump(this.config.jumpAngle, this.config.jumpForce, this.config.jumpForceTime);
+            this.human.jump(this.config.jumpAngle, this.config.jumpForce);
         }
         else{
 

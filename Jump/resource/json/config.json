@@ -23,7 +23,7 @@
 
     "jumpAngle":  0.935,
 
-    "jumpForce": [230,400],
+    "jumpForce": [230,450],
 
     "jumpForceTime":  50,
 
@@ -37,7 +37,7 @@
 
     "enemyJumpProbability":  1,
 
-    "enemyPropProbability":  0,
+    "enemyPropProbability":  0.2,
 
     "enemyPropHeightFix":  5,
 

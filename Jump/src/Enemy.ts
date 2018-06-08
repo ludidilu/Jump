@@ -4,8 +4,6 @@ class Enemy extends Human{
 
     public static jumpForce:number[];
 
-    public static jumpForceTime:number;
-
     public static jumpProbability:number;
 
     public updateDisplaysPosition(_dt:number):void{
@@ -16,7 +14,7 @@ class Enemy extends Human{
 
             if(this.checkCanJump()){
 
-                this.jump(Enemy.jumpAngle, Enemy.jumpForce, Enemy.jumpForceTime);
+                this.jump(Enemy.jumpAngle, Enemy.jumpForce);
             }
         }
     }

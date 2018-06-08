@@ -8,13 +8,11 @@ class Human extends BodyObj{
 
     public static jumpDisableTime:number;
 
-    private jumpForceTime:number = 0;
-
     private jumpDisableTime:number = 0;
 
-    private jumpAngle:number;
+    private length:number;
 
-    private jumpForce:number[];
+    private radius:number;
 
     public updateDisplaysPosition(_dt:number):void{
 
@@ -61,19 +59,29 @@ class Human extends BodyObj{
         return false;
     }
 
-    public jump(_jumpAngle:number, _jumpForce:number[], _jumpForceTime:number):void{
+    public jump(_jumpAngle:number, _jumpForce:number[]):void{
+
+        let angle:number = this.angle;
+
+        let x:number = this.position[0] - Math.cos(angle) * this.length * 0.5;
+
+        let y:number = this.position[1] - Math.sin(angle) * this.length * 0.5;
+
+        x += Math.cos(_jumpAngle) * this.length * 0.5;
+
+        y += Math.sin(_jumpAngle) * this.length * 0.5;
+
+        this.position = [x,y];
 
         this.angle = _jumpAngle;
 
-        this.jumpAngle = _jumpAngle;
-
-        this.jumpForce = _jumpForce;
-
-        this.jumpForceTime = _jumpForceTime;
+        this.previousAngle = _jumpAngle;
 
         this.jumpDisableTime = Human.jumpDisableTime;
 
         this.angularVelocity = 0;
+
+        this.applyForce(_jumpForce, [0,0]);
 
         SuperTicker.getInstance().addEventListener(this.jumpReal, this);
 
@@ -81,13 +89,6 @@ class Human extends BodyObj{
     }
 
     private jumpReal(_dt:number):void{
-
-        if(this.jumpForceTime > 0){
-
-            this.applyForce(this.jumpForce, [0,0]);
-
-            this.jumpForceTime = 0;
-        }
 
         if(this.jumpDisableTime > _dt){
 
@@ -115,6 +116,10 @@ class Human extends BodyObj{
     protected static initHuman(_human:Human, _world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _color:number, _pos:number[]):void{
 
         _human.allowSleep = false;
+
+        _human.length = _length;
+
+        _human.radius = _radius;
 
         var boxShape: p2.Capsule = new p2.Capsule({length: _length, radius: _radius});
 
