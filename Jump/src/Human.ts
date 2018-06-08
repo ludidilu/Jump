@@ -8,9 +8,9 @@ class Human extends BodyObj{
 
     public static jumpDisableTime:number;
 
-    private tick:number = 0;
+    private jumpForceTime:number = 0;
 
-    private time:number = 0;
+    private jumpDisableTime:number = 0;
 
     private jumpAngle:number;
 
@@ -35,7 +35,7 @@ class Human extends BodyObj{
 
     public checkCanJump():boolean{
 
-        if(this.tick == 0 && this.time == 0){
+        if(this.jumpDisableTime == 0){
             
             if(this.world.overlapKeeper.bodiesAreOverlapping(this, Human.conBody)){
 
@@ -61,7 +61,7 @@ class Human extends BodyObj{
         return false;
     }
 
-    public jump(_jumpAngle:number, _jumpForce:number[], _jumpForceTick:number):void{
+    public jump(_jumpAngle:number, _jumpForce:number[], _jumpForceTime:number):void{
 
         this.angle = _jumpAngle;
 
@@ -69,9 +69,9 @@ class Human extends BodyObj{
 
         this.jumpForce = _jumpForce;
 
-        this.tick = _jumpForceTick;
+        this.jumpForceTime = _jumpForceTime;
 
-        this.time = Human.jumpDisableTime;
+        this.jumpDisableTime = Human.jumpDisableTime;
 
         this.angularVelocity = 0;
 
@@ -82,41 +82,39 @@ class Human extends BodyObj{
 
     private jumpReal(_dt:number):void{
 
-        if(this.tick > 0){
+        if(this.jumpForceTime > 0){
 
-            this.tick--;
+            this.applyForce(this.jumpForce, [0,0]);
 
-            this.applyForce(this.jumpForce,[0,0]);
+            this.jumpForceTime = 0;
         }
 
-        if(this.time > _dt){
+        if(this.jumpDisableTime > _dt){
 
-            this.time -= _dt;
+            this.jumpDisableTime -= _dt;
         }
-        else{
+        else if(this.jumpDisableTime > 0){
 
-            this.time = 0;
+            this.jumpDisableTime = 0;
+
+            console.log("jump over!");
 
             SuperTicker.getInstance().removeEventListener(this.jumpReal, this);
-
-            // egret.Ticker.getInstance().unregister(this.jumpReal, this);
         }
     }
 
-    public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material):Human{
+    public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _pos:number[]):Human{
         
         let human:Human = new Human({ mass: 1 });
 
-        Human.initHuman(human, _world, _length, _radius, _container, _mat, 0xffff00);
+        Human.initHuman(human, _world, _length, _radius, _container, _mat, 0xffff00, _pos);
 
         return human;
     }
 
-    protected static initHuman(_human:Human, _world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _color:number):void{
+    protected static initHuman(_human:Human, _world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _color:number, _pos:number[]):void{
 
         _human.allowSleep = false;
-
-        _human.sleepSpeedLimit = Math.abs(Human.humanSleepXFix);
 
         var boxShape: p2.Capsule = new p2.Capsule({length: _length, radius: _radius});
 
@@ -144,5 +142,9 @@ class Human extends BodyObj{
         _container.addChild(humanDisplay);
 
         Human.humanArr.push(_human);
+
+        _human.position = _pos;
+
+        _human.updateDisplaysPosition(0);
     }
 }

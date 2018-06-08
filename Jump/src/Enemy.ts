@@ -4,7 +4,7 @@ class Enemy extends Human{
 
     public static jumpForce:number[];
 
-    public static jumpForceTick:number;
+    public static jumpForceTime:number;
 
     public static jumpProbability:number;
 
@@ -16,16 +16,16 @@ class Enemy extends Human{
 
             if(this.checkCanJump()){
 
-                this.jump(Enemy.jumpAngle, Enemy.jumpForce, Enemy.jumpForceTick);
+                this.jump(Enemy.jumpAngle, Enemy.jumpForce, Enemy.jumpForceTime);
             }
         }
     }
 
-    public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material):Enemy{
+    public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _pos:number[]):Enemy{
         
         let enemy:Enemy = new Enemy({ mass: 1 });
 
-        Human.initHuman(enemy, _world, _length, _radius, _container, _mat, 0x0000ff);
+        Human.initHuman(enemy, _world, _length, _radius, _container, _mat, 0x0000ff, _pos);
 
         return enemy;
     }

@@ -93,7 +93,7 @@ class Main extends egret.DisplayObjectContainer {
 
         Enemy.jumpForce = this.config.jumpForce;
 
-        Enemy.jumpForceTick = this.config.jumpForceTick;
+        Enemy.jumpForceTime = this.config.jumpForceTime;
 
         Enemy.jumpProbability = this.config.enemyJumpProbability;
 
@@ -209,9 +209,13 @@ class Main extends egret.DisplayObjectContainer {
 
         conDisplay.graphics.beginFill(0xff0000);
 
-        conDisplay.graphics.moveTo(this.config.unitWidth * this.config.unitNum * this.config.factor, 0);
+        let factorFix:number = 0.2;
 
-        conDisplay.graphics.lineTo(this.config.unitWidth * this.config.unitNum * this.config.factor, this.config.unitHeight * this.config.unitNum * -this.config.factor);
+        let factor:number = this.config.factor * factorFix;
+
+        conDisplay.graphics.moveTo(this.config.unitWidth * this.config.unitNum * factor, 0);
+
+        conDisplay.graphics.lineTo(this.config.unitWidth * this.config.unitNum * factor, this.config.unitHeight * this.config.unitNum * -factor);
 
         let vertices = [];
 
@@ -229,11 +233,11 @@ class Main extends egret.DisplayObjectContainer {
 
                 vertices.push(arr2);
 
-                conDisplay.graphics.lineTo((arr[0] + m * this.config.unitWidth) * this.config.factor, (arr[1] + m * this.config.unitHeight) * -this.config.factor);
+                conDisplay.graphics.lineTo((arr[0] + m * this.config.unitWidth) * factor, (arr[1] + m * this.config.unitHeight) * -factor);
             }
         }
 
-        conDisplay.graphics.lineTo(this.config.unitWidth * this.config.unitNum * this.config.factor, 0);
+        conDisplay.graphics.lineTo(this.config.unitWidth * this.config.unitNum * factor, 0);
 
         conDisplay.graphics.endFill();
 
@@ -280,6 +284,10 @@ class Main extends egret.DisplayObjectContainer {
         conDisplay.x = minX * this.config.factor;
 
         conDisplay.y = minY * -this.config.factor;
+
+        conDisplay.scaleX = 1 / factorFix;
+
+        conDisplay.scaleY = 1 / factorFix;
 
         this.conBodyX = -minX;
 
@@ -418,13 +426,9 @@ class Main extends egret.DisplayObjectContainer {
 
                 let y:number = (targetLevel + 1.5) * this.config.unitHeight;
 
-                let enemy:Enemy = Enemy.create(this.world, this.config.humanLength, this.config.humanRadius, this.mapContainer, this.mat);
+                let enemy:Enemy = Enemy.create(this.world, this.config.humanLength, this.config.humanRadius, this.mapContainer, this.mat, [x,y]);
 
                 this.enemies.push(enemy);
-
-                enemy.position = [x,y];
-
-                enemy.updateDisplaysPosition(dt);
             }
         }
     }
@@ -483,11 +487,9 @@ class Main extends egret.DisplayObjectContainer {
             var positionX: number = e.stageX / this.config.factor;
             var positionY: number = (egret.MainContext.instance.stage.stageHeight - e.stageY) / this.config.factor;
 
-            this.human = Human.create(this.world, this.config.humanLength, this.config.humanRadius, this.mapContainer, this.mat);
+            this.human = Human.create(this.world, this.config.humanLength, this.config.humanRadius, this.mapContainer, this.mat, [positionX, positionY]);
 
             this.humanDisplay = this.human.displays[0];
-
-            this.human.position = [positionX, positionY];
 
             SuperTicker.getInstance().addEventListener(this.update, this);
 
@@ -495,7 +497,7 @@ class Main extends egret.DisplayObjectContainer {
         }
         else if(this.human.checkCanJump()){
 
-            this.human.jump(this.config.jumpAngle, this.config.jumpForce, this.config.jumpForceTick);
+            this.human.jump(this.config.jumpAngle, this.config.jumpForce, this.config.jumpForceTime);
         }
         else{
 

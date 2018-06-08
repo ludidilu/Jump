@@ -28,7 +28,7 @@ class Config{
 
     public jumpForce:number[] = [80,145];
 
-    public jumpForceTick:number = 3;
+    public jumpForceTime:number = 50;
 
     public jumpDisableTime:number = 300;
 
