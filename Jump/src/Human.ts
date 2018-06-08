@@ -98,8 +98,6 @@ class Human extends BodyObj{
 
             this.jumpDisableTime = 0;
 
-            console.log("jump over!");
-
             SuperTicker.getInstance().removeEventListener(this.jumpReal, this);
         }
     }
