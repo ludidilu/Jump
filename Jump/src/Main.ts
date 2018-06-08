@@ -1,32 +1,3 @@
-//////////////////////////////////////////////////////////////////////////////////////
-//
-//  Copyright (c) 2014-present, Egret Technology.
-//  All rights reserved.
-//  Redistribution and use in source and binary forms, with or without
-//  modification, are permitted provided that the following conditions are met:
-//
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the Egret nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
-//
-//  THIS SOFTWARE IS PROVIDED BY EGRET AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
-//  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-//  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-//  IN NO EVENT SHALL EGRET AND CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-//  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;LOSS OF USE, DATA,
-//  OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-//  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-//  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-//////////////////////////////////////////////////////////////////////////////////////
-
 class Main extends egret.DisplayObjectContainer {
 
     private world:p2.World;
@@ -59,55 +30,9 @@ class Main extends egret.DisplayObjectContainer {
 
     private bestScore:number = 0;
 
-    //*****config
-    private heightAddSpeed:number = 0.625;
+    private config:Config;
 
-    // private heightAddSpeed:number = 0;
-
-    private physicalTimeFix:number = 1.3;
-
-    private factor:number = 80;
-
-    private unitHeight:number = 2.4;
-
-    private unitWidth:number = 2;
-
-    private triangleWidth:number = 0.3;
-
-    private triangleHeight:number = 0.4;
-
-    private unitNum:number = 20;
-
-    private changeUnitNum:number = 5;
-
-    private humanLength:number = 0.7;
-
-    private humanRadius:number = 0.3;
-
-    private jumpAngle:number = Math.PI * 0.25 + 0.15;
-
-    private jumpForce:number[] = [80,145];
-
-    private jumpForceTick:number = 3;
-
-    private jumpDisableTime:number = 300;
-
-    private friction:number = 0;
-
-    private relaxation:number = 10;
-
-    private humanSleepXFix:number = -0.5;
-
-    private enemyJumpProbability:number = 1;
-
-    private enemyPropProbability:number = 0.2;
-
-    // private enemyPropProbability:number = 0;
-
-    private enemyPropHeightFix:number = 5;
-
-    private maxEnemyNum:number = 2;
-    //*****
+    private btClickFun:()=>void;
 
     public constructor() {
         super();
@@ -116,16 +41,6 @@ class Main extends egret.DisplayObjectContainer {
 
     private onAddToStage(event: egret.Event):void {
 
-        egret.lifecycle.onPause = () => {
-
-            SuperTicker.getInstance().pause();
-        }
-
-        egret.lifecycle.onResume = () => {
-            
-            SuperTicker.getInstance().resume();
-        }
-
         egret.registerImplementation("eui.IAssetAdapter", new AssetAdapter());
         egret.registerImplementation("eui.IThemeAdapter", new ThemeAdapter());
 
@@ -133,14 +48,15 @@ class Main extends egret.DisplayObjectContainer {
         // RES.addEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
         // RES.loadConfig("resource/default.res.json", "resource/");
 
-        this.loadConfig();
+        this.loadResources();
     }
 
-    private async loadConfig():Promise<void>{
+    private async loadResources():Promise<void>{
 
         await RES.loadConfig("resource/default.res.json", "resource/");
         await this.loadTheme();
         await RES.loadGroup("preload");
+        await this.loadConfig();
 
         this.createGameScene();
     }
@@ -157,28 +73,29 @@ class Main extends egret.DisplayObjectContainer {
         })
     }
 
+    private async loadConfig():Promise<void>{
+
+        this.config = await RES.getResAsync("config_json");
+    }
+
     /**
      * 创建游戏场景
      */
     private createGameScene(): void {
 
-        // let mm:MainPanel = new MainPanel();
+        BodyObj.factor = this.config.factor;
 
-        // this.addChild(mm);
+        Human.humanSleepXFix = this.config.humanSleepXFix;
 
-        BodyObj.factor = this.factor;
+        Human.jumpDisableTime = this.config.jumpDisableTime;
 
-        Human.humanSleepXFix = this.humanSleepXFix;
+        Enemy.jumpAngle = this.config.jumpAngle;
 
-        Human.jumpDisableTime = this.jumpDisableTime;
+        Enemy.jumpForce = this.config.jumpForce;
 
-        Enemy.jumpAngle = this.jumpAngle;
+        Enemy.jumpForceTick = this.config.jumpForceTick;
 
-        Enemy.jumpForce = this.jumpForce;
-
-        Enemy.jumpForceTick = this.jumpForceTick;
-
-        Enemy.jumpProbability = this.enemyJumpProbability;
+        Enemy.jumpProbability = this.config.enemyJumpProbability;
 
         this.createContainers();
 
@@ -191,6 +108,31 @@ class Main extends egret.DisplayObjectContainer {
         this.createLadder();
         
         this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
+
+        egret.lifecycle.onPause = () => {
+
+            SuperTicker.getInstance().pause();
+
+            if(SuperTicker.getInstance().hasEventListener(this.update, this)){
+
+                SuperTicker.getInstance().removeEventListener(this.update, this);
+
+                this.stage.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
+
+                this.alertPanel.visible = true;
+
+                this.alertPanel.message.text = "Click to continue";
+
+                this.alertPanel.bt.label = "Resume";
+
+                this.btClickFun = this.resume;
+            }
+        }
+
+        egret.lifecycle.onResume = () => {
+            
+            SuperTicker.getInstance().resume();
+        }
     }
 
     private createContainers():void{
@@ -236,52 +178,62 @@ class Main extends egret.DisplayObjectContainer {
         this.alertPanel.visible = false;
 
         this.alertPanel.bt.addEventListener(egret.TouchEvent.TOUCH_END, this.btClick, this);
-
-        this.alertPanel.bt.label = "Restart";
     }
 
     private btClick(e:egret.TouchEvent):void{
 
+        this.alertPanel.visible = false;
+
+        this.btClickFun();
+    }
+
+    private restart():void{
+
         this.reset();
 
-        this.alertPanel.visible = false;
+        this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
+    }
+
+    private resume():void{
+
+        SuperTicker.getInstance().addEventListener(this.update, this);
 
         this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
     }
 
     private createLadder():void{
 
-        let verticesOrigin = [[this.unitWidth, this.unitHeight], [this.triangleWidth, this.unitHeight],[0, this.unitHeight - this.triangleHeight],[0,0]];
+        let verticesOrigin = [[this.config.unitWidth, this.config.unitHeight], [this.config.triangleWidth, this.config.unitHeight],[0, this.config.unitHeight - this.config.triangleHeight],[0,0]];
 
         let conDisplay:egret.Shape = new egret.Shape();
 
         conDisplay.graphics.beginFill(0xff0000);
 
-        conDisplay.graphics.moveTo(this.unitWidth * this.unitNum * this.factor, 0);
+        conDisplay.graphics.moveTo(this.config.unitWidth * this.config.unitNum * this.config.factor, 0);
 
-        conDisplay.graphics.lineTo(this.unitWidth * this.unitNum * this.factor, this.unitHeight * this.unitNum * -this.factor);
+        conDisplay.graphics.lineTo(this.config.unitWidth * this.config.unitNum * this.config.factor, this.config.unitHeight * this.config.unitNum * -this.config.factor);
 
         let vertices = [];
 
-        vertices.push([this.unitWidth * this.unitNum, 0]);
+        vertices.push([this.config.unitWidth * this.config.unitNum, 0]);
 
-        vertices.push([this.unitWidth * this.unitNum, this.unitHeight * this.unitNum]);
+        vertices.push([this.config.unitWidth * this.config.unitNum, this.config.unitHeight * this.config.unitNum]);
 
-        for(let m:number = this.unitNum - 1 ; m > -1 ; m--){
+        for(let m:number = this.config.unitNum - 1 ; m > -1 ; m--){
 
             for(let i:number = 1 ; i < verticesOrigin.length ; i++){
 
                 let arr = verticesOrigin[i];
 
-                let arr2 = [arr[0] + m * this.unitWidth,arr[1] + m * this.unitHeight];
+                let arr2 = [arr[0] + m * this.config.unitWidth,arr[1] + m * this.config.unitHeight];
 
                 vertices.push(arr2);
 
-                conDisplay.graphics.lineTo((arr[0] + m * this.unitWidth) * this.factor, (arr[1] + m * this.unitHeight) * -this.factor);
+                conDisplay.graphics.lineTo((arr[0] + m * this.config.unitWidth) * this.config.factor, (arr[1] + m * this.config.unitHeight) * -this.config.factor);
             }
         }
 
-        conDisplay.graphics.lineTo(this.unitWidth * this.unitNum * this.factor, 0);
+        conDisplay.graphics.lineTo(this.config.unitWidth * this.config.unitNum * this.config.factor, 0);
 
         conDisplay.graphics.endFill();
 
@@ -325,9 +277,9 @@ class Main extends egret.DisplayObjectContainer {
             }
         }
 
-        conDisplay.x = minX * this.factor;
+        conDisplay.x = minX * this.config.factor;
 
-        conDisplay.y = minY * -this.factor;
+        conDisplay.y = minY * -this.config.factor;
 
         this.conBodyX = -minX;
 
@@ -349,8 +301,8 @@ class Main extends egret.DisplayObjectContainer {
         this.world.sleepMode = p2.World.BODY_SLEEPING;
 
         let conMat2:p2.ContactMaterial = new p2.ContactMaterial(this.mat, this.mat);
-        conMat2.friction = this.friction;
-        conMat2.relaxation = this.relaxation;
+        conMat2.friction = this.config.friction;
+        conMat2.relaxation = this.config.relaxation;
 
         this.world.addContactMaterial(conMat2);
 
@@ -376,19 +328,19 @@ class Main extends egret.DisplayObjectContainer {
 
         let lastY = this.mapContainer.y;
 
-        this.mapContainer.x -= this.heightAddSpeed * this.factor * dt * this.unitWidth / this.unitHeight * 0.001;
+        this.mapContainer.x -= this.config.heightAddSpeed * this.config.factor * dt * this.config.unitWidth / this.config.unitHeight * 0.001;
 
-        this.mapContainer.y += this.heightAddSpeed * this.factor * dt * 0.001;
+        this.mapContainer.y += this.config.heightAddSpeed * this.config.factor * dt * 0.001;
 
-        this.world.step(dt / 1000 * this.physicalTimeFix);
+        this.world.step(dt / 1000 * this.config.physicalTimeFix);
 
-        let changeHeightValue:number = (this.nowHeight + 1) * this.changeUnitNum * this.unitHeight * this.factor;
+        let changeHeightValue:number = (this.nowHeight + 1) * this.config.changeUnitNum * this.config.unitHeight * this.config.factor;
 
-        if(this.human.position[1] * this.factor - this.stage.stageHeight * 0.5 > this.mapContainer.y){
+        if(this.human.position[1] * this.config.factor - this.stage.stageHeight * 0.5 > this.mapContainer.y){
 
-            let addValue = this.human.position[1] * this.factor - this.stage.stageHeight * 0.5 - this.mapContainer.y;
+            let addValue = (this.human.position[1] * this.config.factor - this.stage.stageHeight * 0.5 - this.mapContainer.y) * this.config.cameraFollowSpeedFix;
 
-            this.mapContainer.x -= addValue * this.unitWidth / this.unitHeight;
+            this.mapContainer.x -= addValue * this.config.unitWidth / this.config.unitHeight;
 
             this.mapContainer.y += addValue;
         }
@@ -397,14 +349,14 @@ class Main extends egret.DisplayObjectContainer {
 
             this.nowHeight++;
 
-            this.conBody.position = [this.conBody.position[0] + this.unitWidth * this.changeUnitNum, this.conBody.position[1] + this.unitHeight * this.changeUnitNum];
+            this.conBody.position = [this.conBody.position[0] + this.config.unitWidth * this.config.changeUnitNum, this.conBody.position[1] + this.config.unitHeight * this.config.changeUnitNum];
 
             this.conBody.updateDisplaysPosition();
         }
 
-        let humanY:number = Math.floor(this.human.position[1] / this.unitHeight);
+        let humanY:number = Math.floor(this.human.position[1] / this.config.unitHeight);
 
-        if(this.human.position[0] > (humanY - 1) * this.unitWidth && this.human.position[0] < humanY * this.unitWidth){
+        if(this.human.position[0] > (humanY - 1) * this.config.unitWidth && this.human.position[0] < humanY * this.config.unitWidth){
 
             // console.log("get score:" + humanY);
 
@@ -427,6 +379,10 @@ class Main extends egret.DisplayObjectContainer {
             this.alertPanel.visible = true;
 
             this.alertPanel.message.text = "You score is:" + this.bestScore;
+
+            this.alertPanel.bt.label = "restart";
+
+            this.btClickFun = this.restart;
 
             // this.reset();
         }
@@ -452,17 +408,17 @@ class Main extends egret.DisplayObjectContainer {
                 }
             }
 
-            if(this.enemies.length < this.maxEnemyNum && Math.random() < this.enemyPropProbability * dt * 0.001){
+            if(this.enemies.length < this.config.maxEnemyNum && Math.random() < this.config.enemyPropProbability * dt * 0.001){
 
-                let nowLevel:number = Math.floor(this.mapContainer.y / this.factor / this.unitHeight);
+                let nowLevel:number = Math.floor(this.mapContainer.y / this.config.factor / this.config.unitHeight);
 
-                let targetLevel:number = nowLevel + this.enemyPropHeightFix;
+                let targetLevel:number = nowLevel + this.config.enemyPropHeightFix;
 
-                let x:number = (targetLevel + 0.5) * this.unitWidth;
+                let x:number = (targetLevel + 0.5) * this.config.unitWidth;
 
-                let y:number = (targetLevel + 1.5) * this.unitHeight;
+                let y:number = (targetLevel + 1.5) * this.config.unitHeight;
 
-                let enemy:Enemy = Enemy.create(this.world, this.humanLength, this.humanRadius, this.mapContainer, this.mat);
+                let enemy:Enemy = Enemy.create(this.world, this.config.humanLength, this.config.humanRadius, this.mapContainer, this.mat);
 
                 this.enemies.push(enemy);
 
@@ -524,10 +480,10 @@ class Main extends egret.DisplayObjectContainer {
 
         if(!this.human){
 
-            var positionX: number = e.stageX / this.factor;
-            var positionY: number = (egret.MainContext.instance.stage.stageHeight - e.stageY) / this.factor;
+            var positionX: number = e.stageX / this.config.factor;
+            var positionY: number = (egret.MainContext.instance.stage.stageHeight - e.stageY) / this.config.factor;
 
-            this.human = Human.create(this.world, this.humanLength, this.humanRadius, this.mapContainer, this.mat);
+            this.human = Human.create(this.world, this.config.humanLength, this.config.humanRadius, this.mapContainer, this.mat);
 
             this.humanDisplay = this.human.displays[0];
 
@@ -539,7 +495,7 @@ class Main extends egret.DisplayObjectContainer {
         }
         else if(this.human.checkCanJump()){
 
-            this.human.jump(this.jumpAngle, this.jumpForce, this.jumpForceTick);
+            this.human.jump(this.config.jumpAngle, this.config.jumpForce, this.config.jumpForceTick);
         }
         else{
 

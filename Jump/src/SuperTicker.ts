@@ -39,6 +39,21 @@ class SuperTicker{
         this.isPause = false;
     }
 
+    public hasEventListener(_fun:(dt:number)=>void,_target:any):boolean{
+
+        let index:number = this.eventList.indexOf(_fun);
+
+        if(index != -1){
+
+            if(this.eventTargetList[index] == _target){
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public addEventListener(_fun:(dt:number)=>void, _target:any):void{
 
         this.eventList.push(_fun);

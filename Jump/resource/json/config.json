@@ -1,0 +1,47 @@
+{
+    "heightAddSpeed": 0.625,
+
+    "physicalTimeFix": 1.3,
+
+    "factor":  80,
+
+    "unitHeight":  2.4,
+
+    "unitWidth":  2,
+
+    "triangleWidth":  0.3,
+
+    "triangleHeight":  0.4,
+
+    "unitNum":  20,
+
+    "changeUnitNum":  5,
+
+    "humanLength":  0.7,
+
+    "humanRadius":  0.3,
+
+    "jumpAngle":  0.935,
+
+    "jumpForce": [80,145],
+
+    "jumpForceTick":  3,
+
+    "jumpDisableTime":  300,
+
+    "friction":  0,
+
+    "relaxation":  10,
+
+    "humanSleepXFix":  -0.5,
+
+    "enemyJumpProbability":  1,
+
+    "enemyPropProbability":  0.2,
+
+    "enemyPropHeightFix":  5,
+
+    "maxEnemyNum":  2,
+
+    "cameraFollowSpeedFix":  0.02
+}
