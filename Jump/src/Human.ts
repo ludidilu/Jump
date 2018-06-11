@@ -8,6 +8,8 @@ class Human extends BodyObj{
 
     public static jumpDisableTime:number;
 
+    public static fixHumanPosX:boolean = false;
+
     private jumpDisableTime:number = 0;
 
     private length:number;
@@ -18,7 +20,7 @@ class Human extends BodyObj{
 
         // if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Human.humanSleepXFix) * _dt * 0.001 && Math.abs(this.previousPosition[1] - this.position[1]) < 0.0001){
 
-        if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Human.humanSleepXFix) * _dt * 0.001){
+        if(Human.fixHumanPosX && Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Human.humanSleepXFix) * _dt * 0.001){
 
             // console.log("fix:" + this.velocity[0]);
 

@@ -34,6 +34,8 @@ class Main extends egret.DisplayObjectContainer {
 
     private btClickFun:()=>void;
 
+    private firstJump:boolean = false;
+
     public constructor() {
         super();
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
@@ -332,32 +334,35 @@ class Main extends egret.DisplayObjectContainer {
             return;
         }
 
-        let lastY = this.mapContainer.y;
-
-        this.mapContainer.x -= this.config.heightAddSpeed * this.config.factor * dt * this.config.unitWidth / this.config.unitHeight * 0.001;
-
-        this.mapContainer.y += this.config.heightAddSpeed * this.config.factor * dt * 0.001;
-
         this.world.step(1 / this.config.fps * this.config.physicalTimeFix);
 
-        let changeHeightValue:number = (this.nowHeight + 1) * this.config.changeUnitNum * this.config.unitHeight * this.config.factor;
+        if(this.firstJump){
 
-        if(this.human.position[1] * this.config.factor - this.stage.stageHeight * 0.5 > this.mapContainer.y){
+            let lastY = this.mapContainer.y;
 
-            let addValue = (this.human.position[1] * this.config.factor - this.stage.stageHeight * 0.5 - this.mapContainer.y) * this.config.cameraFollowSpeedFix;
+            this.mapContainer.x -= this.config.heightAddSpeed * this.config.factor * dt * this.config.unitWidth / this.config.unitHeight * 0.001;
 
-            this.mapContainer.x -= addValue * this.config.unitWidth / this.config.unitHeight;
+            this.mapContainer.y += this.config.heightAddSpeed * this.config.factor * dt * 0.001;
 
-            this.mapContainer.y += addValue;
-        }
+            let changeHeightValue:number = (this.nowHeight + 1) * this.config.changeUnitNum * this.config.unitHeight * this.config.factor;
 
-        if(lastY < changeHeightValue && this.mapContainer.y >= changeHeightValue){
+            if(this.human.position[1] * this.config.factor - this.stage.stageHeight * 0.5 > this.mapContainer.y){
 
-            this.nowHeight++;
+                let addValue = (this.human.position[1] * this.config.factor - this.stage.stageHeight * 0.5 - this.mapContainer.y) * this.config.cameraFollowSpeedFix;
 
-            this.conBody.position = [this.conBody.position[0] + this.config.unitWidth * this.config.changeUnitNum, this.conBody.position[1] + this.config.unitHeight * this.config.changeUnitNum];
+                this.mapContainer.x -= addValue * this.config.unitWidth / this.config.unitHeight;
 
-            this.conBody.updateDisplaysPosition();
+                this.mapContainer.y += addValue;
+            }
+
+            if(lastY < changeHeightValue && this.mapContainer.y >= changeHeightValue){
+
+                this.nowHeight++;
+
+                this.conBody.position = [this.conBody.position[0] + this.config.unitWidth * this.config.changeUnitNum, this.conBody.position[1] + this.config.unitHeight * this.config.changeUnitNum];
+
+                this.conBody.updateDisplaysPosition();
+            }
         }
 
         let humanY:number = Math.floor(this.human.position[1] / this.config.unitHeight);
@@ -386,7 +391,7 @@ class Main extends egret.DisplayObjectContainer {
 
             this.alertPanel.message.text = "You score is:" + this.bestScore;
 
-            this.alertPanel.bt.label = "restart";
+            this.alertPanel.bt.label = "Restart";
 
             this.btClickFun = this.restart;
 
@@ -467,6 +472,10 @@ class Main extends egret.DisplayObjectContainer {
         this.bestScore = 0;
 
         this.mainPanel.score.text = this.bestScore.toString();
+
+        this.firstJump = false;
+
+        Human.fixHumanPosX = false;
     }
 
     private removeHuman(_human:Human):void{
@@ -496,6 +505,12 @@ class Main extends egret.DisplayObjectContainer {
             // egret.Ticker.getInstance().register(this.update, this);
         }
         else if(this.human.checkCanJump()){
+
+            if(!this.firstJump){
+
+                this.firstJump = true;
+                Human.fixHumanPosX = true;
+            }
 
             this.human.jump(this.config.jumpAngle, this.config.jumpForce);
         }
