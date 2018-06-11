@@ -48,5 +48,13 @@ class Config{
 
     public cameraFollowSpeedFix:number = 0.02;
 
+    public firstCameraFollowTime:number = 1000;
+
     public fps:number = 60;
+
+    public humanStartPos:number[] = [100,100];
+
+    public firstJumpAngle:number = Math.PI * 0.25 + 0.15;
+
+    public firstJumpForce:number[] = [100, 100];
 }

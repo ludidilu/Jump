@@ -43,5 +43,13 @@
 
     "cameraFollowSpeedFix":  0.02,
 
-    "fps": 60
+    "firstCameraFollowTime": 2000,
+
+    "fps": 60,
+
+    "humanStartPos": [-4,6],
+
+    "firstJumpAngle": 0.9,
+
+    "firstJumpForce": [300,450]
 }

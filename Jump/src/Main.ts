@@ -20,6 +20,10 @@ class Main extends egret.DisplayObjectContainer {
 
     private nowHeight:number = 0;
 
+    private firstCameraFollowTime:number;
+
+    private firstCameraPosX:number;
+
     private conBodyX:number;
 
     private conBodyY:number;
@@ -106,33 +110,48 @@ class Main extends egret.DisplayObjectContainer {
         this.createWorldAndPlane();
 
         this.createLadder();
-        
-        this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
 
-        egret.lifecycle.onPause = () => {
+        this.createHuman();
 
-            SuperTicker.getInstance().pause();
+        try{
 
-            if(SuperTicker.getInstance().hasEventListener(this.update, this)){
+            wx.onHide(this.pause.bind(this));
 
-                SuperTicker.getInstance().removeEventListener(this.update, this);
+            wx.onShow(this.resume.bind(this));
 
-                this.stage.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
+        }catch(e){
 
-                this.alertPanel.visible = true;
+            egret.lifecycle.onPause = this.pause.bind(this);
 
-                this.alertPanel.message.text = "Click to continue";
-
-                this.alertPanel.bt.label = "Resume";
-
-                this.btClickFun = this.resume;
-            }
+            egret.lifecycle.onResume = this.resume.bind(this);
         }
 
-        egret.lifecycle.onResume = () => {
-            
-            SuperTicker.getInstance().resume();
+        this.reset();
+    }
+
+    private pause():void{
+
+        SuperTicker.getInstance().pause();
+
+        if(SuperTicker.getInstance().hasEventListener(this.update, this)){
+
+            SuperTicker.getInstance().removeEventListener(this.update, this);
+
+            this.stage.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
+
+            this.alertPanel.visible = true;
+
+            this.alertPanel.message.text = "Click to continue";
+
+            this.alertPanel.bt.label = "Resume";
+
+            this.btClickFun = this.resumeReal;
         }
+    }
+
+    private resume():void{
+
+        SuperTicker.getInstance().resume();
     }
 
     private createContainers():void{
@@ -191,10 +210,10 @@ class Main extends egret.DisplayObjectContainer {
 
         this.reset();
 
-        this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
+        
     }
 
-    private resume():void{
+    private resumeReal():void{
 
         SuperTicker.getInstance().addEventListener(this.update, this);
 
@@ -325,6 +344,13 @@ class Main extends egret.DisplayObjectContainer {
         this.world.addBody(planeBody);
     }
 
+    private createHuman():void{
+
+        this.human = Human.create(this.world, this.config.humanLength, this.config.humanRadius, this.mapContainer, this.mat, this.config.humanStartPos);
+
+        this.humanDisplay = this.human.displays[0];
+    }
+
     private update(dt:number):void{
 
         if (dt < 10) {
@@ -336,33 +362,41 @@ class Main extends egret.DisplayObjectContainer {
 
         this.world.step(1 / this.config.fps * this.config.physicalTimeFix);
 
-        if(this.firstJump){
+        let lastY:number = this.mapContainer.y;
 
-            let lastY = this.mapContainer.y;
+        this.mapContainer.y += this.config.heightAddSpeed * this.config.factor * dt * 0.001;
 
-            this.mapContainer.x -= this.config.heightAddSpeed * this.config.factor * dt * this.config.unitWidth / this.config.unitHeight * 0.001;
+        let targetY:number = this.human.position[1] * this.config.factor - this.stage.stageHeight * 0.5;
 
-            this.mapContainer.y += this.config.heightAddSpeed * this.config.factor * dt * 0.001;
+        if(targetY > this.mapContainer.y){
 
-            let changeHeightValue:number = (this.nowHeight + 1) * this.config.changeUnitNum * this.config.unitHeight * this.config.factor;
+            this.mapContainer.y = this.mapContainer.y + (targetY - this.mapContainer.y) * this.config.cameraFollowSpeedFix;
+        }
 
-            if(this.human.position[1] * this.config.factor - this.stage.stageHeight * 0.5 > this.mapContainer.y){
+        let targetX:number = -this.mapContainer.y * this.config.unitWidth / this.config.unitHeight;
 
-                let addValue = (this.human.position[1] * this.config.factor - this.stage.stageHeight * 0.5 - this.mapContainer.y) * this.config.cameraFollowSpeedFix;
+        this.firstCameraFollowTime += dt;
 
-                this.mapContainer.x -= addValue * this.config.unitWidth / this.config.unitHeight;
+        if(this.firstCameraFollowTime < this.config.firstCameraFollowTime){
 
-                this.mapContainer.y += addValue;
-            }
+            let nowX:number = this.stage.stageWidth * 0.5 - this.humanDisplay.x;
 
-            if(lastY < changeHeightValue && this.mapContainer.y >= changeHeightValue){
+            this.mapContainer.x = nowX + (targetX - nowX) * this.firstCameraFollowTime / this.config.firstCameraFollowTime;
 
-                this.nowHeight++;
+        }else{
 
-                this.conBody.position = [this.conBody.position[0] + this.config.unitWidth * this.config.changeUnitNum, this.conBody.position[1] + this.config.unitHeight * this.config.changeUnitNum];
+            this.mapContainer.x = targetX;
+        }
 
-                this.conBody.updateDisplaysPosition();
-            }
+        let changeHeightValue:number = (this.nowHeight + 1) * this.config.changeUnitNum * this.config.unitHeight * this.config.factor;
+
+        if(lastY < changeHeightValue && this.mapContainer.y >= changeHeightValue){
+
+            this.nowHeight++;
+
+            this.conBody.position = [this.conBody.position[0] + this.config.unitWidth * this.config.changeUnitNum, this.conBody.position[1] + this.config.unitHeight * this.config.changeUnitNum];
+
+            this.conBody.updateDisplaysPosition();
         }
 
         let humanY:number = Math.floor(this.human.position[1] / this.config.unitHeight);
@@ -440,14 +474,6 @@ class Main extends egret.DisplayObjectContainer {
 
     private reset():void{
 
-        this.world.removeBody(this.human);
-
-        this.human = null;
-
-        this.mapContainer.removeChild(this.humanDisplay);
-
-        this.humanDisplay = null;
-
         this.conBody.position = [this.conBodyX, this.conBodyY];
 
         this.conBody.updateDisplaysPosition();
@@ -458,7 +484,11 @@ class Main extends egret.DisplayObjectContainer {
 
         this.nowHeight = 0;
 
-        Human.humanArr.length = 0;
+        this.firstJump = false;
+
+        this.firstCameraFollowTime = 0;
+
+        Human.humanArr.length = 1;
 
         for(let i:number = 0; i < this.enemies.length ; i++){
 
@@ -473,9 +503,19 @@ class Main extends egret.DisplayObjectContainer {
 
         this.mainPanel.score.text = this.bestScore.toString();
 
-        this.firstJump = false;
+        this.human.reset();
 
-        Human.fixHumanPosX = false;
+        this.human.position = [this.config.humanStartPos[0], this.config.humanStartPos[1]];
+
+        this.human.updateDisplaysPosition(0);
+
+        this.mapContainer.x = -this.humanDisplay.x + this.stage.stageWidth * 0.5;
+
+        this.mapContainer.y = -this.humanDisplay.y + this.stage.stageHeight * 0.5;
+
+        this.firstCameraPosX = this.mapContainer.x;
+
+        this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
     }
 
     private removeHuman(_human:Human):void{
@@ -491,26 +531,15 @@ class Main extends egret.DisplayObjectContainer {
 
     private addOneBox(e: egret.TouchEvent): void {
 
-        if(!this.human){
+        if(!this.firstJump){
 
-            var positionX: number = e.stageX / this.config.factor;
-            var positionY: number = (egret.MainContext.instance.stage.stageHeight - e.stageY) / this.config.factor;
-
-            this.human = Human.create(this.world, this.config.humanLength, this.config.humanRadius, this.mapContainer, this.mat, [positionX, positionY]);
-
-            this.humanDisplay = this.human.displays[0];
+            this.firstJump = true;
 
             SuperTicker.getInstance().addEventListener(this.update, this);
 
-            // egret.Ticker.getInstance().register(this.update, this);
-        }
-        else if(this.human.checkCanJump()){
+            this.human.jump(this.config.firstJumpAngle, this.config.firstJumpForce);
 
-            if(!this.firstJump){
-
-                this.firstJump = true;
-                Human.fixHumanPosX = true;
-            }
+        }else if(this.human.checkCanJump()){
 
             this.human.jump(this.config.jumpAngle, this.config.jumpForce);
         }
