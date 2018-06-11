@@ -47,9 +47,9 @@
 
     "fps": 60,
 
-    "humanStartPos": [-4,6],
+    "humanStartPos": [-4,9],
 
-    "firstJumpAngle": 0.9,
+    "firstJumpAngle": 0.7,
 
-    "firstJumpForce": [300,450]
+    "firstJumpForce": [400,450]
 }

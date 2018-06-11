@@ -125,7 +125,6 @@ class Human extends BodyObj{
 
         _human.addShape(boxShape);
 
-        _world.addBody(_human);
         boxShape.material = _mat;
 
         let width = ((<p2.Capsule>boxShape).length + (<p2.Capsule>boxShape).radius * 2) * BodyObj.factor;
@@ -138,12 +137,14 @@ class Human extends BodyObj{
 
         humanDisplay.width = width;
         humanDisplay.height = height;
-        
 
         humanDisplay.anchorOffsetX = width / 2;
         humanDisplay.anchorOffsetY = height / 2;
 
         _human.displays = [humanDisplay];
+
+        _world.addBody(_human);
+
         _container.addChild(humanDisplay);
 
         Human.humanArr.push(_human);

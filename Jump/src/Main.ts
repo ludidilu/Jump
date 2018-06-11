@@ -449,7 +449,7 @@ class Main extends egret.DisplayObjectContainer {
 
                 if(p.y > this.stage.stageHeight){
 
-                    this.removeHuman(enemy);
+                    this.removeEnemy(enemy);
 
                     this.enemies.splice(i,1);
                 }
@@ -494,7 +494,7 @@ class Main extends egret.DisplayObjectContainer {
 
             let enemy:Enemy = this.enemies[i];
 
-            this.removeHuman(enemy);
+            this.removeEnemy(enemy);
         }
 
         this.enemies.length = 0;
@@ -518,15 +518,9 @@ class Main extends egret.DisplayObjectContainer {
         this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
     }
 
-    private removeHuman(_human:Human):void{
+    private removeEnemy(_enemy:Human):void{
 
-        let index:number = Human.humanArr.indexOf(_human);
-
-        Human.humanArr.splice(index, 1);
-
-        this.world.removeBody(_human);
-
-        this.mapContainer.removeChild(_human.displays[0]);
+        Enemy.release(_enemy);
     }
 
     private addOneBox(e: egret.TouchEvent): void {
