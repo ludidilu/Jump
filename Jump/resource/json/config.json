@@ -41,7 +41,7 @@
 
     "maxEnemyNum":  2,
 
-    "cameraFollowSpeedFix":  0.02,
+    "cameraFollowSpeedFix":  0.05,
 
     "firstCameraFollowTime": 2000,
 

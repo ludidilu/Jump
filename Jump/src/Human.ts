@@ -31,6 +31,15 @@ class Human extends BodyObj{
         }
 
         super.updateDisplaysPosition(_dt);
+
+        if(this.jumpDisableTime > _dt){
+
+            this.jumpDisableTime -= _dt;
+        }
+        else if(this.jumpDisableTime > 0){
+
+            this.jumpDisableTime = 0;
+        }
     }
 
     public checkCanJump():boolean{
@@ -84,24 +93,6 @@ class Human extends BodyObj{
         this.angularVelocity = 0;
 
         this.applyForce(_jumpForce, [0,0]);
-
-        SuperTicker.getInstance().addEventListener(this.jumpReal, this);
-
-        // egret.Ticker.getInstance().register(this.jumpReal, this);
-    }
-
-    private jumpReal(_dt:number):void{
-
-        if(this.jumpDisableTime > _dt){
-
-            this.jumpDisableTime -= _dt;
-        }
-        else if(this.jumpDisableTime > 0){
-
-            this.jumpDisableTime = 0;
-
-            SuperTicker.getInstance().removeEventListener(this.jumpReal, this);
-        }
     }
 
     public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _pos:number[]):Human{

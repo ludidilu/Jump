@@ -89,6 +89,8 @@ class Main extends egret.DisplayObjectContainer {
      */
     private createGameScene(): void {
 
+        this.stage.frameRate = this.config.fps;
+
         BodyObj.factor = this.config.factor;
 
         Human.humanSleepXFix = this.config.humanSleepXFix;
@@ -158,9 +160,13 @@ class Main extends egret.DisplayObjectContainer {
 
         this.bgContainer = new egret.DisplayObjectContainer();
 
+        this.bgContainer.touchChildren = false;
+
         this.addChild(this.bgContainer);
 
         this.mapContainer = new egret.DisplayObjectContainer();
+
+        this.mapContainer.touchChildren = false;
 
         this.addChild(this.mapContainer);
 
