@@ -1,0 +1,47 @@
+{
+    "heightAddSpeed": 0.625,摄像机上升速度
+
+    "physicalTimeFix": 1.3,物理引擎时间系数
+
+    "factor":  80,画面缩放系数
+
+    "unitHeight":  2.4,台阶高度
+
+    "unitWidth":  2,台阶宽度
+
+    "triangleWidth":  0.3,台阶切角宽度
+
+    "triangleHeight":  0.4,台阶切角高度
+
+    "unitNum":  20,台阶总数
+
+    "changeUnitNum":  5,移动多少台阶后重置位置
+
+    "humanLength":  0.7,人的长度
+
+    "humanRadius":  0.3,人的半径
+
+    "jumpAngle":  0.935,跳跃角度
+
+    "jumpForce": [230,450],跳跃时受到的力
+
+    "jumpDisableTime":  300,跳跃后禁止跳跃时间
+
+    "friction":  0,阻力系数
+
+    "relaxation":  10,弹力系数
+
+    "humanSleepXFix":  0.5,人的移动修正
+
+    "enemyJumpProbability":  1,敌人跳跃概率
+
+    "enemyPropProbability":  0.2,敌人出现概率
+
+    "enemyPropHeightFix":  5,敌人出现位置修正
+
+    "maxEnemyNum":  2,最大敌人是数量
+
+    "cameraFollowSpeedFix":  0.02,摄像机跟随系数
+
+    "fps": 60 帧率(不要去修改)
+}
