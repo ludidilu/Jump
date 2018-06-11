@@ -35,7 +35,9 @@ class Enemy extends Human{
 
             enemy = Enemy.pool.pop();
 
-            enemy.position = [_pos[0], _pos[1]];
+            enemy.position[0] = _pos[0];
+
+            enemy.position[1] = _pos[1];
 
             _container.addChild(enemy.displays[0]);
 

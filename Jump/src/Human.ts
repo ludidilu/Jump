@@ -22,11 +22,11 @@ class Human extends BodyObj{
 
             if(this.velocity[0] > 0){
 
-                this.position = [this.previousPosition[0] + Human.humanSleepXFix * _dt * 0.001, this.position[1]];
+                this.position[0] = this.previousPosition[0] + Human.humanSleepXFix * _dt * 0.001;
             }
             else{
 
-                this.position = [this.previousPosition[0] - Human.humanSleepXFix * _dt * 0.001, this.position[1]];
+                this.position[0] = this.previousPosition[0] - Human.humanSleepXFix * _dt * 0.001;
             }
         }
 
@@ -82,7 +82,9 @@ class Human extends BodyObj{
 
         // y += Math.sin(_jumpAngle) * this.length * 0.5;
 
-        // this.position = [x,y];
+        // this.position[0] = x;
+
+        // this.position[1] = y;
 
         this.angle = _jumpAngle;
 
@@ -140,7 +142,9 @@ class Human extends BodyObj{
 
         Human.humanArr.push(_human);
 
-        _human.position = [_pos[0], _pos[1]];
+        _human.position[0] = _pos[0];
+
+        _human.position[1] = _pos[1];
 
         _human.updateDisplaysPosition(0);
     }

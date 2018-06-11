@@ -277,8 +277,8 @@ class Main extends egret.DisplayObjectContainer {
         this.conBody.displays = [container];
         this.world.addBody(this.conBody);
 
-        let minX:number = 10000000;
-        let minY:number = 10000000;
+        let minX:number = Number.MAX_VALUE;
+        let minY:number = Number.MAX_VALUE;
 
         for(let i:number = 0; i < this.conBody.shapes.length ; i++){
 
@@ -318,7 +318,9 @@ class Main extends egret.DisplayObjectContainer {
 
         this.conBodyY = -minY;
 
-        this.conBody.position = [-minX, -minY];
+        this.conBody.position[0] = -minX;
+
+        this.conBody.position[1] = -minY;
 
         this.conBody.updateDisplaysPosition();
 
@@ -400,7 +402,9 @@ class Main extends egret.DisplayObjectContainer {
 
             this.nowHeight++;
 
-            this.conBody.position = [this.conBody.position[0] + this.config.unitWidth * this.config.changeUnitNum, this.conBody.position[1] + this.config.unitHeight * this.config.changeUnitNum];
+            this.conBody.position[0] = this.conBody.position[0] + this.config.unitWidth * this.config.changeUnitNum;
+
+            this.conBody.position[1] = this.conBody.position[1] + this.config.unitHeight * this.config.changeUnitNum;
 
             this.conBody.updateDisplaysPosition();
         }
@@ -480,7 +484,9 @@ class Main extends egret.DisplayObjectContainer {
 
     private reset():void{
 
-        this.conBody.position = [this.conBodyX, this.conBodyY];
+        this.conBody.position[0] = this.conBodyX;
+
+        this.conBody.position[1] = this.conBodyY;
 
         this.conBody.updateDisplaysPosition();
 
@@ -511,7 +517,9 @@ class Main extends egret.DisplayObjectContainer {
 
         this.human.reset();
 
-        this.human.position = [this.config.humanStartPos[0], this.config.humanStartPos[1]];
+        this.human.position[0] = this.config.humanStartPos[0];
+
+        this.human.position[1] = this.config.humanStartPos[1];
 
         this.human.updateDisplaysPosition(0);
 
