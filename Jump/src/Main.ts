@@ -338,7 +338,7 @@ class Main extends egret.DisplayObjectContainer {
 
         this.mapContainer.y += this.config.heightAddSpeed * this.config.factor * dt * 0.001;
 
-        this.world.step(16 / 1000 * this.config.physicalTimeFix);
+        this.world.step(1 / this.config.fps * this.config.physicalTimeFix);
 
         let changeHeightValue:number = (this.nowHeight + 1) * this.config.changeUnitNum * this.config.unitHeight * this.config.factor;
 

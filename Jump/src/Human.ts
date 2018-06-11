@@ -16,15 +16,19 @@ class Human extends BodyObj{
 
     public updateDisplaysPosition(_dt:number):void{
 
-        if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Human.humanSleepXFix) * _dt * 0.001 && Math.abs(this.previousPosition[1] - this.position[1]) < 0.0001){
+        // if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Human.humanSleepXFix) * _dt * 0.001 && Math.abs(this.previousPosition[1] - this.position[1]) < 0.0001){
+
+        if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Human.humanSleepXFix) * _dt * 0.001){
+
+            // console.log("fix:" + this.velocity[0]);
 
             if(this.velocity[0] > 0){
 
-                this.position = [this.previousPosition[0] - Human.humanSleepXFix * _dt * 0.001, this.position[1]];
+                this.position = [this.previousPosition[0] + Human.humanSleepXFix * _dt * 0.001, this.position[1]];
             }
             else{
 
-                this.position = [this.previousPosition[0] + Human.humanSleepXFix * _dt * 0.001, this.position[1]];
+                this.position = [this.previousPosition[0] - Human.humanSleepXFix * _dt * 0.001, this.position[1]];
             }
         }
 

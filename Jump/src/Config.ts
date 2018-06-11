@@ -47,4 +47,6 @@ class Config{
     public maxEnemyNum:number = 2;
 
     public cameraFollowSpeedFix:number = 0.02;
+
+    public fps:number = 60;
 }

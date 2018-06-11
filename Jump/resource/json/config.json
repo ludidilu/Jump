@@ -33,7 +33,7 @@
 
     "relaxation":  10,
 
-    "humanSleepXFix":  -0.5,
+    "humanSleepXFix":  0.5,
 
     "enemyJumpProbability":  1,
 
@@ -43,5 +43,7 @@
 
     "maxEnemyNum":  2,
 
-    "cameraFollowSpeedFix":  0.02
+    "cameraFollowSpeedFix":  0.02,
+
+    "fps": 60
 }
