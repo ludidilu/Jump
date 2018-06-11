@@ -250,7 +250,7 @@ class Main extends egret.DisplayObjectContainer {
 
         for(let m:number = this.config.unitNum - 1 ; m > -1 ; m--){
 
-            for(let i:number = 1 ; i < verticesOrigin.length ; i++){
+            for(let i:number = 1, n:number = verticesOrigin.length ; i < n ; i++){
 
                 let arr = verticesOrigin[i];
 
@@ -280,7 +280,7 @@ class Main extends egret.DisplayObjectContainer {
         let minX:number = Number.MAX_VALUE;
         let minY:number = Number.MAX_VALUE;
 
-        for(let i:number = 0; i < this.conBody.shapes.length ; i++){
+        for(let i:number = 0, n:number = this.conBody.shapes.length; i < n ; i++){
 
             let shape:p2.Convex = <p2.Convex>this.conBody.shapes[i];
 
@@ -288,7 +288,7 @@ class Main extends egret.DisplayObjectContainer {
 
             let pos:number[] = shape.position;
 
-            for(let m:number = 0; m < shape.vertices.length ; m++){
+            for(let m:number = 0, l:number = shape.vertices.length; m < l ; m++){
 
                 let x:number = shape.vertices[m][0] + pos[0];
 
@@ -502,7 +502,7 @@ class Main extends egret.DisplayObjectContainer {
 
         Human.humanArr.length = 1;
 
-        for(let i:number = 0; i < this.enemies.length ; i++){
+        for(let i:number = 0, n:number = this.enemies.length; i < n ; i++){
 
             let enemy:Enemy = this.enemies[i];
 

@@ -51,7 +51,7 @@ class Human extends BodyObj{
                 return true;
             }
 
-            for(let i:number = 0 ; i < Human.humanArr.length ; i++){
+            for(let i:number = 0, m:number = Human.humanArr.length ; i < m ; i++){
 
                 let human:Human = Human.humanArr[i];
 

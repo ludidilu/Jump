@@ -82,12 +82,12 @@ class SuperTicker{
 
             let dt:number = _time - this.lastTime;
 
-            for(let i:number = 0 ; i < this.eventList.length ; i++){
+            for(let i:number = 0, m:number = this.eventList.length ; i < m ; i++){
 
                 this.tmpList.push(this.eventList[i]);
             }
 
-            for(let i:number = 0 ; i < this.tmpList.length ; i++){
+            for(let i:number = 0, m:number = this.tmpList.length ; i < m ; i++){
 
                 let fun:(dt:number)=>void = this.tmpList[i];
 
