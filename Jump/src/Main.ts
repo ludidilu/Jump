@@ -115,8 +115,6 @@ class Main extends egret.DisplayObjectContainer {
 
         this.createHint();
 
-        Line.container = this.otherContainer;
-
         try{
 
             wx.onHide(this.pause.bind(this));
@@ -511,7 +509,7 @@ class Main extends egret.DisplayObjectContainer {
 
                 let y:number = (targetLevel + 1.5) * Main.config.unitHeight;
 
-                let enemy:Enemy = Enemy.create(this.world, Main.config.humanLength, Main.config.humanRadius, this.humanContainer, this.mat, [x,y]);
+                Enemy.create(this.world, Main.config.humanLength, Main.config.humanRadius, this.humanContainer, this.mat, [x,y]);
             }
 
             if(Line.lineArr.length < Main.config.maxLineNum && Math.random() < Main.config.linePropProbability * dt * 0.001){
@@ -522,7 +520,7 @@ class Main extends egret.DisplayObjectContainer {
 
                 let y:number = (targetLevel + 1.5) * Main.config.unitHeight + (Math.random() - 0.5) * Main.config.unitHeight;
 
-                Line.create(y);
+                Line.create(y, this.otherContainer);
             }
         }
     }

@@ -2,13 +2,11 @@ class Line extends egret.Shape{
 
     public static lineArr:Line[] = []
 
-    public static container:egret.DisplayObjectContainer;
-
     private static pool:Line[] = [];
 
     public worldY:number;
 
-    public static create(_worldY:number):void{
+    public static create(_worldY:number, _container:egret.DisplayObjectContainer):void{
 
         let line:Line;
 
@@ -22,18 +20,18 @@ class Line extends egret.Shape{
 
             line.graphics.beginFill(0x00ffff, 0.5);
 
-            line.graphics.drawRect(0,0,Line.container.stage.stageWidth, Main.config.lineWidth * Main.config.factor);
+            line.graphics.drawRect(0,0,_container.stage.stageWidth, Main.config.lineWidth * Main.config.factor);
 
             line.graphics.endFill();
         }
 
         line.worldY = _worldY;
 
-        Line.container.addChild(line);
+        _container.addChild(line);
         
-        line.y = Line.container.stage.stageHeight - _worldY * Main.config.factor - Main.config.lineWidth * 0.5 * Main.config.factor;
+        line.y = _container.stage.stageHeight - _worldY * Main.config.factor - Main.config.lineWidth * 0.5 * Main.config.factor;
 
-        line.x = -Line.container.parent.x;
+        line.x = -_container.parent.x;
 
         Line.lineArr.push(line);
     }
@@ -44,9 +42,9 @@ class Line extends egret.Shape{
 
             let line:Line = Line.lineArr[i];
 
-            if(Line.container.parent.y + line.y - Main.config.lineWidth * 0.5 * Main.config.factor > Line.container.stage.stageHeight){
+            if(line.parent.parent.y + line.y - Main.config.lineWidth * 0.5 * Main.config.factor > line.stage.stageHeight){
 
-                Line.container.removeChild(line);
+                line.parent.removeChild(line);
 
                 Line.pool.push(line);
 
@@ -54,7 +52,7 @@ class Line extends egret.Shape{
             }
             else{
 
-                line.x = -Line.container.parent.x;
+                line.x = -line.parent.parent.x;
             }
         }
     }
