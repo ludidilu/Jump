@@ -2,8 +2,6 @@ class Config{
 
     public heightAddSpeed:number = 0.625;
 
-    // public heightAddSpeed:number = 0;
-
     public physicalTimeFix:number = 1.3;
 
     public factor:number = 80;
@@ -40,8 +38,6 @@ class Config{
 
     public enemyPropProbability:number = 0.2;
 
-    // public enemyPropProbability:number = 0;
-
     public enemyPropHeightFix:number = 5;
 
     public maxEnemyNum:number = 2;
@@ -57,4 +53,16 @@ class Config{
     public firstJumpAngle:number = Math.PI * 0.25 + 0.15;
 
     public firstJumpForce:number[] = [100, 100];
+
+    public lineWidth:number = 0.5;
+
+    public lineJumpAngle:number = 1;
+
+    public lineJumpForce:number[] = [400,600];
+
+    public linePropProbability:number = 0.2;
+
+    public maxLineNum:number = 1;
+
+    public linePropHeightFix:number = 5;
 }

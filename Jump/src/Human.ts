@@ -1,12 +1,16 @@
-class Human extends BodyObj{
+enum HumanJumpResult{
 
-    public static humanSleepXFix:number;
+    CANNOT,
+    LADDER,
+    HUMAN,
+    LINE,
+}
+
+class Human extends BodyObj{
 
     public static conBody:BodyObj;
 
     public static humanArr:Human[] = [];
-
-    public static jumpDisableTime:number;
 
     private jumpDisableTime:number = 0;
 
@@ -18,15 +22,15 @@ class Human extends BodyObj{
 
         // if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Human.humanSleepXFix) * _dt * 0.001 && Math.abs(this.previousPosition[1] - this.position[1]) < 0.0001){
 
-        if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Human.humanSleepXFix) * _dt * 0.001){
+        if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Main.config.humanSleepXFix) * _dt * 0.001){
 
             if(this.velocity[0] > 0){
 
-                this.position[0] = this.previousPosition[0] + Human.humanSleepXFix * _dt * 0.001;
+                this.position[0] = this.previousPosition[0] + Main.config.humanSleepXFix * _dt * 0.001;
             }
             else{
 
-                this.position[0] = this.previousPosition[0] - Human.humanSleepXFix * _dt * 0.001;
+                this.position[0] = this.previousPosition[0] - Main.config.humanSleepXFix * _dt * 0.001;
             }
         }
 
@@ -42,32 +46,44 @@ class Human extends BodyObj{
         }
     }
 
-    public checkCanJump():boolean{
+    public checkCanJump():HumanJumpResult{
 
         if(this.jumpDisableTime == 0){
+
+            for(let i:number = 0, m:number = Line.lineArr.length; i < m ; i++){
+
+                let line:Line = Line.lineArr[i];
+
+                console.log("this.position[1]:" + this.position[1] + "   line.worldY:" + line.worldY);
+
+                if(Math.abs(this.position[1] - line.worldY) < Main.config.humanLength * 0.5 + Main.config.humanRadius + Main.config.lineWidth * 0.5){
+
+                    return HumanJumpResult.LINE;
+                }
+            }
             
             if(this.world.overlapKeeper.bodiesAreOverlapping(this, Human.conBody)){
 
-                return true;
+                return HumanJumpResult.LADDER;
             }
 
             for(let i:number = 0, m:number = Human.humanArr.length ; i < m ; i++){
 
                 let human:Human = Human.humanArr[i];
 
-                if(human ==  this){
+                if(human == this){
 
                     continue;
                 }
 
                 if(this.world.overlapKeeper.bodiesAreOverlapping(this, human) && this.position[1] > human.position[1]){
 
-                    return true;
+                    return HumanJumpResult.HUMAN;
                 }
             }
         }
 
-        return false;
+        return HumanJumpResult.CANNOT;
     }
 
     public jump(_jumpAngle:number, _jumpForce:number[]):void{
@@ -90,7 +106,7 @@ class Human extends BodyObj{
 
         // this.previousAngle = _jumpAngle;
 
-        this.jumpDisableTime = Human.jumpDisableTime;
+        this.jumpDisableTime = Main.config.jumpDisableTime;
 
         this.angularVelocity = 0;
 
@@ -120,8 +136,8 @@ class Human extends BodyObj{
 
         boxShape.material = _mat;
 
-        let width = ((<p2.Capsule>boxShape).length + (<p2.Capsule>boxShape).radius * 2) * BodyObj.factor;
-        let height = (<p2.Capsule>boxShape).radius * 2 * BodyObj.factor;
+        let width = (_length + _radius * 2) * Main.config.factor;
+        let height = _radius * 2 * Main.config.factor;
 
         let humanDisplay:egret.Shape = new egret.Shape();
         humanDisplay.graphics.beginFill(_color);

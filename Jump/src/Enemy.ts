@@ -1,22 +1,24 @@
 class Enemy extends Human{
 
-    public static jumpAngle:number;
-
-    public static jumpForce:number[];
-
-    public static jumpProbability:number;
-
     private static pool:Enemy[] = [];
+
+    public static enemies:Enemy[] = [];
 
     public updateDisplaysPosition(_dt:number):void{
 
         super.updateDisplaysPosition(_dt);
 
-        if(Math.random() < Enemy.jumpProbability * _dt * 0.001){
+        if(Math.random() < Main.config.enemyJumpProbability * _dt * 0.001){
 
-            if(this.checkCanJump()){
+            let result:HumanJumpResult = this.checkCanJump();
 
-                this.jump(Enemy.jumpAngle, Enemy.jumpForce);
+            if(result == HumanJumpResult.LADDER || result == HumanJumpResult.HUMAN){
+
+                this.jump(Main.config.jumpAngle, Main.config.jumpForce);
+            }
+            else if(result == HumanJumpResult.LINE){
+
+                this.jump(Main.config.lineJumpAngle, Main.config.lineJumpForce);
             }
         }
     }
@@ -48,10 +50,12 @@ class Enemy extends Human{
             Human.humanArr.push(enemy);
         }
 
+        Enemy.enemies.push(enemy);
+
         return enemy;
     }
 
-    public static release(_enemy:Enemy):void{
+    private static release(_enemy:Enemy):void{
 
         _enemy.world.removeBody(_enemy);
 
@@ -62,5 +66,38 @@ class Enemy extends Human{
         Human.humanArr.splice(Human.humanArr.indexOf(_enemy), 1);
 
         Enemy.pool.push(_enemy);
+    }
+
+    public static update(_dt:number):void{
+
+        for(let i:number = this.enemies.length - 1; i > -1 ; i--){
+
+            let enemy:Enemy = this.enemies[i];
+
+            enemy.updateDisplaysPosition(_dt);
+
+            let enemyDisplay:egret.DisplayObject = enemy.displays[0];
+
+            let p:egret.Point = enemyDisplay.parent.parent.localToGlobal(enemyDisplay.x, enemyDisplay.y);
+
+            if(p.y > enemyDisplay.stage.stageHeight){
+
+                this.release(enemy);
+
+                this.enemies.splice(i,1);
+            }
+        }
+    }
+
+    public static reset():void{
+
+        for(let i:number = 0, n:number = this.enemies.length; i < n ; i++){
+
+            let enemy:Enemy = this.enemies[i];
+
+            this.release(enemy);
+        }
+
+        this.enemies.length = 0;
     }
 }

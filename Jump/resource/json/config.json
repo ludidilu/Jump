@@ -51,5 +51,17 @@
 
     "firstJumpAngle": 0.7,
 
-    "firstJumpForce": [400,450]
+    "firstJumpForce": [400,450],
+
+    "lineWidth": 0.5,
+
+    "lineJumpAngle": 1.2,
+
+    "lineJumpForce": [400,700],
+
+    "linePropProbability": 0.2,
+
+    "maxLineNum": 1,
+
+    "linePropHeightFix": 5
 }

@@ -14,6 +14,7 @@
 		"bin-debug/Main.js",
 		"bin-debug/Enemy.js",
 		"bin-debug/AssetAdapter.js",
+		"bin-debug/Line.js",
 		"bin-debug/Config.js",
 		"bin-debug/Platform.js",
 		"bin-debug/SuperTicker.js",
