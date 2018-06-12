@@ -1,47 +1,67 @@
 {
-    "heightAddSpeed": 0.625,ÉãÏñ»úÉÏÉıËÙ¶È
+    "heightAddSpeed": 0.625,æ‘„åƒæœºä¸Šå‡é€Ÿåº¦
 
-    "physicalTimeFix": 1.3,ÎïÀíÒıÇæÊ±¼äÏµÊı
+    "physicalTimeFix": 1.3,ç‰©ç†å¼•æ“æ—¶é—´ç³»æ•°
 
-    "factor":  80,»­ÃæËõ·ÅÏµÊı
+    "factor":  80,ç”»é¢ç¼©æ”¾ç³»æ•°
 
-    "unitHeight":  2.4,Ì¨½×¸ß¶È
+    "unitHeight":  2.4,å°é˜¶é«˜åº¦
 
-    "unitWidth":  2,Ì¨½×¿í¶È
+    "unitWidth":  2,å°é˜¶å®½åº¦
 
-    "triangleWidth":  0.3,Ì¨½×ÇĞ½Ç¿í¶È
+    "triangleWidth":  0.3,å°é˜¶åˆ‡è§’å®½åº¦
 
-    "triangleHeight":  0.4,Ì¨½×ÇĞ½Ç¸ß¶È
+    "triangleHeight":  0.4,å°é˜¶åˆ‡è§’é«˜åº¦
 
-    "unitNum":  20,Ì¨½××ÜÊı
+    "unitNum":  20,å°é˜¶æ€»æ•°
 
-    "changeUnitNum":  5,ÒÆ¶¯¶àÉÙÌ¨½×ºóÖØÖÃÎ»ÖÃ
+    "changeUnitNum":  5,ç§»åŠ¨å¤šå°‘å°é˜¶åé‡ç½®ä½ç½®
 
-    "humanLength":  0.7,ÈËµÄ³¤¶È
+    "humanLength":  0.7,äººçš„é•¿åº¦
 
-    "humanRadius":  0.3,ÈËµÄ°ë¾¶
+    "humanRadius":  0.3,äººçš„åŠå¾„
 
-    "jumpAngle":  0.935,ÌøÔ¾½Ç¶È
+    "jumpAngle":  0.935,è·³è·ƒè§’åº¦
 
-    "jumpForce": [230,450],ÌøÔ¾Ê±ÊÜµ½µÄÁ¦
+    "jumpForce": [230,450],è·³è·ƒæ—¶å—åˆ°çš„åŠ›
 
-    "jumpDisableTime":  300,ÌøÔ¾ºó½ûÖ¹ÌøÔ¾Ê±¼ä
+    "jumpDisableTime":  300,è·³è·ƒåç¦æ­¢è·³è·ƒæ—¶é—´
 
-    "friction":  0,×èÁ¦ÏµÊı
+    "friction":  0,é˜»åŠ›ç³»æ•°
 
-    "relaxation":  10,µ¯Á¦ÏµÊı
+    "relaxation":  10,å¼¹åŠ›ç³»æ•°
 
-    "humanSleepXFix":  0.5,ÈËµÄÒÆ¶¯ĞŞÕı
+    "humanSleepXFix":  0.5,äººçš„ç§»åŠ¨ä¿®æ­£
 
-    "enemyJumpProbability":  1,µĞÈËÌøÔ¾¸ÅÂÊ
+    "enemyJumpProbability":  1,æ•Œäººè·³è·ƒæ¦‚ç‡
 
-    "enemyPropProbability":  0.2,µĞÈË³öÏÖ¸ÅÂÊ
+    "enemyPropProbability":  0.2,æ•Œäººå‡ºç°æ¦‚ç‡
 
-    "enemyPropHeightFix":  5,µĞÈË³öÏÖÎ»ÖÃĞŞÕı
+    "enemyPropHeightFix":  5,æ•Œäººå‡ºç°ä½ç½®ä¿®æ­£
 
-    "maxEnemyNum":  2,×î´óµĞÈËÊÇÊıÁ¿
+    "maxEnemyNum":  2,æœ€å¤§æ•Œäººæ˜¯æ•°é‡
 
-    "cameraFollowSpeedFix":  0.02,ÉãÏñ»ú¸úËæÏµÊı
+    "cameraFollowSpeedFix":  0.02,æ‘„åƒæœºè·Ÿéšç³»æ•°
 
-    "fps": 60 Ö¡ÂÊ(²»ÒªÈ¥ĞŞ¸Ä)
+    "firstCameraFollowTime": 2000,åˆå§‹æ‘„åƒæœºä¿®æ­£æ—¶é—´
+
+    "fps": 60,å¸§ç‡(ä¸è¦å»ä¿®æ”¹)
+
+    "humanStartPos": [-4,9],å‡ºç”Ÿä½ç½®
+
+    "firstJumpAngle": 0.7,ç¬¬ä¸€æ¬¡è·³è·ƒè§’åº¦
+
+    "firstJumpForce": [400,450],ç¬¬ä¸€æ¬¡è·³è·ƒçš„åŠ›
+
+    "lineWidth": 0.5,çº¿å®½
+    
+    "lineJumpAngle": 1.2,è§¦çº¿è·³è·ƒè§’åº¦
+
+    "lineJumpForce": [400,700],è§¦çº¿è·³è·ƒåŠ›åº¦
+
+    "linePropProbability": 0.2,çº¿å‡ºç°çš„æ¦‚ç‡
+
+    "maxLineNum": 1,çº¿çš„æ•°é‡ä¸Šé™
+
+    "linePropHeightFix": 5,çº¿çš„é«˜åº¦ä¿®æ­£
 }
