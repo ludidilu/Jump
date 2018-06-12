@@ -22,6 +22,16 @@ class Human extends BodyObj{
 
         // if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Human.humanSleepXFix) * _dt * 0.001 && Math.abs(this.previousPosition[1] - this.position[1]) < 0.0001){
 
+        for(let i:number = Coin.coins.length - 1; i > -1; i--){
+
+            let coin:Coin = Coin.coins[i];
+
+            if(this.world.overlapKeeper.bodiesAreOverlapping(this, coin)){
+
+                Coin.release(coin);
+            }
+        }
+
         if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Main.config.humanSleepXFix) * _dt * 0.001){
 
             if(this.velocity[0] > 0){
@@ -115,7 +125,7 @@ class Human extends BodyObj{
         
         let human:Human = new Human({ mass: 1 });
 
-        Human.initHuman(human, _world, _length, _radius, _container, _mat, 0xffff00, _pos);
+        this.initHuman(human, _world, _length, _radius, _container, _mat, 0xffff00, _pos);
 
         return human;
     }
@@ -133,6 +143,10 @@ class Human extends BodyObj{
         _human.addShape(boxShape);
 
         boxShape.material = _mat;
+
+        boxShape.collisionGroup = Main.HUMAN_GROUP;
+
+        boxShape.collisionMask = Main.HUMAN_GROUP | Main.LADDER_GROUP | Main.COIN_GROUP;
 
         let width = (_length + _radius * 2) * Main.config.factor;
         let height = _radius * 2 * Main.config.factor;
@@ -154,21 +168,12 @@ class Human extends BodyObj{
 
         _container.addChild(humanDisplay);
 
-        Human.humanArr.push(_human);
+        this.humanArr.push(_human);
 
         _human.position[0] = _pos[0];
 
         _human.position[1] = _pos[1];
 
         _human.updateDisplaysPosition(0);
-    }
-
-    public reset():void{
-
-        this.velocity = [0,0];
-
-        this.angularVelocity = 0;
-
-        this.angle = 0;
     }
 }

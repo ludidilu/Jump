@@ -2,15 +2,23 @@ class Main extends egret.DisplayObjectContainer {
 
     public static config:Config;
 
+    public static HUMAN_GROUP:number = Math.pow(2, 0);
+
+    public static LADDER_GROUP:number = Math.pow(2, 1);
+
+    public static COIN_GROUP:number = Math.pow(2, 2);
+
     private world:p2.World;
 
-    private mat:p2.Material;
+    private ladderMat:p2.Material;
+
+    private humanMat:p2.Material;
+
+    private coinMat:p2.Material;
 
     private humanDisplay:egret.DisplayObject;
 
     private human:Human;
-
-    // private enemies:Human[] = [];
 
     private conBody:BodyObj;
 
@@ -237,7 +245,6 @@ class Main extends egret.DisplayObjectContainer {
         this.hintContainer.addChild(this.hint);
 
         this.hint.x = 30;
-        // this.hint.y = 100;
 
         this.hint.visible = false;
     }
@@ -319,7 +326,11 @@ class Main extends egret.DisplayObjectContainer {
 
             let shape:p2.Convex = <p2.Convex>this.conBody.shapes[i];
 
-            shape.material = this.mat;
+            shape.material = this.ladderMat;
+
+            shape.collisionGroup = Main.LADDER_GROUP;
+
+            shape.collisionMask = Main.HUMAN_GROUP | Main.COIN_GROUP;
 
             let pos:number[] = shape.position;
 
@@ -364,32 +375,50 @@ class Main extends egret.DisplayObjectContainer {
 
     private createWorldAndPlane():void{
 
-        this.mat = new p2.Material(1);
+        this.ladderMat = new p2.Material(1);
+
+        this.humanMat = new p2.Material(2);
+
+        this.coinMat = new p2.Material(3);
 
         //创建world
         this.world = new p2.World();
         this.world.sleepMode = p2.World.BODY_SLEEPING;
 
-        let conMat2:p2.ContactMaterial = new p2.ContactMaterial(this.mat, this.mat);
-        conMat2.friction = Main.config.friction;
-        conMat2.relaxation = Main.config.relaxation;
+        let conMat:p2.ContactMaterial = new p2.ContactMaterial(this.ladderMat, this.humanMat);
+        conMat.friction = Main.config.friction;
+        conMat.relaxation = Main.config.relaxation;
+        conMat.restitution = Main.config.restitution;
 
-        this.world.addContactMaterial(conMat2);
+        this.world.addContactMaterial(conMat);
 
+        conMat = new p2.ContactMaterial(this.humanMat, this.humanMat);
+        conMat.friction = Main.config.friction;
+        conMat.relaxation = Main.config.relaxation;
+        conMat.restitution = Main.config.restitution;
+
+        this.world.addContactMaterial(conMat);
+
+        conMat = new p2.ContactMaterial(this.ladderMat, this.coinMat);
+        conMat.friction = Main.config.coinFriction;
+        conMat.relaxation = Main.config.coinRelaxation;
+        conMat.restitution = Main.config.coinRestitution;
+
+        this.world.addContactMaterial(conMat);
 
         //创建plane
         var planeShape: p2.Plane = new p2.Plane();
         var planeBody: p2.Body = new p2.Body();
         planeBody.addShape(planeShape);
         planeBody.displays = [];
-        planeShape.material = this.mat;
+        planeShape.material = this.ladderMat;
 
         this.world.addBody(planeBody);
     }
 
     private createHuman():void{
 
-        this.human = Human.create(this.world, Main.config.humanLength, Main.config.humanRadius, this.humanContainer, this.mat, Main.config.humanStartPos);
+        this.human = Human.create(this.world, Main.config.humanLength, Main.config.humanRadius, this.humanContainer, this.humanMat, Main.config.humanStartPos);
 
         this.humanDisplay = this.human.displays[0];
     }
@@ -499,6 +528,8 @@ class Main extends egret.DisplayObjectContainer {
 
             Enemy.update(dt);
 
+            Coin.update();
+
             if(Enemy.enemies.length < Main.config.maxEnemyNum && Math.random() < Main.config.enemyPropProbability * dt * 0.001){
 
                 let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.factor / Main.config.unitHeight);
@@ -509,7 +540,7 @@ class Main extends egret.DisplayObjectContainer {
 
                 let y:number = (targetLevel + 1.5) * Main.config.unitHeight;
 
-                Enemy.create(this.world, Main.config.humanLength, Main.config.humanRadius, this.humanContainer, this.mat, [x,y]);
+                Enemy.create(this.world, Main.config.humanLength, Main.config.humanRadius, this.humanContainer, this.humanMat, [x,y]);
             }
 
             if(Line.lineArr.length < Main.config.maxLineNum && Math.random() < Main.config.linePropProbability * dt * 0.001){
@@ -521,6 +552,19 @@ class Main extends egret.DisplayObjectContainer {
                 let y:number = (targetLevel + 1.5) * Main.config.unitHeight + (Math.random() - 0.5) * Main.config.unitHeight;
 
                 Line.create(y, this.otherContainer);
+            }
+
+            if(Coin.coins.length < Main.config.maxCoinNum && Math.random() < Main.config.coinPropProbability * dt * 0.001){
+
+                let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.factor / Main.config.unitHeight);
+
+                let targetLevel:number = nowLevel + Main.config.enemyPropHeightFix;
+
+                let x:number = (targetLevel + 0.5) * Main.config.unitWidth + (Math.random() - 0.5) * (Main.config.unitWidth - Main.config.coinRadius * 2);
+
+                let y:number = (targetLevel + 1.5) * Main.config.unitHeight + (Math.random() - 0.5) * (Main.config.unitHeight - Main.config.coinRadius * 2);
+
+                Coin.create(this.world, this.humanContainer, this.coinMat, [x,y]);
             }
         }
     }
@@ -546,6 +590,10 @@ class Main extends egret.DisplayObjectContainer {
         Human.humanArr.length = 1;
 
         Enemy.reset();
+
+        Coin.reset();
+
+        Line.reset();
 
         this.bestScore = 0;
 

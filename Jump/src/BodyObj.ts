@@ -11,4 +11,15 @@ class BodyObj extends p2.Body{
             display.rotation = 360 - (this.angle + this.shapes[0].angle) * 180 / Math.PI;
         }
     }
+
+    public reset():void{
+
+        this.velocity[0] = 0;
+
+        this.velocity[1] = 0;
+
+        this.angularVelocity = 0;
+
+        this.angle = 0;
+    }
 }

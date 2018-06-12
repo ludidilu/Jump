@@ -50,12 +50,14 @@ class Enemy extends Human{
             Human.humanArr.push(enemy);
         }
 
-        Enemy.enemies.push(enemy);
+        this.enemies.push(enemy);
 
         return enemy;
     }
 
     private static release(_enemy:Enemy):void{
+
+        _enemy.reset();
 
         _enemy.world.removeBody(_enemy);
 
@@ -65,7 +67,7 @@ class Enemy extends Human{
 
         Human.humanArr.splice(Human.humanArr.indexOf(_enemy), 1);
 
-        Enemy.pool.push(_enemy);
+        this.pool.push(_enemy);
     }
 
     public static update(_dt:number):void{

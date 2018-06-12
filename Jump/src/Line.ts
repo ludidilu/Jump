@@ -33,27 +33,41 @@ class Line extends egret.Shape{
 
         line.x = -_container.parent.x;
 
-        Line.lineArr.push(line);
+        this.lineArr.push(line);
     }
 
     public static update():void{
 
-        for(let i:number = Line.lineArr.length - 1 ; i > -1 ; i--){
+        for(let i:number = this.lineArr.length - 1 ; i > -1 ; i--){
 
-            let line:Line = Line.lineArr[i];
+            let line:Line = this.lineArr[i];
 
             if(line.parent.parent.y + line.y - Main.config.lineWidth * 0.5 * Main.config.factor > line.stage.stageHeight){
 
                 line.parent.removeChild(line);
 
-                Line.pool.push(line);
+                this.pool.push(line);
 
-                Line.lineArr.splice(i, 1);
+                this.lineArr.splice(i, 1);
             }
             else{
 
                 line.x = -line.parent.parent.x;
             }
         }
+    }
+
+    public static reset():void{
+
+        for(let i:number = 0, m:number = this.lineArr.length; i < m; i++){
+
+            let line:Line = this.lineArr[i];
+
+            line.parent.removeChild(line);
+
+            this.pool.push(line);
+        }
+
+        this.lineArr.length = 0;
     }
 }

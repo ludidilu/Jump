@@ -31,6 +31,8 @@
 
     "relaxation":  10,
 
+    "restitution": 0,
+
     "humanSleepXFix":  0.5,
 
     "enemyJumpProbability":  1,
@@ -63,5 +65,19 @@
 
     "maxLineNum": 1,
 
-    "linePropHeightFix": 5
+    "linePropHeightFix": 5,
+
+    "coinPropProbability": 0.3,
+
+    "maxCoinNum": 3,
+
+    "coinRadius": 0.3,
+
+    "coinForce": [-0.01,0],
+
+    "coinFriction": 0,
+
+    "coinRelaxation": 10,
+
+    "coinRestitution": 0.5
 }

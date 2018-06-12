@@ -32,6 +32,8 @@ class Config{
 
     public relaxation:number = 10;
 
+    public restitution:number = 0;
+
     public humanSleepXFix:number = -0.5;
 
     public enemyJumpProbability:number = 1;
@@ -65,4 +67,18 @@ class Config{
     public maxLineNum:number = 1;
 
     public linePropHeightFix:number = 5;
+
+    public coinPropProbability:number = 0.3;
+
+    public maxCoinNum:number = 3;
+
+    public coinRadius:number = 0.3;
+
+    public coinForce:number[] = [-100,0];
+
+    public coinFriction:number = 0;
+
+    public coinRelaxation:number = 100;
+
+    public coinRestitution:number = 0.8;
 }
