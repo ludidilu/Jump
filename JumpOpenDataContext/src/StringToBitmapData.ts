@@ -193,32 +193,27 @@ class StringToBitmapData{
     }
 
     public static fromDisplayObjectContainer(_obj:egret.DisplayObject):string{
-
-
-
         let rt = new egret.RenderTexture();
         rt.drawToTexture(_obj, new egret.Rectangle(0,0,_obj.width,1));
-
 
         let arr = rt.getPixel32(0,0);
         let length = arr[0] * 256 + arr[1];
 
         let times = Math.ceil(length / 3);
 
-        arr = rt.getPixels(1,0,times,1);
-        
-
         let by = new egret.ByteArray();
 
         for(let i = 0 ; i < times ; i++){
 
-            by.writeByte(arr[i * 4]);
+            arr = rt.getPixel32(i + 1, 0);
+
+            by.writeByte(arr[0]);
 
             length--;
 
             if(length > 0){
 
-                by.writeByte(arr[i * 4 + 1]);
+                by.writeByte(arr[1]);
 
                 length--;
             }
@@ -228,7 +223,7 @@ class StringToBitmapData{
 
             if(length > 0){
                 
-                by.writeByte(arr[i * 4 + 2]);
+                by.writeByte(arr[2]);
 
                 length--;
             }
