@@ -89,4 +89,8 @@
     "coinRestitution": 0.5,金币与地面的弹力系数
 
     "gravity": [0, -9.78],重力系数
+
+    "humanFixForce": [0,-0.3],人物修正力
+
+    "humanFixForcePoint": [0.35,0]，人物修正力的受力点
 }
