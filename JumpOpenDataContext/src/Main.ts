@@ -70,14 +70,18 @@ class Main extends egret.DisplayObjectContainer {
 
         egret.startTick(this.tick, this);
 
-        let keyList:string[] = ["score"];
+        let keyList:string[] = ["score","zxasd12"];
 
-        let param = {keyList:keyList, success:this.success, fail:this.fail, complete:this.complete};
+        let param = {keyList:keyList, success:this.getUserCloudStorageSuccess.bind(this), fail:this.getUserCloudStorageFail.bind(this), complete:this.getUserCloudStorageComplete.bind(this)};
 
         wx.getUserCloudStorage(param);
+
+        param = {keyList:keyList, success:this.getFriendCloudStorageSuccess.bind(this), fail:this.getFriendCloudStorageFail.bind(this), complete:this.getFriendCloudStorageComplete.bind(this)};
+
+        wx.getFriendCloudStorage(param);
     }
 
-    private success(data:{KVDataList:{key:string,value:string}[]}):void{
+    private getUserCloudStorageSuccess(data:{KVDataList:{key:string,value:string}[]}):void{
         console.log("getUserCloudStorage success");
 
         for(let i:number = 0 ; i < data.KVDataList.length ; i++){
@@ -85,12 +89,28 @@ class Main extends egret.DisplayObjectContainer {
         }
     }
 
-    private fail():void{    
+    private getUserCloudStorageFail():void{    
         console.log("getUserCloudStorage fail");
     }
 
-    private complete():void{
+    private getUserCloudStorageComplete():void{
         console.log("getUserCloudStorage complete");
+    }
+
+    private getFriendCloudStorageSuccess(data:{avatarUrl:string, nickname:string, openid:string, KVDataList:{key:string, value:string}[]}[]):void{
+        console.log("getFriendCloudStorage success");
+
+        for(let i:number = 0 ; i < data.length ; i++){
+            console.log("avatarUrl:" + data[i].avatarUrl + "  nickname:" + data[i].nickname);
+        }
+    }
+
+    private getFriendCloudStorageFail():void{    
+        console.log("getFriendCloudStorage fail");
+    }
+
+    private getFriendCloudStorageComplete():void{
+        console.log("getFriendCloudStorage complete");
     }
 
     private tick(dt:number):boolean{

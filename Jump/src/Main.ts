@@ -150,9 +150,9 @@ class Main extends egret.DisplayObjectContainer {
 
         if(Main.isWeixin){
 
-            let param:getUserInfoParam = {withCredentials:false, lang:"zh_CN", timeout:3000, success: this.weixinSuccess.bind(this), fail: this.weixinFail, complete:this.weixinComplete}
+            // let param:getUserInfoParam = {withCredentials:false, lang:"zh_CN", timeout:3000, success: this.weixinSuccess.bind(this), fail: this.weixinFail, complete:this.weixinComplete}
 
-            wx.getUserInfo(param);
+            // wx.getUserInfo(param);
         }
 
         this.reset();
@@ -184,7 +184,10 @@ class Main extends egret.DisplayObjectContainer {
         this.bitmap = new egret.Bitmap(texture);
         this.bitmap.width = this.stage.stageWidth;
         this.bitmap.height = this.stage.stageHeight;
-        this.addChild(this.bitmap);
+        // this.bitmap.touchEnabled = true;
+        // this.addChild(this.bitmap);
+
+
 
         egret.startTick((timeStarmp: number) => {
             egret.WebGLUtils.deleteWebGLTexture(bitmapdata.webGLTexture);
@@ -198,7 +201,7 @@ class Main extends egret.DisplayObjectContainer {
 
         let kv2 = {key:"zxasd12",value:"12322"};
 
-        let data = {KVDataList: [kv, kv2],success:this.setUserCloudStorageSuccess, fail:this.setUserCloudStorageFail, complete:this.setUserCloudStorageComplete};
+        let data = {KVDataList: [kv, kv2],success:this.setUserCloudStorageSuccess.bind(this), fail:this.setUserCloudStorageFail.bind(this), complete:this.setUserCloudStorageComplete.bind(this)};
 
         wx.setUserCloudStorage(data);
     }
@@ -474,7 +477,7 @@ class Main extends egret.DisplayObjectContainer {
         this.coinMat = new p2.Material(3);
 
         //创建world
-        this.world = new p2.World();
+        this.world = new p2.World({gravity:Main.config.gravity});
         this.world.sleepMode = p2.World.BODY_SLEEPING;
 
         let conMat:p2.ContactMaterial = new p2.ContactMaterial(this.ladderMat, this.humanMat);

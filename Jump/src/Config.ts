@@ -81,4 +81,6 @@ class Config{
     public coinRelaxation:number = 100;
 
     public coinRestitution:number = 0.8;
+
+    public gravity:number[] = [0, -9.78];
 }

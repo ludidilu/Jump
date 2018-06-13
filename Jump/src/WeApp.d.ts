@@ -59,4 +59,5 @@ declare class wx{
     public static getSharedCanvas(): Canvas;
     public static setUserCloudStorage(object: {KVDataList:{key:string,value:string}[],success:(res:any)=>void,fail:(res:any)=>void,complete:(res:any)=>void}):void;
     public static getUserCloudStorage(object: {keyList:string[],success:(res:{KVDataList:{key:string,value:string}[]})=>void,fail:(res:any)=>void,complete:(res:any)=>void}):void;
+    public static getFriendCloudStorage(object: {keyList:string[],success:(res:{avatarUrl:string, nickname:string, openid:string, KVDataList:{key:string, value:string}[]}[])=>void,fail:(res:any)=>void,complete:(res:any)=>void}): void;
 }

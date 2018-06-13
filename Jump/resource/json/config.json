@@ -79,5 +79,7 @@
 
     "coinRelaxation": 10,
 
-    "coinRestitution": 0.8
+    "coinRestitution": 0.8,
+
+    "gravity": [0, -9.78]
 }
