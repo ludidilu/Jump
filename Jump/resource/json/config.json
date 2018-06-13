@@ -73,11 +73,11 @@
 
     "coinRadius": 0.3,
 
-    "coinForce": [-0.01,0],
+    "coinForce": [-0.002,0],
 
     "coinFriction": 0,
 
     "coinRelaxation": 10,
 
-    "coinRestitution": 0.5
+    "coinRestitution": 0.8
 }

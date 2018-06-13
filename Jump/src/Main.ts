@@ -58,6 +58,10 @@ class Main extends egret.DisplayObjectContainer {
 
     private firstJump:boolean = false;
 
+    public static isWeixin:boolean;
+
+    private openDataContext:OpenDataContext;
+
     public constructor() {
         super();
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
@@ -129,14 +133,102 @@ class Main extends egret.DisplayObjectContainer {
 
             wx.onShow(this.resume.bind(this));
 
+            Main.isWeixin = true;
+
+            console.log("is weixin");
+
         }catch(e){
 
             egret.lifecycle.onPause = this.pause.bind(this);
 
             egret.lifecycle.onResume = this.resume.bind(this);
+
+            Main.isWeixin = false;
+
+            console.log("is not weixin");
+        }
+
+        if(Main.isWeixin){
+
+            let param:getUserInfoParam = {withCredentials:false, lang:"zh_CN", timeout:3000, success: this.weixinSuccess.bind(this), fail: this.weixinFail, complete:this.weixinComplete}
+
+            wx.getUserInfo(param);
         }
 
         this.reset();
+    }
+
+    private bitmap: egret.Bitmap;
+
+    private weixinSuccess(_param:getUserInfoSuccess):void{
+
+        console.log("weixinSuccess!");
+
+        for(let key in _param.userInfo){
+
+            console.log("key:" + key + "   value:" + _param.userInfo[key]);
+        }
+
+        RES.getResByUrl(_param.userInfo.avatarUrl, this.getWeixinImage, this, RES.ResourceItem.TYPE_IMAGE);
+
+        this.openDataContext = wx.getOpenDataContext();
+
+        console.log("this.openDataContext:" + this.openDataContext);
+
+        
+
+        const bitmapdata = new egret.BitmapData(window["sharedCanvas"]);
+        bitmapdata.$deleteSource = false;
+        const texture = new egret.Texture();
+        texture.bitmapData = bitmapdata;
+        this.bitmap = new egret.Bitmap(texture);
+        this.bitmap.width = this.stage.stageWidth;
+        this.bitmap.height = this.stage.stageHeight;
+        this.addChild(this.bitmap);
+
+        egret.startTick((timeStarmp: number) => {
+            egret.WebGLUtils.deleteWebGLTexture(bitmapdata.webGLTexture);
+            bitmapdata.webGLTexture = null;
+            return false;
+        }, this);
+
+        
+
+        let kv = {key:"score",value:"12"};
+
+        let kv2 = {key:"zxasd12",value:"12322"};
+
+        let data = {KVDataList: [kv, kv2],success:this.setUserCloudStorageSuccess, fail:this.setUserCloudStorageFail, complete:this.setUserCloudStorageComplete};
+
+        wx.setUserCloudStorage(data);
+    }
+
+    private setUserCloudStorageSuccess():void{
+        console.log("setUserCloudStorageSuccess");
+        this.openDataContext.postMessage({a:1,b:"sss"});
+    }
+
+    private setUserCloudStorageFail():void{
+        console.log("setUserCloudStorageFail");
+    }
+
+    private setUserCloudStorageComplete():void{
+        console.log("setUserCloudStorageComplete");
+    }
+
+    private getWeixinImage(_tex:egret.Texture):void{
+
+        let bp:egret.Bitmap = new egret.Bitmap(_tex);
+
+        this.uiContainer.addChild(bp);
+    }
+
+    private weixinFail():void{
+        console.log("weixinFail!");
+    }
+
+    private weixinComplete():void{
+        console.log("weixinComplete!");
     }
 
     private pause():void{

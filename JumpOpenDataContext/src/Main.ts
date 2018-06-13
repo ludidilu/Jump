@@ -52,6 +52,8 @@ class Main extends egret.DisplayObjectContainer {
             console.log("key:" + key + "   value:" + _data[key]);
         }
 
+
+
         this.circle = new egret.Shape();
 
         this.circle.graphics.beginFill(0xff0000);
@@ -67,6 +69,28 @@ class Main extends egret.DisplayObjectContainer {
         this.circle.y = 300;
 
         egret.startTick(this.tick, this);
+
+        let keyList:string[] = ["score"];
+
+        let param = {keyList:keyList, success:this.success, fail:this.fail, complete:this.complete};
+
+        wx.getUserCloudStorage(param);
+    }
+
+    private success(data:{KVDataList:{key:string,value:string}[]}):void{
+        console.log("getUserCloudStorage success");
+
+        for(let i:number = 0 ; i < data.KVDataList.length ; i++){
+            console.log("key:" + data.KVDataList[i].key + "   value:" + data.KVDataList[i].value);
+        }
+    }
+
+    private fail():void{    
+        console.log("getUserCloudStorage fail");
+    }
+
+    private complete():void{
+        console.log("getUserCloudStorage complete");
     }
 
     private tick(dt:number):boolean{

@@ -20,8 +20,6 @@ class Human extends BodyObj{
 
     public updateDisplaysPosition(_dt:number):void{
 
-        // if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Human.humanSleepXFix) * _dt * 0.001 && Math.abs(this.previousPosition[1] - this.position[1]) < 0.0001){
-
         for(let i:number = Coin.coins.length - 1; i > -1; i--){
 
             let coin:Coin = Coin.coins[i];

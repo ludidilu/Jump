@@ -29,7 +29,9 @@
 
     "friction":  0,阻力系数
 
-    "relaxation":  10,弹力系数
+    "relaxation":  10,缓和系数
+
+    "restitution": 0,弹力系数
 
     "humanSleepXFix":  0.5,人的移动修正
 
@@ -64,4 +66,18 @@
     "maxLineNum": 1,线的数量上限
 
     "linePropHeightFix": 5,线的高度修正
+
+    "coinPropProbability": 0.3,金币出现概率
+
+    "maxCoinNum": 3,金币上限
+
+    "coinRadius": 0.3,金币半径
+
+    "coinForce": [-0.01,0],金币初始获得的力
+
+    "coinFriction": 0,金币与地面的摩擦系数
+
+    "coinRelaxation": 10,金币与地面的缓和系数
+
+    "coinRestitution": 0.5,金币与地面的弹力系数
 }
