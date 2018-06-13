@@ -14,11 +14,11 @@ class Enemy extends Human{
 
             if(result == HumanJumpResult.LADDER || result == HumanJumpResult.HUMAN){
 
-                this.jump(Main.config.jumpAngle, Main.config.jumpForce);
+                this.jump(Main.config.jumpAngle, Main.config.jumpForce, Main.config.jumpPoint);
             }
             else if(result == HumanJumpResult.LINE){
 
-                this.jump(Main.config.lineJumpAngle, Main.config.lineJumpForce);
+                this.jump(Main.config.lineJumpAngle, Main.config.lineJumpForce, Main.config.lineJumpPoint);
             }
         }
     }

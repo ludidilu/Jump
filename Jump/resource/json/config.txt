@@ -1,4 +1,5 @@
 {
+
     "heightAddSpeed": 0.625,摄像机上升速度
 
     "physicalTimeFix": 1.3,物理引擎时间系数
@@ -24,6 +25,8 @@
     "jumpAngle":  0.935,跳跃角度
 
     "jumpForce": [230,450],跳跃时受到的力
+
+    public jumpPoint:number[] = [0,0],跳跃受力点
 
     "jumpDisableTime":  300,跳跃后禁止跳跃时间
 
@@ -55,11 +58,15 @@
 
     "firstJumpForce": [400,450],第一次跳跃的力
 
+    "firstJumpPoint": [0,0],第一次跳跃的受力点
+
     "lineWidth": 0.5,线宽
     
     "lineJumpAngle": 1.2,触线跳跃角度
 
     "lineJumpForce": [400,700],触线跳跃力度
+
+    "lineJumpPoint": [0,0],
 
     "linePropProbability": 0.2,线出现的概率
 

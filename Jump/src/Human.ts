@@ -42,6 +42,8 @@ class Human extends BodyObj{
             }
         }
 
+        this.applyForce(Main.config.humanFixForce, Main.config.humanFixForcePoint);
+
         super.updateDisplaysPosition(_dt);
 
         if(this.jumpDisableTime > _dt){
@@ -92,7 +94,7 @@ class Human extends BodyObj{
         return HumanJumpResult.CANNOT;
     }
 
-    public jump(_jumpAngle:number, _jumpForce:number[]):void{
+    public jump(_jumpAngle:number, _jumpForce:number[], _jumpPoint:number[]):void{
 
         // let angle:number = this.angle;
 
@@ -116,7 +118,7 @@ class Human extends BodyObj{
 
         this.angularVelocity = 0;
 
-        this.applyForce(_jumpForce, [0,0]);
+        this.applyForce(_jumpForce, _jumpPoint);
     }
 
     public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _pos:number[]):Human{

@@ -26,6 +26,8 @@ class Config{
 
     public jumpForce:number[] = [80,145];
 
+    public jumpPoint:number[] = [0,0];
+
     public jumpDisableTime:number = 300;
 
     public friction:number = 0;
@@ -56,11 +58,15 @@ class Config{
 
     public firstJumpForce:number[] = [100, 100];
 
+    public firstJumpPoint:number[] = [0,0];
+
     public lineWidth:number = 0.5;
 
     public lineJumpAngle:number = 1;
 
     public lineJumpForce:number[] = [400,600];
+
+    public lineJumpPoint:number[] = [0,0];
 
     public linePropProbability:number = 0.2;
 
@@ -83,4 +89,8 @@ class Config{
     public coinRestitution:number = 0.8;
 
     public gravity:number[] = [0, -9.78];
+
+    public humanFixForce:number[] = [0,-0.3];
+
+    public humanFixForcePoint:number[] = [0.35,0];
 }

@@ -719,7 +719,7 @@ class Main extends egret.DisplayObjectContainer {
 
             SuperTicker.getInstance().addEventListener(this.update, this);
 
-            this.human.jump(Main.config.firstJumpAngle, Main.config.firstJumpForce);
+            this.human.jump(Main.config.firstJumpAngle, Main.config.firstJumpForce, Main.config.firstJumpPoint);
 
         }else{
 
@@ -727,11 +727,11 @@ class Main extends egret.DisplayObjectContainer {
 
             if(result == HumanJumpResult.LADDER || result == HumanJumpResult.HUMAN){
 
-                this.human.jump(Main.config.jumpAngle, Main.config.jumpForce);
+                this.human.jump(Main.config.jumpAngle, Main.config.jumpForce, Main.config.jumpPoint);
             }
             else if(result == HumanJumpResult.LINE){
 
-                this.human.jump(Main.config.lineJumpAngle, Main.config.lineJumpForce);
+                this.human.jump(Main.config.lineJumpAngle, Main.config.lineJumpForce, Main.config.lineJumpPoint);
             }
             else{
 
