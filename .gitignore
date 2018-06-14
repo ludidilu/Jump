@@ -70,3 +70,4 @@ Assets/Plugins/*
 /bin-debug
 /bin-release
 Jump_wxgame/
+manifest.json
