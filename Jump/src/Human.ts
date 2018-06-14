@@ -151,10 +151,14 @@ class Human extends BodyObj{
         let width = (_length + _radius * 2) * Main.config.factor;
         let height = _radius * 2 * Main.config.factor;
 
-        let humanDisplay:egret.Shape = new egret.Shape();
-        humanDisplay.graphics.beginFill(_color);
-        humanDisplay.graphics.drawRect(0,0,width,height);
-        humanDisplay.graphics.endFill();
+        // let humanDisplay:egret.Shape = new egret.Shape();
+        // humanDisplay.graphics.beginFill(_color);
+        // humanDisplay.graphics.drawRect(0,0,width,height);
+        // humanDisplay.graphics.endFill();
+
+        let tex:egret.Texture = RES.getRes("yu_png");
+
+        let humanDisplay:egret.Bitmap = new egret.Bitmap(tex);
 
         humanDisplay.width = width;
         humanDisplay.height = height;

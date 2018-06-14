@@ -29,7 +29,7 @@
 
 class Main extends egret.DisplayObjectContainer {
 
-    private circle:egret.Shape;
+    private container:egret.DisplayObjectContainer;
 
     public constructor() {
         super();
@@ -45,40 +45,42 @@ class Main extends egret.DisplayObjectContainer {
 
     private getMessage(_data:any):void{
 
-        console.log("openDataContext getMessage");
+        let str:string = _data.command;
 
-        for(let key in _data){
+        switch(str){
 
-            console.log("key:" + key + "   value:" + _data[key]);
+            case "talkOver":
+
+            if(this.container){
+
+                this.removeChild(this.container);
+
+                this.container = null;
+            }
+
+            break;
+
+            default:
+
+            if(this.container){
+
+                throw new Error("duplicate talk!");
+            }
+
+            this.container = StringTool.stringToObj(str + " -->reply");
+
+            this.addChild(this.container);
         }
 
+        // let keyList:string[] = ["score","zxasd12"];
 
+        // let param = {keyList:keyList, success:this.getUserCloudStorageSuccess.bind(this), fail:this.getUserCloudStorageFail.bind(this), complete:this.getUserCloudStorageComplete.bind(this)};
 
-        this.circle = new egret.Shape();
+        // wx.getUserCloudStorage(param);
 
-        this.circle.graphics.beginFill(0xff0000);
+        // param = {keyList:keyList, success:this.getFriendCloudStorageSuccess.bind(this), fail:this.getFriendCloudStorageFail.bind(this), complete:this.getFriendCloudStorageComplete.bind(this)};
 
-        this.circle.graphics.drawCircle(0,0,100);
-
-        this.circle.graphics.endFill();
-
-        this.addChild(this.circle);
-
-        this.circle.x = 300;
-
-        this.circle.y = 300;
-
-        egret.startTick(this.tick, this);
-
-        let keyList:string[] = ["score","zxasd12"];
-
-        let param = {keyList:keyList, success:this.getUserCloudStorageSuccess.bind(this), fail:this.getUserCloudStorageFail.bind(this), complete:this.getUserCloudStorageComplete.bind(this)};
-
-        wx.getUserCloudStorage(param);
-
-        param = {keyList:keyList, success:this.getFriendCloudStorageSuccess.bind(this), fail:this.getFriendCloudStorageFail.bind(this), complete:this.getFriendCloudStorageComplete.bind(this)};
-
-        wx.getFriendCloudStorage(param);
+        // wx.getFriendCloudStorage(param);
     }
 
     private getUserCloudStorageSuccess(data:{KVDataList:{key:string,value:string}[]}):void{
@@ -111,12 +113,5 @@ class Main extends egret.DisplayObjectContainer {
 
     private getFriendCloudStorageComplete():void{
         console.log("getFriendCloudStorage complete");
-    }
-
-    private tick(dt:number):boolean{
-
-        this.circle.x += 0.1;
-
-        return false;
     }
 }

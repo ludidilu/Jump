@@ -60,8 +60,6 @@ class Main extends egret.DisplayObjectContainer {
 
     public static isWeixin:boolean;
 
-    private openDataContext:OpenDataContext;
-
     public constructor() {
         super();
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
@@ -150,9 +148,9 @@ class Main extends egret.DisplayObjectContainer {
 
         if(Main.isWeixin){
 
-            // let param:getUserInfoParam = {withCredentials:false, lang:"zh_CN", timeout:3000, success: this.weixinSuccess.bind(this), fail: this.weixinFail, complete:this.weixinComplete}
+            let param:getUserInfoParam = {withCredentials:false, lang:"zh_CN", timeout:3000, success: this.weixinSuccess.bind(this), fail: this.weixinFail, complete:this.weixinComplete}
 
-            // wx.getUserInfo(param);
+            wx.getUserInfo(param);
         }
 
         this.reset();
@@ -171,30 +169,7 @@ class Main extends egret.DisplayObjectContainer {
 
         RES.getResByUrl(_param.userInfo.avatarUrl, this.getWeixinImage, this, RES.ResourceItem.TYPE_IMAGE);
 
-        this.openDataContext = wx.getOpenDataContext();
-
-        console.log("this.openDataContext:" + this.openDataContext);
-
         
-
-        const bitmapdata = new egret.BitmapData(window["sharedCanvas"]);
-        bitmapdata.$deleteSource = false;
-        const texture = new egret.Texture();
-        texture.bitmapData = bitmapdata;
-        this.bitmap = new egret.Bitmap(texture);
-        this.bitmap.width = this.stage.stageWidth;
-        this.bitmap.height = this.stage.stageHeight;
-        // this.bitmap.touchEnabled = true;
-        // this.addChild(this.bitmap);
-
-
-
-        egret.startTick((timeStarmp: number) => {
-            egret.WebGLUtils.deleteWebGLTexture(bitmapdata.webGLTexture);
-            bitmapdata.webGLTexture = null;
-            return false;
-        }, this);
-
         
 
         let kv = {key:"score",value:"12"};
@@ -206,9 +181,19 @@ class Main extends egret.DisplayObjectContainer {
         wx.setUserCloudStorage(data);
     }
 
+    private sendTalk(_cmd:any):void{
+
+        WeixinTalk.talk(_cmd, this.getTalk.bind(this));
+    }
+
+    private getTalk(_str:string):void{
+
+        console.log("gettalk:" + _str);
+    }
+
     private setUserCloudStorageSuccess():void{
         console.log("setUserCloudStorageSuccess");
-        this.openDataContext.postMessage({a:1,b:"sss"});
+        
     }
 
     private setUserCloudStorageFail():void{
@@ -526,6 +511,15 @@ class Main extends egret.DisplayObjectContainer {
         if (dt > 1000) {
             return;
         }
+
+        if(Main.isWeixin && !WeixinTalk.isTalking()){
+
+            if(Math.random() < 0.01){
+
+                this.sendTalk({command:Math.random().toString()});
+            }
+        }
+
 
         this.world.step(1 / Main.config.fps * Main.config.physicalTimeFix);
 
