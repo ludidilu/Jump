@@ -1,6 +1,10 @@
-class StringToBitmapData{
+class StringTool{
 
-    public static create(_str:string):egret.BitmapData{
+    public static width:number = 32;
+
+    public static height:number = 32;
+
+    public static stringToBmp(_str:string):egret.BitmapData{
 
         let kkk = new egret.ByteArray();
 
@@ -21,9 +25,9 @@ class StringToBitmapData{
 
         kkk.writeInt(40);
 
-        kkk.writeInt(16);//width
+        kkk.writeInt(this.width);//width
 
-        kkk.writeInt(16);//height
+        kkk.writeInt(this.height);//height
 
         kkk.writeShort(1);
 
@@ -41,11 +45,21 @@ class StringToBitmapData{
 
         kkk.writeInt(0);
 
-        let num = 16 * 16 * 3;
+        let num = this.width * this.height * 3;
 
-        kkk.writeShort(_str.length);
+        let length = _str.length;
 
-        kkk.writeByte(0);
+        let t0:number = length>>16 & 0xff;
+
+        let t1:number = length>>8 & 0xff;
+
+        let t2:number = length & 0xff;
+
+        kkk.writeByte(t0);
+
+        kkk.writeByte(t1);
+
+        kkk.writeByte(t2);
 
         num -= 3;
 
@@ -58,85 +72,30 @@ class StringToBitmapData{
             kkk.writeByte(255);
         }
 
-        console.log("oi:" + kkk.length);
-
         let bbb = egret.BitmapData.create("arraybuffer", kkk.rawBuffer);
 
         return bbb;
     }
 
-    public static bitmapDataToString(_bpd:egret.RenderTexture):string{
-        
-         let kk = _bpd.getPixel32(0, 0);
-
-         let length = kk[0] * 256 * 256 + kk[1] * 256 + kk[2];
-
-         let readTimes = Math.ceil(length / 3);
-
-         let index:number = 1;
-
-         let oioi = new egret.ByteArray();
-
-         while(true){
-
-             let x = index % 16;
-
-             let y = Math.floor(index / 16);
-
-             index++;
-
-             kk = _bpd.getPixel32(x, y);
-
-             oioi.writeByte(kk[2]);
-
-             length--;
-
-             if(length == 0){
-
-                 break;
-             }
-
-             oioi.writeByte(kk[1]);
-
-             length--;
-
-             if(length == 0){
-
-                 break;
-             }
-
-             oioi.writeByte(kk[0]);
-
-             length--;
-
-             if(length == 0){
-
-                 break;
-             }
-         }
-
-         oioi.position = 0;
-
-         let result = oioi.readUTFBytes(oioi.length);
-
-         return result;
-    }
-
-    public static createDisplayObjectContainer(_str:string):egret.DisplayObjectContainer{
-
-        console.log("sss:" + _str.length);
+    public static stringToObj(_str:string):egret.DisplayObjectContainer{
 
         let kkk = new egret.ByteArray();
 
-        kkk.endian = egret.Endian.LITTLE_ENDIAN;
+        let length = _str.length;
 
-        kkk.writeShort(_str.length);
+        let t0:number = length>>16 & 0xff;
 
-        kkk.writeByte(0);
+        let t1:number = length>>8 & 0xff;
+
+        let t2:number = length & 0xff;
+
+        kkk.writeByte(t0);
+
+        kkk.writeByte(t1);
+
+        kkk.writeByte(t2);
 
         kkk.writeUTFBytes(_str);
-
-        console.log("kkk:" + kkk.length);
 
         kkk.position = 0;
 
@@ -145,6 +104,10 @@ class StringToBitmapData{
         let times = Math.ceil(kkk.length / 3);
 
         for(let i = 0 ; i < times ; i++){
+
+            let x = i % this.width;
+
+            let y = Math.floor(i / this.width);
 
             let r;
 
@@ -176,41 +139,43 @@ class StringToBitmapData{
 
             let sp:egret.Shape = new egret.Shape();
 
-            sp.graphics.beginFill(r * 256 * 256 + g * 256 + b);
+            let c = r << 16 | g << 8 | b;
 
-            sp.graphics.drawRect(i,0,1,1);
+            sp.graphics.beginFill(c);
+
+            sp.graphics.drawRect(x,y,1,1);
 
             sp.graphics.endFill();
 
             container.addChild(sp);
         }
 
-        container.width = times;
-        
-        container.height = 1;
+        container.cacheAsBitmap = true;
 
         return container;
     }
 
-    public static fromDisplayObjectContainer(_obj:egret.DisplayObject):string{
-
-
+    public static objToString(_obj:egret.DisplayObject):string{
 
         let rt = new egret.RenderTexture();
-        rt.drawToTexture(_obj, new egret.Rectangle(0,0,_obj.width,1));
 
+        let b= rt.drawToTexture(_obj);
 
         let arr = rt.getPixel32(0,0);
-        let length = arr[0] * 256 + arr[1];
 
-        let times = Math.ceil(length / 3);
+        let length = arr[0] << 16 | arr[1] << 8 | arr[2];
 
-        arr = rt.getPixels(1,0,times,1);
-        
+        let times = Math.ceil(length / 3) + 1;
+
+        let readWidth = times < this.width ? times + 1 : this.width;
+
+        let readHeight = Math.ceil((times) / this.width);
+
+        arr = rt.getPixels(0,0,readWidth,readHeight);
 
         let by = new egret.ByteArray();
 
-        for(let i = 0 ; i < times ; i++){
+        for(let i = 1 ; i < times ; i++){
 
             by.writeByte(arr[i * 4]);
 
@@ -223,6 +188,7 @@ class StringToBitmapData{
                 length--;
             }
             else{
+
                 break;
             }
 
@@ -233,6 +199,7 @@ class StringToBitmapData{
                 length--;
             }
             else{
+
                 break;
             }
         }
