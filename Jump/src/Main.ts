@@ -150,9 +150,9 @@ class Main extends egret.DisplayObjectContainer {
 
         if(Main.isWeixin){
 
-            // let param:getUserInfoParam = {withCredentials:false, lang:"zh_CN", timeout:3000, success: this.weixinSuccess.bind(this), fail: this.weixinFail, complete:this.weixinComplete}
+            let param:getUserInfoParam = {withCredentials:false, lang:"zh_CN", timeout:3000, success: this.weixinSuccess.bind(this), fail: this.weixinFail, complete:this.weixinComplete}
 
-            // wx.getUserInfo(param);
+            wx.getUserInfo(param);
         }
 
         this.reset();
@@ -187,9 +187,25 @@ class Main extends egret.DisplayObjectContainer {
         // this.bitmap.touchEnabled = true;
         // this.addChild(this.bitmap);
 
+        let tick:number = 0;
+
+        let rt:egret.RenderTexture = new egret.RenderTexture();
+
 
 
         egret.startTick((timeStarmp: number) => {
+
+            tick++;
+
+            if(tick % 120 == 0){
+
+                let result = StringToBitmapData.fromDisplayObjectContainer(this.bitmap);
+
+                console.log("result:" + result);
+            }
+
+            
+
             egret.WebGLUtils.deleteWebGLTexture(bitmapdata.webGLTexture);
             bitmapdata.webGLTexture = null;
             return false;
@@ -208,7 +224,10 @@ class Main extends egret.DisplayObjectContainer {
 
     private setUserCloudStorageSuccess():void{
         console.log("setUserCloudStorageSuccess");
-        this.openDataContext.postMessage({a:1,b:"sss"});
+        this.openDataContext.postMessage({command:"kill anyone1!"});
+
+        
+
     }
 
     private setUserCloudStorageFail():void{

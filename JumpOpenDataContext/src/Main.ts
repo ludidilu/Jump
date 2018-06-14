@@ -45,30 +45,15 @@ class Main extends egret.DisplayObjectContainer {
 
     private getMessage(_data:any):void{
 
-        console.log("openDataContext getMessage");
+        let str:string = _data.command;
 
-        for(let key in _data){
+        console.log("get command:" + str);
 
-            console.log("key:" + key + "   value:" + _data[key]);
-        }
+        let bpd = StringToBitmapData.createDisplayObjectContainer(str);
 
+        this.addChild(bpd);
 
-
-        this.circle = new egret.Shape();
-
-        this.circle.graphics.beginFill(0xff0000);
-
-        this.circle.graphics.drawCircle(0,0,100);
-
-        this.circle.graphics.endFill();
-
-        this.addChild(this.circle);
-
-        this.circle.x = 300;
-
-        this.circle.y = 300;
-
-        egret.startTick(this.tick, this);
+        // egret.startTick(this.tick, this);
 
         let keyList:string[] = ["score","zxasd12"];
 

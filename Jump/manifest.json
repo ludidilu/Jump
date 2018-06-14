@@ -11,16 +11,17 @@
 	"game": [
 		"bin-debug/BodyObj.js",
 		"bin-debug/Human.js",
-		"bin-debug/Line.js",
+		"bin-debug/Main.js",
 		"bin-debug/Config.js",
 		"bin-debug/Enemy.js",
 		"bin-debug/AssetAdapter.js",
-		"bin-debug/skin/MainPanel.js",
-		"bin-debug/Main.js",
+		"bin-debug/Line.js",
+		"bin-debug/Coin.js",
 		"bin-debug/Platform.js",
+		"bin-debug/StringToBitmapData.js",
 		"bin-debug/SuperTicker.js",
 		"bin-debug/ThemeAdapter.js",
 		"bin-debug/skin/AlertPanel.js",
-		"bin-debug/Coin.js"
+		"bin-debug/skin/MainPanel.js"
 	]
 }
