@@ -6,44 +6,44 @@ class StringTool{
 
     public static stringToBmp(_str:string):egret.BitmapData{
 
-        let kkk = new egret.ByteArray();
+        let byteArray:egret.ByteArray = new egret.ByteArray();
 
-        kkk.endian = egret.Endian.LITTLE_ENDIAN;
+        byteArray.endian = egret.Endian.LITTLE_ENDIAN;
 
-        kkk.writeUTFBytes("BM");
+        byteArray.writeUTFBytes("BM");
 
-        kkk.writeInt(1000);
+        byteArray.writeInt(1000);
 
-        kkk.writeShort(0);
+        byteArray.writeShort(0);
 
-        kkk.writeShort(0);
+        byteArray.writeShort(0);
 
-        kkk.writeInt(54);
-
-
+        byteArray.writeInt(54);
 
 
-        kkk.writeInt(40);
 
-        kkk.writeInt(this.width);//width
 
-        kkk.writeInt(this.height);//height
+        byteArray.writeInt(40);
 
-        kkk.writeShort(1);
+        byteArray.writeInt(this.width);//width
 
-        kkk.writeShort(24);
+        byteArray.writeInt(this.height);//height
 
-        kkk.writeInt(0);
+        byteArray.writeShort(1);
 
-        kkk.writeInt(3);
+        byteArray.writeShort(24);
 
-        kkk.writeInt(0);
+        byteArray.writeInt(0);
 
-        kkk.writeInt(0);
+        byteArray.writeInt(3);
 
-        kkk.writeInt(0);
+        byteArray.writeInt(0);
 
-        kkk.writeInt(0);
+        byteArray.writeInt(0);
+
+        byteArray.writeInt(0);
+
+        byteArray.writeInt(0);
 
         let num = this.width * this.height * 3;
 
@@ -55,33 +55,33 @@ class StringTool{
 
         let t2:number = length & 0xff;
 
-        kkk.writeByte(t0);
+        byteArray.writeByte(t0);
 
-        kkk.writeByte(t1);
+        byteArray.writeByte(t1);
 
-        kkk.writeByte(t2);
+        byteArray.writeByte(t2);
 
         num -= 3;
 
-        kkk.writeUTFBytes(_str);
+        byteArray.writeUTFBytes(_str);
 
         num -= _str.length;
 
-        for(let i = 0 ; i < num ; i++){
+        for(let i:number = 0 ; i < num ; i++){
 
-            kkk.writeByte(255);
+            byteArray.writeByte(255);
         }
 
-        let bbb = egret.BitmapData.create("arraybuffer", kkk.rawBuffer);
+        let bpd:egret.BitmapData = egret.BitmapData.create("arraybuffer", byteArray.rawBuffer);
 
-        return bbb;
+        return bpd;
     }
 
     public static stringToObj(_str:string):egret.DisplayObjectContainer{
 
-        let kkk = new egret.ByteArray();
+        let byteArray:egret.ByteArray = new egret.ByteArray();
 
-        let length = _str.length;
+        let length:number = _str.length;
 
         let t0:number = length>>16 & 0xff;
 
@@ -89,41 +89,41 @@ class StringTool{
 
         let t2:number = length & 0xff;
 
-        kkk.writeByte(t0);
+        byteArray.writeByte(t0);
 
-        kkk.writeByte(t1);
+        byteArray.writeByte(t1);
 
-        kkk.writeByte(t2);
+        byteArray.writeByte(t2);
 
-        kkk.writeUTFBytes(_str);
+        byteArray.writeUTFBytes(_str);
 
-        kkk.position = 0;
+        byteArray.position = 0;
 
-        let container = new egret.DisplayObjectContainer();
+        let container:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();
 
-        let times = Math.ceil(kkk.length / 3);
+        let times:number = Math.ceil(byteArray.length / 3);
 
-        for(let i = 0 ; i < times ; i++){
+        for(let i:number = 0 ; i < times ; i++){
 
-            let x = i % this.width;
+            let x:number = i % this.width;
 
-            let y = Math.floor(i / this.width);
+            let y:number = Math.floor(i / this.width);
 
-            let r;
+            let r:number;
 
-            let g;
+            let g:number;
 
-            let b;
+            let b:number;
 
-            r = kkk.readByte();
+            r = byteArray.readByte();
 
-            if(kkk.bytesAvailable > 0){
+            if(byteArray.bytesAvailable > 0){
 
-                g = kkk.readByte();
+                g = byteArray.readByte();
 
-                if(kkk.bytesAvailable > 0){
+                if(byteArray.bytesAvailable > 0){
 
-                    b = kkk.readByte();
+                    b = byteArray.readByte();
                 }
                 else{
 
@@ -139,9 +139,9 @@ class StringTool{
 
             let sp:egret.Shape = new egret.Shape();
 
-            let c = r << 16 | g << 8 | b;
+            let color:number = r << 16 | g << 8 | b;
 
-            sp.graphics.beginFill(c);
+            sp.graphics.beginFill(color);
 
             sp.graphics.drawRect(x,y,1,1);
 
@@ -157,42 +157,42 @@ class StringTool{
 
     public static objToString(_obj:egret.DisplayObject):string{
 
-        let rt = new egret.RenderTexture();
+        let rt:egret.RenderTexture = new egret.RenderTexture();
 
-        let drawWidth = _obj.width < this.width ? _obj.width : this.width;
+        let drawWidth:number = _obj.width < this.width ? _obj.width : this.width;
 
-        let drawHeight = _obj.height < this.height ? _obj.height : this.height;
+        let drawHeight:number = _obj.height < this.height ? _obj.height : this.height;
 
         rt.drawToTexture(_obj, new egret.Rectangle(0,0,drawWidth, drawHeight));
 
-        let arr = rt.getPixel32(0,drawHeight - 1);
+        let arr:number[] = rt.getPixel32(0,drawHeight - 1);
 
-        let length = arr[0] << 16 | arr[1] << 8 | arr[2];
+        let length:number = arr[0] << 16 | arr[1] << 8 | arr[2];
 
         if(length == 0){
 
             return null;
         }
 
-        let times = Math.ceil(length / 3);
+        let times:number = Math.ceil(length / 3);
 
-        let by = new egret.ByteArray();
+        let byteArray:egret.ByteArray = new egret.ByteArray();
 
-        for(let i = 0 ; i < times ; i++){
+        for(let i:number = 0 ; i < times ; i++){
 
-            let x = (i + 1) % drawWidth;
+            let x:number = (i + 1) % drawWidth;
 
-            let y = drawHeight - 1 - Math.floor((i + 1) / drawWidth);
+            let y:number = drawHeight - 1 - Math.floor((i + 1) / drawWidth);
 
             arr = rt.getPixel32(x,y);
 
-            by.writeByte(arr[0]);
+            byteArray.writeByte(arr[0]);
 
             length--;
 
             if(length > 0){
 
-                by.writeByte(arr[1]);
+                byteArray.writeByte(arr[1]);
 
                 length--;
             }
@@ -203,7 +203,7 @@ class StringTool{
 
             if(length > 0){
 
-                by.writeByte(arr[2]);
+                byteArray.writeByte(arr[2]);
 
                 length--;
             }
@@ -213,8 +213,8 @@ class StringTool{
             }
         }
 
-        by.position = 0;
+        byteArray.position = 0;
         
-        return by.readUTFBytes(by.length);
+        return byteArray.readUTFBytes(byteArray.length);
     }
 }
