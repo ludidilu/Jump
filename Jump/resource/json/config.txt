@@ -70,7 +70,7 @@
 
     "lineJumpForce": [400,700],触线跳跃力度
 
-    "lineJumpPoint": [0,0],
+    "lineJumpPoint": [0,0],触线跳跃力受力点
 
     "linePropProbability": 0.2,线出现的概率
 
