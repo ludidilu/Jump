@@ -71,3 +71,5 @@ Assets/Plugins/*
 /bin-release
 Jump_wxgame/
 manifest.json
+Jump/src/share/
+JumpOpenDataContext/src/share/
