@@ -123,7 +123,7 @@ class Human extends BodyObj{
 
     public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _pos:number[]):Human{
         
-        let human:Human = new Human({ mass: 1 });
+        let human:Human = new Human({ mass: 1, damping :Main.config.humanDampling, angularDampling:Main.config.humanAngularDampling });
 
         this.initHuman(human, _world, _length, _radius, _container, _mat, 0xffff00, _pos);
 
@@ -138,9 +138,7 @@ class Human extends BodyObj{
 
         _human.radius = _radius;
 
-        var boxShape: p2.Capsule = new p2.Capsule({length: _length, radius: _radius});
-
-        _human.addShape(boxShape);
+        let boxShape: p2.Capsule = new p2.Capsule({length: _length, radius: _radius});
 
         boxShape.material = _mat;
 
@@ -148,6 +146,21 @@ class Human extends BodyObj{
 
         boxShape.collisionMask = Main.HUMAN_GROUP | Main.LADDER_GROUP | Main.COIN_GROUP;
 
+        _human.addShape(boxShape);
+
+        // let boxShape2:p2.Circle = new p2.Circle({radius:0.3});
+
+        // boxShape2.position = [0.35,0];
+
+        // boxShape2.material = _mat;
+
+        // boxShape2.collisionGroup = Main.HUMAN_GROUP;
+
+        // boxShape2.collisionMask = Main.HUMAN_GROUP | Main.LADDER_GROUP | Main.COIN_GROUP;
+
+        // _human.addShape(boxShape2);
+
+        
         let width = (_length + _radius * 2) * Main.config.factor;
         let height = _radius * 2 * Main.config.factor;
 

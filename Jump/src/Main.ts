@@ -308,7 +308,30 @@ class Main extends egret.DisplayObjectContainer {
 
         this.alertPanel.visible = false;
 
-        this.alertPanel.bt.addEventListener(egret.TouchEvent.TOUCH_END, this.btClick, this);
+        this.alertPanel.bt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.btClick, this);
+
+        this.mainPanel.shareBt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.clickShareBt, this);
+    }
+
+    private clickShareBt(e:egret.TouchEvent):void{
+
+        wx.shareAppMessage({success:this.shareSuccess.bind(this), fail:this.shareFail.bind(this), complete:this.shareComplete.bind(this)});
+    }
+
+    private shareSuccess(v):void{
+        console.log("shareSuccess:" + v);
+    }
+
+    private shareFail(v):void{
+        console.log("shareFail:" + v);
+
+        for(let key in v){
+            console.log("key:" + key + "  value:" + v[key]);
+        }
+    }
+
+    private shareComplete(v):void{
+        console.log("shareComplete");
     }
 
     private createHint():void{
@@ -515,6 +538,8 @@ class Main extends egret.DisplayObjectContainer {
         if(Main.isWeixin && !WeixinTalk.isTalking()){
 
             if(Math.random() < 0.01){
+
+                console.log("sendTalk!");
 
                 this.sendTalk({command:Math.random().toString()});
             }

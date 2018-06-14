@@ -29,7 +29,7 @@ class Enemy extends Human{
 
         if(Enemy.pool.length == 0){
 
-            enemy = new Enemy({ mass: 1 });
+            enemy = new Enemy({ mass: 1, damping :Main.config.humanDampling, angularDampling:Main.config.humanAngularDampling });
 
             Human.initHuman(enemy, _world, _length, _radius, _container, _mat, 0x0000ff, _pos);
         }

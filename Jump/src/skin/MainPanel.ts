@@ -18,5 +18,5 @@ class MainPanel extends eui.Component implements  eui.UIComponent {
 
 	public score:eui.Label;
 
-	public img:eui.Image;
+	public shareBt:eui.Button;
 }

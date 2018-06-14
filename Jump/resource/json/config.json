@@ -20,7 +20,7 @@
 
     "humanLength":  0.7,
 
-    "humanRadius":  0.3,
+    "humanRadius":  0.2,
 
     "jumpAngle":  0.935,
 
@@ -35,6 +35,10 @@
     "relaxation":  10,
 
     "restitution": 0,
+
+    "humanDumpling": 0.1,
+
+    "humanAngularDampling": 0.1,
 
     "humanSleepXFix":  0.5,
 
@@ -80,17 +84,21 @@
 
     "coinRadius": 0.3,
 
-    "coinForce": [-0.002,0],
+    "coinForce": [-0.005,0],
 
     "coinFriction": 0,
 
     "coinRelaxation": 10,
 
-    "coinRestitution": 0.8,
+    "coinRestitution": 0.98,
+
+    "coinDampling": 0.1,
+
+    "coinAngularDampling": 0.1,
 
     "gravity": [0, -9.78],
 
-    "humanFixForce": [0,-0.3],
+    "humanFixForce": [0,-0.1],
 
     "humanFixForcePoint": [0.35,0]
 }

@@ -36,6 +36,10 @@
 
     "restitution": 0,弹力系数
 
+    "humanDumpling": 0.1,人的空气阻力
+
+    "humanAngularDampling": 0.1,人的角空气阻力
+
     "humanSleepXFix":  0.5,人的移动修正
 
     "enemyJumpProbability":  1,敌人跳跃概率
@@ -87,6 +91,10 @@
     "coinRelaxation": 10,金币与地面的缓和系数
 
     "coinRestitution": 0.5,金币与地面的弹力系数
+
+    "coinDampling": 0.1,金币空气阻力
+
+    "coinAngularDampling": 0.1,金币的角空气阻力
 
     "gravity": [0, -9.78],重力系数
 

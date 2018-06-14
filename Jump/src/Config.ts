@@ -36,6 +36,10 @@ class Config{
 
     public restitution:number = 0;
 
+    public humanDampling:number = 0.1;
+
+    public humanAngularDampling:number = 0.1;
+
     public humanSleepXFix:number = -0.5;
 
     public enemyJumpProbability:number = 1;
@@ -87,6 +91,10 @@ class Config{
     public coinRelaxation:number = 100;
 
     public coinRestitution:number = 0.8;
+
+    public coinDampling:number = 0.1;
+
+    public coinAngularDampling:number = 0.1;
 
     public gravity:number[] = [0, -9.78];
 
