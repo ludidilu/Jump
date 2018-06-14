@@ -648,11 +648,11 @@ class Main extends egret.DisplayObjectContainer {
 
                 let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.factor / Main.config.unitHeight);
 
-                let targetLevel:number = nowLevel + Main.config.enemyPropHeightFix;
+                let targetLevel:number = nowLevel + Main.config.propHeightFix;
 
                 let x:number = (targetLevel + 0.5) * Main.config.unitWidth;
 
-                let y:number = (targetLevel + 1.5) * Main.config.unitHeight;
+                let y:number = (targetLevel + 0.5) * Main.config.unitHeight;
 
                 Enemy.create(this.world, Main.config.humanLength, Main.config.humanRadius, this.humanContainer, this.humanMat, [x,y]);
             }
@@ -661,9 +661,9 @@ class Main extends egret.DisplayObjectContainer {
 
                 let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.factor / Main.config.unitHeight);
 
-                let targetLevel:number = nowLevel + Main.config.linePropHeightFix;
+                let targetLevel:number = nowLevel + Main.config.propHeightFix;
 
-                let y:number = (targetLevel + 1.5) * Main.config.unitHeight + (Math.random() - 0.5) * Main.config.unitHeight;
+                let y:number = (targetLevel + 0.5) * Main.config.unitHeight + (Math.random() - 0.5) * Main.config.unitHeight;
 
                 Line.create(y, this.otherContainer);
             }
@@ -672,11 +672,11 @@ class Main extends egret.DisplayObjectContainer {
 
                 let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.factor / Main.config.unitHeight);
 
-                let targetLevel:number = nowLevel + Main.config.enemyPropHeightFix;
+                let targetLevel:number = nowLevel + Main.config.propHeightFix;
 
                 let x:number = (targetLevel + 0.5) * Main.config.unitWidth + (Math.random() - 0.5) * (Main.config.unitWidth - Main.config.coinRadius * 2);
 
-                let y:number = (targetLevel + 1.5) * Main.config.unitHeight + (Math.random() - 0.5) * (Main.config.unitHeight - Main.config.coinRadius * 2);
+                let y:number = (targetLevel + 1) * Main.config.unitHeight + Math.random() * (Main.config.unitHeight - Main.config.coinRadius * 2);
 
                 Coin.create(this.world, this.humanContainer, this.coinMat, [x,y]);
             }

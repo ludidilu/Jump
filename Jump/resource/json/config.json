@@ -14,7 +14,7 @@
 
     "triangleHeight":  0.4,
 
-    "unitNum":  20,
+    "unitNum":  15,
 
     "changeUnitNum":  5,
 
@@ -46,7 +46,7 @@
 
     "enemyPropProbability":  0.2,
 
-    "enemyPropHeightFix":  5,
+    "propHeightFix":  10,
 
     "maxEnemyNum":  2,
 
@@ -75,8 +75,6 @@
     "linePropProbability": 0.2,
 
     "maxLineNum": 1,
-
-    "linePropHeightFix": 5,
 
     "coinPropProbability": 0.3,
 

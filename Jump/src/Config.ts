@@ -46,7 +46,7 @@ class Config{
 
     public enemyPropProbability:number = 0.2;
 
-    public enemyPropHeightFix:number = 5;
+    public propHeightFix:number = 10;
 
     public maxEnemyNum:number = 2;
 
@@ -75,8 +75,6 @@ class Config{
     public linePropProbability:number = 0.2;
 
     public maxLineNum:number = 1;
-
-    public linePropHeightFix:number = 5;
 
     public coinPropProbability:number = 0.3;
 

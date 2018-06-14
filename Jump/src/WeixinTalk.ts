@@ -42,7 +42,7 @@ class WeixinTalk{
 
         if(this.cb){
 
-            let str = StringTool.objToString(this.bitmap);
+            let str = StringTool.objToString2(this.bitmap);
 
             if(str){
 

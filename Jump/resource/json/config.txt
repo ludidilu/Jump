@@ -14,7 +14,7 @@
 
     "triangleHeight":  0.4,台阶切角高度
 
-    "unitNum":  20,台阶总数
+    "unitNum":  15,台阶总数
 
     "changeUnitNum":  5,移动多少台阶后重置位置
 
@@ -46,7 +46,7 @@
 
     "enemyPropProbability":  0.2,敌人出现概率
 
-    "enemyPropHeightFix":  5,敌人出现位置修正
+    "propHeightFix":  10,敌人、金币、线出现位置修正
 
     "maxEnemyNum":  2,最大敌人是数量
 
@@ -75,8 +75,6 @@
     "linePropProbability": 0.2,线出现的概率
 
     "maxLineNum": 1,线的数量上限
-
-    "linePropHeightFix": 5,线的高度修正
 
     "coinPropProbability": 0.3,金币出现概率
 

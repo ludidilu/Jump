@@ -64,7 +64,7 @@ class Human extends BodyObj{
 
                 let line:Line = Line.lineArr[i];
 
-                if(Math.abs(this.position[1] - line.worldY) < Main.config.humanLength * 0.5 + Main.config.humanRadius + Main.config.lineWidth * 0.5){
+                if(Math.abs(this.position[1] - line.worldY) < Main.config.humanLength * 0.5 * Math.abs(Math.sin(this.angle)) + Main.config.humanRadius + Main.config.lineWidth * 0.5){
 
                     return HumanJumpResult.LINE;
                 }

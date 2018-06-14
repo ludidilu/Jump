@@ -217,4 +217,67 @@ class StringTool{
         
         return byteArray.readUTFBytes(byteArray.length);
     }
+
+    public static objToString2(_obj:egret.DisplayObject):string{
+
+        let rt:egret.RenderTexture = new egret.RenderTexture();
+
+        let drawWidth:number = _obj.width < this.width ? _obj.width : this.width;
+
+        let drawHeight:number = _obj.height < this.height ? _obj.height : this.height;
+
+        rt.drawToTexture(_obj, new egret.Rectangle(0,0,drawWidth, drawHeight));
+
+        let arr:number[] = rt.getPixel32(0,drawHeight - 1);
+
+        let length:number = arr[0] << 16 | arr[1] << 8 | arr[2];
+
+        if(length == 0){
+
+            return null;
+        }
+
+        let times:number = Math.ceil(length / 3) + 1;
+
+        let readWidth:number = times < drawWidth ? times : drawWidth;
+
+        let readHeight:number = Math.ceil(times / readWidth);
+
+        arr = rt.getPixels(0, 0, readWidth, readHeight);
+
+        let byteArray:egret.ByteArray = new egret.ByteArray();
+        
+        for(let i:number = 1 ; i < times ; i++){
+
+            byteArray.writeByte(arr[i * 4]);
+
+            length--;
+
+            if(length > 0){
+
+                byteArray.writeByte(arr[i * 4 + 1]);
+
+                length--;
+            }
+            else{
+
+                break;
+            }
+
+            if(length > 0){
+
+                byteArray.writeByte(arr[i * 4 + 2]);
+
+                length--;
+            }
+            else{
+
+                break;
+            }
+        }
+
+        byteArray.position = 0;
+        
+        return byteArray.readUTFBytes(byteArray.length);
+    }
 }
