@@ -159,31 +159,40 @@ class StringTool{
 
         let rt = new egret.RenderTexture();
 
-        let b= rt.drawToTexture(_obj);
+        let drawWidth = _obj.width < this.width ? _obj.width : this.width;
 
-        let arr = rt.getPixel32(0,0);
+        let drawHeight = _obj.height < this.height ? _obj.height : this.height;
+
+        rt.drawToTexture(_obj, new egret.Rectangle(0,0,drawWidth, drawHeight));
+
+        let arr = rt.getPixel32(0,drawHeight - 1);
 
         let length = arr[0] << 16 | arr[1] << 8 | arr[2];
 
-        let times = Math.ceil(length / 3) + 1;
+        if(length == 0){
 
-        let readWidth = times < this.width ? times + 1 : this.width;
+            return null;
+        }
 
-        let readHeight = Math.ceil((times) / this.width);
-
-        arr = rt.getPixels(0,0,readWidth,readHeight);
+        let times = Math.ceil(length / 3);
 
         let by = new egret.ByteArray();
 
-        for(let i = 1 ; i < times ; i++){
+        for(let i = 0 ; i < times ; i++){
 
-            by.writeByte(arr[i * 4]);
+            let x = (i + 1) % drawWidth;
+
+            let y = drawHeight - 1 - Math.floor((i + 1) / drawWidth);
+
+            arr = rt.getPixel32(x,y);
+
+            by.writeByte(arr[0]);
 
             length--;
 
             if(length > 0){
 
-                by.writeByte(arr[i * 4 + 1]);
+                by.writeByte(arr[1]);
 
                 length--;
             }
@@ -193,8 +202,8 @@ class StringTool{
             }
 
             if(length > 0){
-                
-                by.writeByte(arr[i * 4 + 2]);
+
+                by.writeByte(arr[2]);
 
                 length--;
             }
