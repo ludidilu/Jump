@@ -123,6 +123,7 @@ class Human extends BodyObj{
 
         // this.position[1] = y;
 
+        //---起跳时整体向上抬升
         let lastHeight:number = Math.abs(Math.sin(this.angle));
 
         let nowHeight:number = Math.abs(Math.sin(_jumpAngle));
@@ -131,6 +132,7 @@ class Human extends BodyObj{
 
             this.position[1] += (nowHeight - lastHeight) * Main.config.humanLength * 0.5;
         }
+        //---
 
         this.angle = _jumpAngle;
 

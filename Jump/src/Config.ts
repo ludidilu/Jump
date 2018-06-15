@@ -102,6 +102,8 @@ class Config{
 
     public coinMoveToHumanAngularSpeed:number = 0.2;
 
+    public coinMoveToHumanRadius:number = 5;
+
     public gravity:number[] = [0, -9.78];
 
     public humanFixForce:number[] = [0,-0.3];

@@ -102,6 +102,8 @@
 
     "coinMoveToHumanAngularSpeed": 0.2,金币追逐玩家的角速度
 
+    "coinMoveToHumanRadius": 5,金币追逐玩家的范围半径
+
     "gravity": [0, -9.78],重力系数
 
     "humanFixForce": [0,-0.3],人物修正力

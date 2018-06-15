@@ -102,6 +102,8 @@
 
     "coinMoveToHumanAngularSpeed": 0.2,
 
+    "coinMoveToHumanRadius": 5,
+
     "gravity": [0, -9.78],
 
     "humanFixForce": [0,-0.1],

@@ -16,7 +16,7 @@ class Coin extends BodyObj{
 
     public updateDisplaysPosition(_dt?:number):void{
 
-        if(Coin.isMovingToHuman && this.position[0] < Coin.human.position[0]){
+        if(Coin.isMovingToHuman && p2.vec2.distance(this.position, Coin.human.position) < Main.config.coinMoveToHumanRadius){
 
             let length = p2.vec2.length(this.velocity);
 
