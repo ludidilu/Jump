@@ -4,6 +4,43 @@ class Coin extends BodyObj{
 
     private static pool:Coin[] = [];
 
+    public static human:Human;
+
+    private static tmpVec1:number[] = [0,0];
+
+    private static tmpVec2:number[] = [0,0];
+
+    private static tmpVec3:number[] = [0,0];
+
+    public static isMovingToHuman:boolean = false;
+
+    public updateDisplaysPosition(_dt?:number):void{
+
+        if(Coin.isMovingToHuman && this.position[0] < Coin.human.position[0]){
+
+            let length = p2.vec2.length(this.velocity);
+
+            p2.vec2.sub(Coin.tmpVec1, Coin.human.position, this.position);
+
+            p2.vec2.normalize(Coin.tmpVec2, Coin.tmpVec1);
+
+            p2.vec2.normalize(Coin.tmpVec1, this.velocity);
+
+            p2.vec2.lerp(Coin.tmpVec3, Coin.tmpVec1, Coin.tmpVec2, Main.config.coinMoveToHumanAngularSpeed);
+
+            if(length < Main.config.coinMoveToHumanSpeed){
+
+                length = Main.config.coinMoveToHumanSpeed;
+            }
+
+            this.velocity[0] = Coin.tmpVec3[0] * length;
+
+            this.velocity[1] = Coin.tmpVec3[1] * length;
+        }
+
+        super.updateDisplaysPosition();
+    }
+
     public static create(_world:p2.World, _container:egret.DisplayObjectContainer, _mat:p2.Material, _pos:number[]):void{
 
         let coin:Coin;
@@ -14,7 +51,7 @@ class Coin extends BodyObj{
         }
         else{
 
-            coin = new Coin({mass: 0.0001, dampling: Main.config.coinDampling, angularDampling:Main.config.coinAngularDampling});
+            coin = new Coin({mass: 0.0001, dampling: Main.config.coinDampling, angularDampling:Main.config.coinAngularDampling, gravityScale:Main.config.coinGravityScale});
 
             let coinShape:p2.Circle = new p2.Circle({radius: Main.config.coinRadius});
 
@@ -41,7 +78,7 @@ class Coin extends BodyObj{
 
         coin.position[1] = _pos[1];
 
-        coin.applyForce(Main.config.coinForce, [0,0]);
+        coin.applyForce(Main.config.coinForce, BodyObj.zeroPoint);
 
         _world.addBody(coin);
 

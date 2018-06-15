@@ -40,6 +40,8 @@
 
     "humanAngularDampling": 0.1,
 
+    "humanGravityScale": 1,
+
     "humanSleepXFix":  0.5,
 
     "enemyJumpProbability":  1,
@@ -88,11 +90,17 @@
 
     "coinRelaxation": 10,
 
-    "coinRestitution": 0.8,
+    "coinRestitution": 0.9,
 
     "coinDampling": 0.1,
 
     "coinAngularDampling": 0.1,
+
+    "coinGravityScale": 1,
+
+    "coinMoveToHumanSpeed": 8,
+
+    "coinMoveToHumanAngularSpeed": 0.2,
 
     "gravity": [0, -9.78],
 

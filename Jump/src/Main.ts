@@ -524,6 +524,8 @@ class Main extends egret.DisplayObjectContainer {
         this.human = Human.create(this.world, Main.config.humanLength, Main.config.humanRadius, this.humanContainer, this.humanMat, Main.config.humanStartPos);
 
         this.humanDisplay = this.human.displays[0];
+
+        Coin.human = this.human;
     }
 
     private update(dt:number):void{

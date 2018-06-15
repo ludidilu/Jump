@@ -40,6 +40,8 @@ class Config{
 
     public humanAngularDampling:number = 0.1;
 
+    public humanGravityScale:number = 1;
+
     public humanSleepXFix:number = -0.5;
 
     public enemyJumpProbability:number = 1;
@@ -93,6 +95,12 @@ class Config{
     public coinDampling:number = 0.1;
 
     public coinAngularDampling:number = 0.1;
+
+    public coinGravityScale:number = 1;
+
+    public coinMoveToHumanSpeed:number = 8;
+
+    public coinMoveToHumanAngularSpeed:number = 0.2;
 
     public gravity:number[] = [0, -9.78];
 

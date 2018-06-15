@@ -42,6 +42,8 @@
 
     "humanSleepXFix":  0.5,人的移动修正
 
+    "humanGravityScale": 1,人的重力系数
+
     "enemyJumpProbability":  1,敌人跳跃概率
 
     "enemyPropProbability":  0.2,敌人出现概率
@@ -93,6 +95,12 @@
     "coinDampling": 0.1,金币空气阻力
 
     "coinAngularDampling": 0.1,金币的角空气阻力
+
+    "coinGravityScale": 1,金币重力系数
+
+    "coinMoveToHumanSpeed": 8,金币追逐玩家的速度
+
+    "coinMoveToHumanAngularSpeed": 0.2,金币追逐玩家的角速度
 
     "gravity": [0, -9.78],重力系数
 
