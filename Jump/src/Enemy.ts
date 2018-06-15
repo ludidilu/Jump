@@ -31,7 +31,7 @@ class Enemy extends Human{
 
             enemy = new Enemy({ mass: 1, damping :Main.config.humanDampling, angularDampling:Main.config.humanAngularDampling });
 
-            Human.initHuman(enemy, _world, _length, _radius, _container, _mat, 0x0000ff, _pos);
+            Human.initHuman(true, enemy, _world, _length, _radius, _container, _mat, 0x0000ff, _pos);
         }
         else{
 

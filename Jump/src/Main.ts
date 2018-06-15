@@ -8,6 +8,8 @@ class Main extends egret.DisplayObjectContainer {
 
     public static COIN_GROUP:number = Math.pow(2, 2);
 
+    public static ENEMY_GROUP:number = Math.pow(2, 3);
+
     private world:p2.World;
 
     private ladderMat:p2.Material;
@@ -433,7 +435,7 @@ class Main extends egret.DisplayObjectContainer {
 
             shape.collisionGroup = Main.LADDER_GROUP;
 
-            shape.collisionMask = Main.HUMAN_GROUP | Main.COIN_GROUP;
+            shape.collisionMask = Main.HUMAN_GROUP | Main.COIN_GROUP | Main.ENEMY_GROUP;
 
             let pos:number[] = shape.position;
 
@@ -666,7 +668,9 @@ class Main extends egret.DisplayObjectContainer {
 
                 let targetLevel:number = nowLevel + Main.config.propHeightFix;
 
-                let y:number = (targetLevel + 0.5) * Main.config.unitHeight + (Math.random() - 0.5) * Main.config.unitHeight;
+                // let y:number = (targetLevel + 0.5) * Main.config.unitHeight + (Math.random() - 0.5) * Main.config.unitHeight;
+
+                let y:number = (targetLevel + 0.5) * Main.config.unitHeight;
 
                 Line.create(y, this.otherContainer);
             }

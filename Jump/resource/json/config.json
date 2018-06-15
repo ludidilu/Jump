@@ -10,7 +10,7 @@
 
     "unitWidth":  2,
 
-    "triangleWidth":  0.3,
+    "triangleWidth":  0.2,
 
     "triangleHeight":  0.4,
 
@@ -32,7 +32,7 @@
 
     "friction":  0,
 
-    "relaxation":  10,
+    "relaxation":  4,
 
     "restitution": 0,
 
@@ -78,25 +78,25 @@
 
     "maxLineNum": 1,
 
-    "coinPropProbability": 0.3,
+    "coinPropProbability": 1,
 
-    "maxCoinNum": 3,
+    "maxCoinNum": 5,
 
-    "coinRadius": 0.3,
+    "coinRadius": 0.15,
 
-    "coinForce": [-0.005,0],
+    "coinForce": [-0.002,0],
 
     "coinFriction": 0,
 
-    "coinRelaxation": 10,
+    "coinRelaxation": 4,
 
     "coinRestitution": 0.9,
 
-    "coinDampling": 0.1,
+    "coinDampling": 0,
 
     "coinAngularDampling": 0.1,
 
-    "coinGravityScale": 1,
+    "coinGravityScale": 0.8,
 
     "coinMoveToHumanSpeed": 8,
 

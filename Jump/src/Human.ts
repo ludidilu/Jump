@@ -22,15 +22,20 @@ class Human extends BodyObj{
 
     private tmpForce:number[] = [0,0];
 
+    private isEnemy:boolean;
+
     public updateDisplaysPosition(_dt:number):void{
 
-        for(let i:number = Coin.coins.length - 1; i > -1; i--){
+        if(!this.isEnemy){
 
-            let coin:Coin = Coin.coins[i];
+            for(let i:number = Coin.coins.length - 1; i > -1; i--){
 
-            if(this.world.overlapKeeper.bodiesAreOverlapping(this, coin)){
+                let coin:Coin = Coin.coins[i];
 
-                Coin.release(coin);
+                if(this.world.overlapKeeper.bodiesAreOverlapping(this, coin)){
+
+                    Coin.release(coin);
+                }
             }
         }
 
@@ -118,6 +123,15 @@ class Human extends BodyObj{
 
         // this.position[1] = y;
 
+        let lastHeight:number = Math.abs(Math.sin(this.angle));
+
+        let nowHeight:number = Math.abs(Math.sin(_jumpAngle));
+
+        if(nowHeight > lastHeight){
+
+            this.position[1] += (nowHeight - lastHeight) * Main.config.humanLength * 0.5;
+        }
+
         this.angle = _jumpAngle;
 
         this.previousAngle = _jumpAngle;
@@ -149,14 +163,16 @@ class Human extends BodyObj{
         
         let human:Human = new Human({mass:1, damping:Main.config.humanDampling, angularDampling:Main.config.humanAngularDampling, gravityScale:Main.config.humanGravityScale});
 
-        this.initHuman(human, _world, _length, _radius, _container, _mat, 0xffff00, _pos);
+        this.initHuman(false, human, _world, _length, _radius, _container, _mat, 0xffff00, _pos);
 
         return human;
     }
 
-    protected static initHuman(_human:Human, _world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _color:number, _pos:number[]):void{
+    protected static initHuman(_isEnemy:boolean, _human:Human, _world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _color:number, _pos:number[]):void{
 
         _human.allowSleep = false;
+
+        _human.isEnemy = _isEnemy;
 
         _human.length = _length;
 
@@ -166,9 +182,18 @@ class Human extends BodyObj{
 
         boxShape.material = _mat;
 
-        boxShape.collisionGroup = Main.HUMAN_GROUP;
+        if(_human.isEnemy){
 
-        boxShape.collisionMask = Main.HUMAN_GROUP | Main.LADDER_GROUP | Main.COIN_GROUP;
+            boxShape.collisionGroup = Main.ENEMY_GROUP;
+
+            boxShape.collisionMask = Main.HUMAN_GROUP | Main.LADDER_GROUP | Main.ENEMY_GROUP;
+        }
+        else{
+
+            boxShape.collisionGroup = Main.HUMAN_GROUP;
+
+            boxShape.collisionMask = Main.HUMAN_GROUP | Main.LADDER_GROUP | Main.COIN_GROUP | Main.ENEMY_GROUP;
+        }
 
         _human.addShape(boxShape);
 
