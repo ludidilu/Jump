@@ -24,6 +24,8 @@ class Main extends egret.DisplayObjectContainer {
 
     private conBody:BodyObj;
 
+    private bg:egret.Shape;
+
     private bgContainer:egret.DisplayObjectContainer;
 
     private gameContainer:egret.DisplayObjectContainer;
@@ -229,7 +231,7 @@ class Main extends egret.DisplayObjectContainer {
 
             SuperTicker.getInstance().removeEventListener(this.update, this);
 
-            this.stage.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
+            this.bg.touchEnabled = false;
 
             this.alertPanel.visible = true;
 
@@ -249,8 +251,6 @@ class Main extends egret.DisplayObjectContainer {
     private createContainers():void{
 
         this.bgContainer = new egret.DisplayObjectContainer();
-
-        this.bgContainer.touchChildren = false;
 
         this.addChild(this.bgContainer);
 
@@ -285,26 +285,34 @@ class Main extends egret.DisplayObjectContainer {
 
     private createBg():void{
 
-        let bg:egret.Shape = new egret.Shape();
+        this.bg = new egret.Shape();
 
-        bg.graphics.beginFill(0x00ff00);
+        this.bg.graphics.beginFill(0x00ff00);
 
-        bg.graphics.drawRect(0,0,this.stage.stageWidth, this.stage.stageHeight);
+        this.bg.graphics.drawRect(0,0,this.stage.stageWidth, this.stage.stageHeight);
 
-        bg.graphics.endFill();
+        this.bg.graphics.endFill();
 
-        this.bgContainer.addChild(bg);
+        this.bgContainer.addChild(this.bg);
+
+        this.bg.touchEnabled = false;
+
+        this.bg.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
     }
 
     private createUi():void{
 
         this.mainPanel = new MainPanel();
 
+        this.mainPanel.touchEnabled = false;
+
         this.uiContainer.addChild(this.mainPanel);
 
         this.mainPanel.score.text = this.bestScore.toString();
 
         this.alertPanel = new AlertPanel();
+
+        this.alertPanel.touchEnabled = false;
 
         this.uiContainer.addChild(this.alertPanel);
 
@@ -317,7 +325,9 @@ class Main extends egret.DisplayObjectContainer {
 
     private clickShareBt(e:egret.TouchEvent):void{
 
-        wx.shareAppMessage({success:this.shareSuccess.bind(this), fail:this.shareFail.bind(this), complete:this.shareComplete.bind(this)});
+        console.log("share!!!");
+
+        // wx.shareAppMessage({success:this.shareSuccess.bind(this), fail:this.shareFail.bind(this), complete:this.shareComplete.bind(this)});
     }
 
     private shareSuccess(v):void{
@@ -370,7 +380,9 @@ class Main extends egret.DisplayObjectContainer {
 
         SuperTicker.getInstance().addEventListener(this.update, this);
 
-        this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
+        this.bg.touchEnabled = true;
+
+        
     }
 
     private createLadder():void{
@@ -626,9 +638,7 @@ class Main extends egret.DisplayObjectContainer {
 
             this.btClickFun = this.restart;
 
-            this.stage.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
-
-            // this.reset();
+            this.bg.touchEnabled = false;
         }
         else{
 
@@ -734,7 +744,7 @@ class Main extends egret.DisplayObjectContainer {
 
         this.firstCameraPosX = this.gameContainer.x;
 
-        this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
+        this.bg.touchEnabled = true;
     }
 
     private addOneBox(e: egret.TouchEvent): void {

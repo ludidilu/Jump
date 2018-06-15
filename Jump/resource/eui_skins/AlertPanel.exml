@@ -2,7 +2,7 @@
 <e:Skin class="AlertPanelSkin" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
 	<w:Config id="163d9496570" ></w:Config>
 	<e:Rect anchorOffsetX="0" anchorOffsetY="0" left="0" right="0" top="0" bottom="0" fillAlpha="0.5"/>
-	<e:Rect width="364" height="369" x="138" y="276" anchorOffsetX="0" anchorOffsetY="0" fillColor="0x124768"/>
+	<e:Rect width="364" height="369" x="138" y="276" anchorOffsetX="0" anchorOffsetY="0" fillColor="0x124768" touchEnabled="false"/>
 	<e:Button id="bt" label="Button" x="270" y="568"/>
-	<e:Label id="message" text="Label" x="202" y="328" anchorOffsetX="0" width="236" anchorOffsetY="0" height="175" textColor="0x000000" textAlign="center" verticalAlign="middle" bold="true"/>
+	<e:Label id="message" text="Label" x="202" y="328" anchorOffsetX="0" width="236" anchorOffsetY="0" height="175" textColor="0x000000" textAlign="center" verticalAlign="middle" bold="true" touchEnabled="false"/>
 </e:Skin>
