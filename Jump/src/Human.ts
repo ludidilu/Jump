@@ -18,6 +18,10 @@ class Human extends BodyObj{
 
     private radius:number;
 
+    private jumpForceFix:number = 1;
+
+    private tmpForce:number[] = [0,0];
+
     public updateDisplaysPosition(_dt:number):void{
 
         for(let i:number = Coin.coins.length - 1; i > -1; i--){
@@ -42,9 +46,13 @@ class Human extends BodyObj{
             }
         }
 
-        this.applyForce(Main.config.humanFixForce, Main.config.humanFixForcePoint);
+        this.tmpForce[0] = Main.config.humanFixForce[0] * this.mass;
 
-        super.updateDisplaysPosition(_dt);
+        this.tmpForce[1] = Main.config.humanFixForce[1] * this.mass;
+
+        this.applyForce(this.tmpForce, Main.config.humanFixForcePoint);
+
+        super.updateDisplaysPosition();
 
         if(this.jumpDisableTime > _dt){
 
@@ -112,13 +120,29 @@ class Human extends BodyObj{
 
         this.angle = _jumpAngle;
 
-        // this.previousAngle = _jumpAngle;
+        this.previousAngle = _jumpAngle;
 
         this.jumpDisableTime = Main.config.jumpDisableTime;
 
         this.angularVelocity = 0;
 
-        this.applyForce(_jumpForce, _jumpPoint);
+        this.tmpForce[0] = _jumpForce[0] * this.jumpForceFix;
+
+        this.tmpForce[1] = _jumpForce[1] * this.jumpForceFix;
+
+        this.applyForce(this.tmpForce, _jumpPoint);
+    }
+
+    public setMass(_mass:number):void{
+
+        this.mass = _mass;
+
+        this.updateMassProperties();
+    }
+
+    public setJumpForceFix(_fix:number):void{
+
+        this.jumpForceFix = _fix;
     }
 
     public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _pos:number[]):Human{

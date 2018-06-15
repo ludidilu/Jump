@@ -545,8 +545,9 @@ class Main extends egret.DisplayObjectContainer {
             }
         }
 
+        dt = 1000 / Main.config.fps;//lock fps
 
-        this.world.step(1 / Main.config.fps * Main.config.physicalTimeFix);
+        this.world.step(dt * 0.001 * Main.config.physicalTimeFix);
 
         let lastY:number = this.gameContainer.y;
 
@@ -605,7 +606,7 @@ class Main extends egret.DisplayObjectContainer {
 
         let p:egret.Point = this.gameContainer.localToGlobal(this.humanDisplay.x, this.humanDisplay.y);
 
-        if(p.y > this.stage.stageHeight){
+        if(p.y > this.stage.stageHeight + (Main.config.humanLength * 0.5 + Main.config.humanRadius) * Main.config.factor){
 
             console.log("lose!!!");
 
@@ -652,7 +653,7 @@ class Main extends egret.DisplayObjectContainer {
 
                 let x:number = (targetLevel + 0.5) * Main.config.unitWidth;
 
-                let y:number = (targetLevel + 0.5) * Main.config.unitHeight;
+                let y:number = (targetLevel + 1.5) * Main.config.unitHeight;
 
                 Enemy.create(this.world, Main.config.humanLength, Main.config.humanRadius, this.humanContainer, this.humanMat, [x,y]);
             }
@@ -674,9 +675,9 @@ class Main extends egret.DisplayObjectContainer {
 
                 let targetLevel:number = nowLevel + Main.config.propHeightFix;
 
-                let x:number = (targetLevel + 0.5) * Main.config.unitWidth + (Math.random() - 0.5) * (Main.config.unitWidth - Main.config.coinRadius * 2);
+                let x:number = targetLevel * Main.config.unitWidth + Main.config.triangleWidth * 2 + Math.random() * (Main.config.unitWidth - Main.config.triangleWidth * 2 - Main.config.coinRadius * 0.5);
 
-                let y:number = (targetLevel + 1) * Main.config.unitHeight + Math.random() * (Main.config.unitHeight - Main.config.coinRadius * 2);
+                let y:number = (targetLevel + 2) * Main.config.unitHeight;
 
                 Coin.create(this.world, this.humanContainer, this.coinMat, [x,y]);
             }

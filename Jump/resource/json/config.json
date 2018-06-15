@@ -88,7 +88,7 @@
 
     "coinRelaxation": 10,
 
-    "coinRestitution": 0.98,
+    "coinRestitution": 0.8,
 
     "coinDampling": 0.1,
 
