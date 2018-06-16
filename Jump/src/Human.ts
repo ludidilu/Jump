@@ -24,6 +24,8 @@ class Human extends BodyObj{
 
     private isEnemy:boolean;
 
+    private static tmpVec:number[] = [0,0];
+
     public updateDisplaysPosition(_dt:number):void{
 
         if(!this.isEnemy){
@@ -55,7 +57,9 @@ class Human extends BodyObj{
 
         this.tmpForce[1] = Main.config.humanFixForce[1] * this.mass;
 
-        this.applyForce(this.tmpForce, Main.config.humanFixForcePoint);
+        p2.vec2.rotate(Human.tmpVec, Main.config.humanFixForcePoint, this.angle);
+
+        this.applyForce(this.tmpForce, Human.tmpVec);
 
         super.updateDisplaysPosition();
 
@@ -141,6 +145,18 @@ class Human extends BodyObj{
         this.jumpDisableTime = Main.config.jumpDisableTime;
 
         this.angularVelocity = 0;
+
+        //---起跳时抹去反向速度
+        if((_jumpForce[0] > 0 && this.velocity[0] < 0) || (_jumpForce[0] < 0 && this.velocity[0] > 0)){
+
+            this.velocity[0] = 0;
+        }
+        
+        if((_jumpForce[1] > 0 && this.velocity[1] < 0) || (_jumpForce[1] < 0 && this.velocity[1] > 0)){
+
+            this.velocity[1] = 0;
+        }
+        //---
 
         this.tmpForce[0] = _jumpForce[0] * this.jumpForceFix;
 

@@ -64,6 +64,8 @@ class Main extends egret.DisplayObjectContainer {
 
     public static isWeixin:boolean;
 
+    public static testSp:egret.Shape;
+
     public constructor() {
         super();
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
@@ -120,7 +122,7 @@ class Main extends egret.DisplayObjectContainer {
         this.createBg();
 
         this.createUi();
-        
+
         this.createWorldAndPlane();
 
         this.createLadder();
@@ -281,6 +283,20 @@ class Main extends egret.DisplayObjectContainer {
         this.uiContainer = new egret.DisplayObjectContainer();
 
         this.addChild(this.uiContainer);
+
+
+        
+        Main.testSp = new egret.Shape();
+
+        Main.testSp.graphics.beginFill(0xff0000);
+
+        Main.testSp.graphics.drawRect(0,0,100,100);
+
+        Main.testSp.graphics.endFill();
+
+        this.addChild(Main.testSp);
+
+        Main.testSp.visible = false;
     }
 
     private createBg():void{
