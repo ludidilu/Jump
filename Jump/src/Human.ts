@@ -166,19 +166,18 @@ class Human extends BodyObj{
 
         this.contectLadder = 0;
 
-        for(let id in Human.humanDic){
-
-            let human:Human = Human.humanDic[id];
-
-            if(this != human && human.contactHuman[this.id]){
-
-                human.contactHuman[this.id] = 0;
-            }
-        }
-
         for(let key in this.contactHuman){
 
-            this.contactHuman[key] = 0;
+            let num:number = this.contactHuman[key];
+
+            if(num > 0){
+
+                let human:Human = Human.humanDic[key];
+
+                human.contactHuman[this.id] = 0;
+
+                this.contactHuman[key] = 0;
+            }
         }
 
         super.reset();
