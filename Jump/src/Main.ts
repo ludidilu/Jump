@@ -46,10 +46,6 @@ class Main extends egret.DisplayObjectContainer {
 
     private firstCameraPosX:number;
 
-    private conBodyX:number;
-
-    private conBodyY:number;
-
     private mainPanel:MainPanel;
 
     private alertPanel:AlertPanel;
@@ -444,6 +440,10 @@ class Main extends egret.DisplayObjectContainer {
         let container:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();
 
         container.addChild(conDisplay);
+        
+        conDisplay.scaleX = 1 / factorFix;
+
+        conDisplay.scaleY = 1 / factorFix;
 
         this.mapContainer.addChild(container);
 
@@ -485,21 +485,14 @@ class Main extends egret.DisplayObjectContainer {
             }
         }
 
-        conDisplay.x = minX * Main.config.factor;
+        for(let i:number = 0, n:number = this.conBody.shapes.length; i < n ; i++){
 
-        conDisplay.y = minY * -Main.config.factor;
+            let shape:p2.Shape = this.conBody.shapes[i];
 
-        conDisplay.scaleX = 1 / factorFix;
+            shape.position[0] -= minX;
 
-        conDisplay.scaleY = 1 / factorFix;
-
-        this.conBodyX = -minX;
-
-        this.conBodyY = -minY;
-
-        this.conBody.position[0] = -minX;
-
-        this.conBody.position[1] = -minY;
+            shape.position[1] -= minY;
+        }
 
         this.conBody.updateDisplaysPosition();
 
@@ -718,9 +711,9 @@ class Main extends egret.DisplayObjectContainer {
 
     private reset():void{
 
-        this.conBody.position[0] = this.conBodyX;
+        this.conBody.position[0] = 0;
 
-        this.conBody.position[1] = this.conBodyY;
+        this.conBody.position[1] = 0;
 
         this.conBody.updateDisplaysPosition();
 

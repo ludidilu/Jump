@@ -34,7 +34,7 @@ class Human extends BodyObj{
 
                 let coin:Coin = Coin.coins[i];
 
-                if(this.world.overlapKeeper.bodiesAreOverlapping(this, coin)){
+                if(this.overlaps(coin)){
 
                     Coin.release(coin);
                 }
@@ -87,7 +87,7 @@ class Human extends BodyObj{
                 }
             }
             
-            if(this.world.overlapKeeper.bodiesAreOverlapping(this, Human.conBody)){
+            if(this.overlaps(Human.conBody)){
 
                 return HumanJumpResult.LADDER;
             }
@@ -101,7 +101,7 @@ class Human extends BodyObj{
                     continue;
                 }
 
-                if(this.world.overlapKeeper.bodiesAreOverlapping(this, human) && this.position[1] > human.position[1]){
+                if(this.overlaps(human) && this.position[1] > human.position[1]){
 
                     return HumanJumpResult.HUMAN;
                 }

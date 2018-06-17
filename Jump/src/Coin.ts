@@ -51,7 +51,7 @@ class Coin extends BodyObj{
         }
         else{
 
-            coin = new Coin({mass: 0.0001, dampling: Main.config.coinDampling, angularDampling:Main.config.coinAngularDampling, gravityScale:Main.config.coinGravityScale});
+            coin = new Coin({mass: 0.0001, dampling: Main.config.coinDampling, angularDampling:Main.config.coinAngularDampling, gravityScale:Main.config.coinGravityScale, fixedRotation:true});
 
             let coinShape:p2.Circle = new p2.Circle({radius: Main.config.coinRadius});
 
