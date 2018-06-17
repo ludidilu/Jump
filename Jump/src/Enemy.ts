@@ -23,6 +23,8 @@ class Enemy extends Human{
         }
     }
 
+    private static enemyId:number = 1;
+
     public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _pos:number[]):Enemy{
 
         let enemy:Enemy;
@@ -31,7 +33,13 @@ class Enemy extends Human{
 
             enemy = new Enemy({ mass: 1, damping :Main.config.humanDampling, angularDampling:Main.config.humanAngularDampling });
 
-            Human.initHuman(true, enemy, _world, _length, _radius, _container, _mat, 0x0000ff, _pos);
+            enemy.bodyType = BodyObjType.ENEMY;
+
+            enemy.id = this.enemyId;
+
+            this.enemyId++;
+
+            Human.initHuman( enemy, _world, _length, _radius, _container, _mat, 0x0000ff, _pos);
         }
         else{
 
@@ -47,7 +55,7 @@ class Enemy extends Human{
 
             enemy.updateDisplaysPosition(0);
 
-            Human.humanArr.push(enemy);
+            Human.humanDic[enemy.id] = enemy;
         }
 
         this.enemies.push(enemy);
@@ -55,19 +63,19 @@ class Enemy extends Human{
         return enemy;
     }
 
-    private static release(_enemy:Enemy):void{
+    public reset():void{
 
-        _enemy.reset();
+        super.reset();
 
-        _enemy.world.removeBody(_enemy);
+        this.world.removeBody(this);
 
-        let display:egret.DisplayObject = _enemy.displays[0];
+        let display:egret.DisplayObject = this.displays[0];
 
         display.parent.removeChild(display);
 
-        Human.humanArr.splice(Human.humanArr.indexOf(_enemy), 1);
+        delete Human.humanDic[this.id];
 
-        this.pool.push(_enemy);
+        Enemy.pool.push(this);
     }
 
     public static update(_dt:number):void{
@@ -84,7 +92,7 @@ class Enemy extends Human{
 
             if(p.y > enemyDisplay.stage.stageHeight){
 
-                this.release(enemy);
+                enemy.reset();
 
                 this.enemies.splice(i,1);
             }
@@ -97,7 +105,7 @@ class Enemy extends Human{
 
             let enemy:Enemy = this.enemies[i];
 
-            this.release(enemy);
+            enemy.reset();
         }
 
         this.enemies.length = 0;

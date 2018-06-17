@@ -14,6 +14,8 @@ class Coin extends BodyObj{
 
     public static isMovingToHuman:boolean = false;
 
+    public isOver:boolean = false;
+
     public updateDisplaysPosition(_dt?:number):void{
 
         if(Coin.isMovingToHuman && p2.vec2.distance(this.position, Coin.human.position) < Main.config.coinMoveToHumanRadius){
@@ -52,6 +54,10 @@ class Coin extends BodyObj{
         else{
 
             coin = new Coin({mass: 0.0001, dampling: Main.config.coinDampling, angularDampling:Main.config.coinAngularDampling, gravityScale:Main.config.coinGravityScale, fixedRotation:true});
+
+            coin.allowSleep = false;
+
+            coin.bodyType = BodyObjType.COIN;
 
             let coinShape:p2.Circle = new p2.Circle({radius: Main.config.coinRadius});
 
@@ -95,39 +101,52 @@ class Coin extends BodyObj{
 
             let coin:Coin = this.coins[i];
 
-            coin.updateDisplaysPosition();
+            if(coin.isOver){
 
-            let coinDisplay:egret.DisplayObject = coin.displays[0];
+                coin.reset();
 
-            if(coinDisplay.parent.parent.y + coinDisplay.y - Main.config.coinRadius * Main.config.factor > coinDisplay.stage.stageHeight){
+                this.coins.splice(i, 1);
+            }
+            else{
 
-                this.release(coin);
+                coin.updateDisplaysPosition();
+
+                let coinDisplay:egret.DisplayObject = coin.displays[0];
+
+                if(coinDisplay.parent.parent.y + coinDisplay.y - Main.config.coinRadius * Main.config.factor > coinDisplay.stage.stageHeight){
+
+                    coin.reset();
+
+                    this.coins.splice(i, 1);
+                }
             }
         }
     }
 
-    public static reset():void{
+    public reset():void{
 
-        for(let i:number = this.coins.length - 1 ; i > -1 ; i--){
+        this.isOver = false;
 
-            let coin:Coin = this.coins[i];
+        this.world.removeBody(this);
 
-            this.release(coin);
-        }
-    }
-
-    public static release(_coin:Coin):void{
-
-        _coin.reset();
-
-        _coin.world.removeBody(_coin);
-
-        let display:egret.DisplayObject = _coin.displays[0];
+        let display:egret.DisplayObject = this.displays[0];
 
         display.parent.removeChild(display);
 
-        this.pool.push(_coin);
+        Coin.pool.push(this);
 
-        this.coins.splice(this.coins.indexOf(_coin), 1);
+        super.reset();
+    }
+
+    public static reset():void{
+
+        for(let i:number = 0, m:number = this.coins.length ; i < m ; i++){
+
+            let coin:Coin = this.coins[i];
+
+            coin.reset();
+        }
+
+        this.coins.length = 0;
     }
 }

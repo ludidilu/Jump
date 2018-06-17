@@ -1,6 +1,15 @@
+enum BodyObjType{
+    HUMAN,
+    ENEMY,
+    LADDER,
+    COIN
+}
+
 class BodyObj extends p2.Body{
 
     public static zeroPoint:number[] = [0,0];
+
+    public bodyType:BodyObjType;
 
     public updateDisplaysPosition(_dt?:number):void{
 
