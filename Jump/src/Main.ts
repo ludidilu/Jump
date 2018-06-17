@@ -509,6 +509,8 @@ class Main extends egret.DisplayObjectContainer {
         this.world = new p2.World({gravity:Main.config.gravity});
         this.world.sleepMode = p2.World.BODY_SLEEPING;
 
+        (<p2.GSSolver>this.world.solver).iterations = Main.config.solverIterations;
+
         let conMat:p2.ContactMaterial = new p2.ContactMaterial(this.ladderMat, this.humanMat);
         conMat.friction = Main.config.friction;
         conMat.relaxation = Main.config.relaxation;
@@ -560,12 +562,12 @@ class Main extends egret.DisplayObjectContainer {
 
         if(Main.isWeixin && !WeixinTalk.isTalking()){
 
-            if(Math.random() < 0.01){
+            // if(Math.random() < 0.01){
 
-                console.log("sendTalk!");
+            //     console.log("sendTalk!");
 
-                this.sendTalk({command:Math.random().toString()});
-            }
+            //     this.sendTalk({command:Math.random().toString()});
+            // }
         }
 
         dt = 1000 / Main.config.fps;//lock fps
@@ -780,7 +782,7 @@ class Main extends egret.DisplayObjectContainer {
             }
             else{
 
-                console.log("no jump!");
+                // console.log("no jump!");
             }
         }
     }

@@ -109,4 +109,6 @@
     "humanFixForce": [0,-0.3],人物修正力
 
     "humanFixForcePoint": [0.35,0]，人物修正力的受力点
+
+    "solverIterations": 1,最大求解次数
 }

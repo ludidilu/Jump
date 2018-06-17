@@ -109,4 +109,6 @@ class Config{
     public humanFixForce:number[] = [0,-0.3];
 
     public humanFixForcePoint:number[] = [0.35,0];
+
+    public solverIterations:number = 1;
 }

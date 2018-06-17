@@ -108,5 +108,7 @@
 
     "humanFixForce": [0,-0.1],
 
-    "humanFixForcePoint": [0.35,0]
+    "humanFixForcePoint": [0.35,0],
+
+    "solverIterations": 1
 }
