@@ -393,8 +393,6 @@ class Main extends egret.DisplayObjectContainer {
         SuperTicker.getInstance().addEventListener(this.update, this);
 
         this.bg.touchEnabled = true;
-
-        
     }
 
     private createLadder():void{
@@ -573,6 +571,8 @@ class Main extends egret.DisplayObjectContainer {
         dt = 1000 / Main.config.fps;//lock fps
 
         this.world.step(dt * 0.001 * Main.config.physicalTimeFix);
+
+        // this.world.step(1 / 60 * Main.config.physicalTimeFix, dt * 0.001 * Main.config.physicalTimeFix);
 
         let lastY:number = this.gameContainer.y;
 
