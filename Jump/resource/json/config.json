@@ -110,5 +110,23 @@
 
     "humanFixForcePoint": [0.35,0],
 
-    "solverIterations": 1
+    "solverIterations": 1,
+
+    "humanBigSize": 2,
+
+    "itemRadius":  0.5,
+
+    "itemForce": [-100,0],
+
+    "itemFriction":  0,
+
+    "itemRelaxation":  100,
+
+    "itemRestitution":  0.8,
+
+    "itemDampling":  0.1,
+
+    "itemAngularDampling":  0.1,
+
+    "itemGravityScale":  1
 }

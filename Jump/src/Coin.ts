@@ -1,4 +1,4 @@
-class Coin extends BodyObj{
+class Coin extends Reward{
 
     public static coins:Coin[] = [];
 
@@ -13,8 +13,6 @@ class Coin extends BodyObj{
     private static tmpVec3:number[] = [0,0];
 
     public static isMovingToHuman:boolean = false;
-
-    public isOver:boolean = false;
 
     public updateDisplaysPosition(_dt?:number):void{
 
@@ -57,11 +55,11 @@ class Coin extends BodyObj{
 
             coin.allowSleep = false;
 
-            coin.bodyType = BodyObjType.COIN;
+            coin.bodyType = BodyObjType.REWARD;
 
             let coinShape:p2.Circle = new p2.Circle({radius: Main.config.coinRadius});
 
-            coinShape.collisionGroup = Main.COIN_GROUP;
+            coinShape.collisionGroup = Main.REWARD_GROUP;
 
             coinShape.collisionMask = Main.LADDER_GROUP | Main.HUMAN_GROUP;
 

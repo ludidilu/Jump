@@ -2,7 +2,7 @@ enum BodyObjType{
     HUMAN,
     ENEMY,
     LADDER,
-    COIN
+    REWARD
 }
 
 class BodyObj extends p2.Body{

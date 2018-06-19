@@ -12,6 +12,10 @@ class Human extends BodyObj{
 
     private static human:Human;
 
+    private static humanNormalShape:p2.Capsule;
+
+    private static humanBigShape:p2.Capsule;
+
     private static tmpVec:number[] = [0,0];
 
     private static tmpVec1:number[] = [0,0];
@@ -19,6 +23,8 @@ class Human extends BodyObj{
     private jumpDisableTime:number = 0;
 
     private jumpForceFix:number = 1;
+
+    public sizeFix:number = 1;
 
     public updateDisplaysPosition(_dt:number):void{
 
@@ -62,7 +68,7 @@ class Human extends BodyObj{
 
                 let line:Line = Line.lineArr[i];
 
-                if(Math.abs(this.position[1] - line.worldY) < Main.config.humanLength * 0.5 * Math.abs(Math.sin(this.angle)) + Main.config.humanRadius + Main.config.lineWidth * 0.5){
+                if(Math.abs(this.position[1] - line.worldY) < (Main.config.humanLength * 0.5 * Math.abs(Math.sin(this.angle)) + Main.config.humanRadius) * this.sizeFix + Main.config.lineWidth * 0.5){
 
                     return HumanJumpResult.LINE;
                 }
@@ -123,7 +129,7 @@ class Human extends BodyObj{
 
         if(nowHeight > lastHeight){
 
-            this.position[1] += (nowHeight - lastHeight) * Main.config.humanLength * 0.5;
+            this.position[1] += (nowHeight - lastHeight) * Main.config.humanLength * 0.5 * this.sizeFix;
         }
         //---
 
@@ -154,16 +160,41 @@ class Human extends BodyObj{
         this.applyForce(Human.tmpVec, _jumpPoint);
     }
 
-    public setMass(_mass:number):void{
+    public setSizeFix(_fix:number):void{
 
-        this.mass = _mass;
+        this.sizeFix *= _fix;
+    }
+
+    public setMassFix(_fix:number):void{
+
+        this.mass *= _fix;
 
         this.updateMassProperties();
     }
 
     public setJumpForceFix(_fix:number):void{
 
-        this.jumpForceFix = _fix;
+        this.jumpForceFix *= _fix;
+    }
+
+    public setBig(_b:boolean):void{
+
+        if(_b){
+
+            this.removeShape(this.shapes[0]);
+
+            this.addShape(Human.humanBigShape);
+
+            this.displays[0].scaleX = Main.config.humanBigSize;
+
+            this.displays[0].scaleY = Main.config.humanBigSize;
+
+            this.setSizeFix(Main.config.humanBigSize);
+
+            this.setMassFix(Main.config.humanBigSize);
+
+            this.setJumpForceFix(Main.config.humanBigSize);
+        }
     }
 
     public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _pos:number[]):Human{
@@ -195,7 +226,17 @@ class Human extends BodyObj{
 
             boxShape.collisionGroup = Main.HUMAN_GROUP;
 
-            boxShape.collisionMask = Main.HUMAN_GROUP | Main.LADDER_GROUP | Main.COIN_GROUP | Main.ENEMY_GROUP;
+            boxShape.collisionMask = Main.HUMAN_GROUP | Main.LADDER_GROUP | Main.REWARD_GROUP | Main.ENEMY_GROUP;
+
+            this.humanNormalShape = boxShape;
+
+            this.humanBigShape = new p2.Capsule({length: _length * Main.config.humanBigSize, radius: _radius * Main.config.humanBigSize});
+
+            this.humanBigShape.material = boxShape.material;
+
+            this.humanBigShape.collisionGroup = boxShape.collisionGroup;
+
+            this.humanBigShape.collisionMask = boxShape.collisionMask;
         }
 
         _human.addShape(boxShape);

@@ -111,4 +111,22 @@ class Config{
     public humanFixForcePoint:number[] = [0.35,0];
 
     public solverIterations:number = 1;
+
+    public humanBigSize:number = 2;
+
+    public itemRadius:number = 0.5;
+
+    public itemForce:number[] = [-100,0];
+
+    public itemFriction:number = 0;
+
+    public itemRelaxation:number = 100;
+
+    public itemRestitution:number = 0.8;
+
+    public itemDampling:number = 0.1;
+
+    public itemAngularDampling:number = 0.1;
+
+    public itemGravityScale:number = 1;
 }

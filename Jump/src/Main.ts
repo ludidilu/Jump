@@ -6,7 +6,7 @@ class Main extends egret.DisplayObjectContainer {
 
     public static LADDER_GROUP:number = Math.pow(2, 1);
 
-    public static COIN_GROUP:number = Math.pow(2, 2);
+    public static REWARD_GROUP:number = Math.pow(2, 2);
 
     public static ENEMY_GROUP:number = Math.pow(2, 3);
 
@@ -339,6 +339,8 @@ class Main extends egret.DisplayObjectContainer {
 
         console.log("share!!!");
 
+        this.human.setBig(true);
+
         // wx.shareAppMessage({success:this.shareSuccess.bind(this), fail:this.shareFail.bind(this), complete:this.shareComplete.bind(this)});
     }
 
@@ -462,7 +464,7 @@ class Main extends egret.DisplayObjectContainer {
 
             shape.collisionGroup = Main.LADDER_GROUP;
 
-            shape.collisionMask = Main.HUMAN_GROUP | Main.COIN_GROUP | Main.ENEMY_GROUP;
+            shape.collisionMask = Main.HUMAN_GROUP | Main.REWARD_GROUP | Main.ENEMY_GROUP;
 
             let pos:number[] = shape.position;
 
@@ -549,13 +551,13 @@ class Main extends egret.DisplayObjectContainer {
 
         // console.log("beginContact   bodyA:" + aa.bodyA.bodyType + "  bodyB:" + aa.bodyB.bodyType);
 
-        if(aa.bodyA.bodyType == BodyObjType.HUMAN && aa.bodyB.bodyType == BodyObjType.COIN){
+        if(aa.bodyA.bodyType == BodyObjType.HUMAN && aa.bodyB.bodyType == BodyObjType.REWARD){
             
-            (<Coin>aa.bodyB).isOver = true;
+            (<Reward>aa.bodyB).isOver = true;
         }
-        else if(aa.bodyA.bodyType == BodyObjType.COIN && aa.bodyB.bodyType == BodyObjType.HUMAN){
+        else if(aa.bodyA.bodyType == BodyObjType.REWARD && aa.bodyB.bodyType == BodyObjType.HUMAN){
             
-            (<Coin>aa.bodyA).isOver = true;
+            (<Reward>aa.bodyA).isOver = true;
         }
     }
 
@@ -650,7 +652,7 @@ class Main extends egret.DisplayObjectContainer {
 
         let p:egret.Point = this.gameContainer.localToGlobal(this.humanDisplay.x, this.humanDisplay.y);
 
-        if(p.y > this.stage.stageHeight + (Main.config.humanLength * 0.5 + Main.config.humanRadius) * Main.config.factor){
+        if(p.y > this.stage.stageHeight + (Main.config.humanLength * 0.5 + Main.config.humanRadius) * this.human.sizeFix * Main.config.factor){
 
             console.log("lose!!!");
 
