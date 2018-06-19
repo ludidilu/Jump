@@ -10,7 +10,7 @@ class Human extends BodyObj{
 
     public static conBody:BodyObj;
 
-    public static humanDic:{[key:number]:Human} = {};
+    private static human:Human;
 
     private static tmpVec:number[] = [0,0];
 
@@ -19,12 +19,6 @@ class Human extends BodyObj{
     private jumpDisableTime:number = 0;
 
     private jumpForceFix:number = 1;
-
-    public contectLadder:number = 0;
-
-    public contactHuman:{[key:number]:number} = {};
-
-    public id:number;
 
     public updateDisplaysPosition(_dt:number):void{
 
@@ -73,22 +67,32 @@ class Human extends BodyObj{
                     return HumanJumpResult.LINE;
                 }
             }
-
-            if(this.contectLadder > 0){
+            
+            if(this.overlaps(Human.conBody)){
 
                 return HumanJumpResult.LADDER;
             }
 
-            for(let key in this.contactHuman){
+            for(let i:number = 0, m:number = Enemy.enemies.length ; i < m ; i++){
 
-                if(this.contactHuman[key] > 0){
+                let human:Human = Enemy.enemies[i];
 
-                    let human:Human = Human.humanDic[key];
+                if(human == this){
 
-                    if(human.position[1] < this.position[1]){
+                    continue;
+                }
 
-                        return HumanJumpResult.HUMAN;
-                    }
+                if(this.overlaps(human) && this.position[1] > human.position[1]){
+
+                    return HumanJumpResult.HUMAN;
+                }
+            }
+
+            if(this.bodyType == BodyObjType.ENEMY){
+
+                if(this.overlaps(Human.human) && this.position[1] > Human.human.position[1]){
+
+                    return HumanJumpResult.HUMAN;
                 }
             }
         }
@@ -162,38 +166,15 @@ class Human extends BodyObj{
         this.jumpForceFix = _fix;
     }
 
-    public reset():void{
-
-        this.contectLadder = 0;
-
-        for(let key in this.contactHuman){
-
-            let num:number = this.contactHuman[key];
-
-            if(num > 0){
-
-                let human:Human = Human.humanDic[key];
-
-                human.contactHuman[this.id] = 0;
-
-                this.contactHuman[key] = 0;
-            }
-        }
-
-        super.reset();
-    }
-
     public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _pos:number[]):Human{
         
-        let human:Human = new Human({mass:1, damping:Main.config.humanDampling, angularDampling:Main.config.humanAngularDampling, gravityScale:Main.config.humanGravityScale});
+        this.human = new Human({mass:1, damping:Main.config.humanDampling, angularDampling:Main.config.humanAngularDampling, gravityScale:Main.config.humanGravityScale});
 
-        human.bodyType = BodyObjType.HUMAN;
+        this.human.bodyType = BodyObjType.HUMAN;
 
-        human.id = 0;
+        this.initHuman(this.human, _world, _length, _radius, _container, _mat, 0xffff00, _pos);
 
-        this.initHuman( human, _world, _length, _radius, _container, _mat, 0xffff00, _pos);
-
-        return human;
+        return this.human;
     }
 
     protected static initHuman(_human:Human, _world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _color:number, _pos:number[]):void{
@@ -242,8 +223,6 @@ class Human extends BodyObj{
         _world.addBody(_human);
 
         _container.addChild(humanDisplay);
-
-        this.humanDic[_human.id] = _human;
 
         _human.position[0] = _pos[0];
 

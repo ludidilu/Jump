@@ -514,8 +514,6 @@ class Main extends egret.DisplayObjectContainer {
 
         this.world.on("beginContact", this.beginContact, this);
 
-        this.world.on("endContact", this.endContact, this);
-
         let conMat:p2.ContactMaterial = new p2.ContactMaterial(this.ladderMat, this.humanMat);
         conMat.friction = Main.config.friction;
         conMat.relaxation = Main.config.relaxation;
@@ -551,69 +549,13 @@ class Main extends egret.DisplayObjectContainer {
 
         // console.log("beginContact   bodyA:" + aa.bodyA.bodyType + "  bodyB:" + aa.bodyB.bodyType);
 
-        if(aa.bodyA.bodyType == BodyObjType.LADDER && aa.bodyB.bodyType < BodyObjType.LADDER){
-
-            (<Human>aa.bodyB).contectLadder++;
-        }
-        else if(aa.bodyA.bodyType < BodyObjType.LADDER && aa.bodyB.bodyType == BodyObjType.LADDER){
-
-            (<Human>aa.bodyA).contectLadder++;
-        }
-        else if((aa.bodyA.bodyType < BodyObjType.LADDER && aa.bodyB.bodyType < BodyObjType.LADDER)){
-            
-            let humanA:Human = <Human>aa.bodyA;
-
-            let humanB:Human = <Human>aa.bodyB;
-
-            if(humanA.contactHuman[humanB.id]){
-
-                humanA.contactHuman[humanB.id]++;
-            }
-            else{
-
-                humanA.contactHuman[humanB.id] = 1;
-            }
-
-            if(humanB.contactHuman[humanA.id]){
-
-                humanB.contactHuman[humanA.id]++;
-            }
-            else{
-
-                humanB.contactHuman[humanA.id] = 1;
-            }
-        }
-        else if(aa.bodyA.bodyType == BodyObjType.HUMAN && aa.bodyB.bodyType == BodyObjType.COIN){
+        if(aa.bodyA.bodyType == BodyObjType.HUMAN && aa.bodyB.bodyType == BodyObjType.COIN){
             
             (<Coin>aa.bodyB).isOver = true;
         }
         else if(aa.bodyA.bodyType == BodyObjType.COIN && aa.bodyB.bodyType == BodyObjType.HUMAN){
             
             (<Coin>aa.bodyA).isOver = true;
-        }
-    }
-
-    private endContact(aa:{bodyA:BodyObj,bodyB:BodyObj}):void{
-
-        // console.log("endContact   bodyA:" + aa.bodyA.bodyType + "  bodyB:" + aa.bodyB.bodyType);
-
-        if(aa.bodyA.bodyType == BodyObjType.LADDER && aa.bodyB.bodyType < BodyObjType.LADDER){
-
-            (<Human>aa.bodyB).contectLadder--;
-        }
-        else if(aa.bodyA.bodyType < BodyObjType.LADDER && aa.bodyB.bodyType == BodyObjType.LADDER){
-
-            (<Human>aa.bodyA).contectLadder--;
-        }
-        else if((aa.bodyA.bodyType < BodyObjType.LADDER && aa.bodyB.bodyType < BodyObjType.LADDER)){
-            
-            let humanA:Human = <Human>aa.bodyA;
-
-            let humanB:Human = <Human>aa.bodyB;
-
-            humanA.contactHuman[humanB.id]--;
-
-            humanB.contactHuman[humanA.id]--;
         }
     }
 

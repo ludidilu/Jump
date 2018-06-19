@@ -23,8 +23,6 @@ class Enemy extends Human{
         }
     }
 
-    private static enemyId:number = 1;
-
     public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _pos:number[]):Enemy{
 
         let enemy:Enemy;
@@ -34,10 +32,6 @@ class Enemy extends Human{
             enemy = new Enemy({ mass: 1, damping :Main.config.humanDampling, angularDampling:Main.config.humanAngularDampling });
 
             enemy.bodyType = BodyObjType.ENEMY;
-
-            enemy.id = this.enemyId;
-
-            this.enemyId++;
 
             Human.initHuman( enemy, _world, _length, _radius, _container, _mat, 0x0000ff, _pos);
         }
@@ -54,8 +48,6 @@ class Enemy extends Human{
             _world.addBody(enemy);
 
             enemy.updateDisplaysPosition(0);
-
-            Human.humanDic[enemy.id] = enemy;
         }
 
         this.enemies.push(enemy);
@@ -72,8 +64,6 @@ class Enemy extends Human{
         let display:egret.DisplayObject = this.displays[0];
 
         display.parent.removeChild(display);
-
-        delete Human.humanDic[this.id];
 
         Enemy.pool.push(this);
     }
