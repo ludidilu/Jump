@@ -9,11 +9,11 @@ enum ItemEffect{
 
 class Item extends Reward{
 
+    public static getItemCallBack:(_effect:ItemEffect)=>void;
+
     public static items:Item[] = [];
 
     private static pool:Item[] = [];
-
-    public static human:Human;
 
     private static itemEffectLength:number;
 
@@ -83,6 +83,8 @@ class Item extends Reward{
             let item:Item = this.items[i];
 
             if(item.isOver){
+
+                this.getItemCallBack(item.effect);
 
                 item.reset();
 

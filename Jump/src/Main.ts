@@ -34,6 +34,8 @@ class Main extends egret.DisplayObjectContainer {
 
     private bg:egret.Shape;
 
+    private itemBt:ItemBt;
+
     private bgContainer:egret.DisplayObjectContainer;
 
     private gameContainer:egret.DisplayObjectContainer;
@@ -45,6 +47,8 @@ class Main extends egret.DisplayObjectContainer {
     private humanContainer:egret.DisplayObjectContainer;
 
     private hintContainer:egret.DisplayObjectContainer;
+
+    private itemBtContainer:egret.DisplayObjectContainer;
 
     private uiContainer:egret.DisplayObjectContainer;
 
@@ -124,6 +128,8 @@ class Main extends egret.DisplayObjectContainer {
         this.createContainers();
 
         this.createBg();
+
+        this.createItemBt();
 
         this.createUi();
 
@@ -284,6 +290,10 @@ class Main extends egret.DisplayObjectContainer {
 
         this.addChild(this.hintContainer);
 
+        this.itemBtContainer = new egret.DisplayObjectContainer();
+
+        this.addChild(this.itemBtContainer);
+
         this.uiContainer = new egret.DisplayObjectContainer();
 
         this.addChild(this.uiContainer);
@@ -318,6 +328,19 @@ class Main extends egret.DisplayObjectContainer {
         this.bg.touchEnabled = false;
 
         this.bg.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
+    }
+
+    private createItemBt():void{
+
+        this.itemBt = new ItemBt();
+
+        this.itemBtContainer.addChild(this.itemBt);
+
+        this.itemBt.x = 80;
+
+        this.itemBt.y = this.stage.stageHeight - 80;
+
+        Item.getItemCallBack = this.itemBt.show.bind(this.itemBt);
     }
 
     private createUi():void{
@@ -589,14 +612,16 @@ class Main extends egret.DisplayObjectContainer {
         Coin.human = this.human;
 
         Human.main = this;
+
+        this.itemBt.human = this.human;
     }
 
-    private update(dt:number):void{
+    private update(_dt:number):void{
 
-        if (dt < 10) {
+        if (_dt < 10) {
             return;
         }
-        if (dt > 1000) {
+        if (_dt > 1000) {
             return;
         }
 
@@ -610,11 +635,11 @@ class Main extends egret.DisplayObjectContainer {
             // }
         }
 
-        let worldRealDt:number = dt * 0.001 * Main.config.physicalTimeFix;
+        let worldRealDt:number = _dt * 0.001 * Main.config.physicalTimeFix;
 
         this.world.step(this.worldDt, worldRealDt * this.worldDtFix * Main.config.worldTimeFix, 10);
 
-        dt = dt * this.worldDtFix * Main.config.worldTimeFix;
+        let dt = _dt * this.worldDtFix * Main.config.worldTimeFix;
 
         // this.world.step(1 / 60 * Main.config.physicalTimeFix, dt * 0.001 * Main.config.physicalTimeFix);
 
@@ -791,6 +816,8 @@ class Main extends egret.DisplayObjectContainer {
         Coin.reset();
 
         Line.reset();
+
+        this.itemBt.reset();
 
         this.bestScore = 0;
 

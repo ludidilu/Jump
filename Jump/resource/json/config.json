@@ -118,7 +118,7 @@
 
     "maxItemNum": 3,
 
-    "itemRadius":  0.5,
+    "itemRadius":  0.3,
 
     "itemForce": [-0.002,0],
 
@@ -142,7 +142,11 @@
 
     "humanFeatherMassFix": 0.5,
 
-    "humanFeatherJumpForceFix": 0.5,
+    "humanFeatherJumpForceFix": 0.8,
 
-    "humanSlowFix": 0.5
+    "humanSlowFix": 0.5,
+
+    "itemBtTime": 10000,
+
+    "itemEffectTime": 10000
 }

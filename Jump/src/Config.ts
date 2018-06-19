@@ -145,4 +145,8 @@ class Config{
     public humanFeatherJumpForceFix:number = 0.5;
 
     public humanSlowFix:number = 0.5;
+
+    public itemBtTime:number = 5000;
+
+    public itemEffectTime:number = 5000;
 }
