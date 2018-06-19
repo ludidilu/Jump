@@ -114,6 +114,10 @@
 
     "solverIterations": 1,最大求解次数
 
+    "itemPropProbability": 0.3,物品出现概率
+
+    "maxItemNum": 3,最大物品数量
+
     "itemRadius":  0.5,物品半径
 
     "itemForce": [-100,0],物品初始获得的力
@@ -140,5 +144,9 @@
 
     "humanFeatherJumpForceFix": 0.5,人物变轻的弹跳受力系数
 
-    "humanSlowFix": 0.5//速度放慢的系数
+    "humanSlowFix": 0.5,速度放慢的系数
+
+    "itemBtTime": 10000,获得物品后按钮持续时间
+
+    "itemEffectTime": 10000,使用物品后持续时间
 }
