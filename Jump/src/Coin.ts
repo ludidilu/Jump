@@ -41,7 +41,7 @@ class Coin extends Reward{
         super.updateDisplaysPosition();
     }
 
-    public static create(_world:p2.World, _container:egret.DisplayObjectContainer, _mat:p2.Material, _pos:number[]):void{
+    public static create(_world:p2.World, _container:egret.DisplayObjectContainer, _mat:p2.Material, _x:number, _y:number):void{
 
         let coin:Coin;
 
@@ -78,11 +78,11 @@ class Coin extends Reward{
             coin.displays = [coinDisplay];
         }
 
-        coin.setPosition(_pos[0], _pos[1]);
-
-        coin.applyForce(Main.config.coinForce, BodyObj.zeroPoint);
+        coin.setPosition(_x, _y);
 
         _world.addBody(coin);
+
+        coin.applyForce(Main.config.coinForce, BodyObj.zeroPoint);
 
         _container.addChild(coin.displays[0]);
 

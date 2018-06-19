@@ -114,6 +114,10 @@ class Config{
 
     public solverIterations:number = 1;
 
+    public itemPropProbability:number = 0.3;
+
+    public maxItemNum:number = 3;
+
     public itemRadius:number = 0.5;
 
     public itemForce:number[] = [-100,0];

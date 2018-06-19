@@ -23,7 +23,7 @@ class Enemy extends Human{
         }
     }
 
-    public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _pos:number[]):Enemy{
+    public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _x:number, _y:number):Enemy{
 
         let enemy:Enemy;
 
@@ -44,7 +44,7 @@ class Enemy extends Human{
             _world.addBody(enemy);
         }
 
-        enemy.setPosition(_pos[0], _pos[1]);
+        enemy.setPosition(_x, _y);
         
         enemy.updateDisplaysPosition(0);
 

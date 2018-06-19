@@ -19,7 +19,7 @@ class Item extends Reward{
 
     public effect:ItemEffect;
 
-    public static create(_world:p2.World, _container:egret.DisplayObjectContainer, _mat:p2.Material, _pos:number[]):void{
+    public static create(_world:p2.World, _container:egret.DisplayObjectContainer, _mat:p2.Material, _x:number, _y:number):void{
 
         let item:Item;
 
@@ -56,24 +56,24 @@ class Item extends Reward{
             item.displays = [itemDisplay];
         }
 
-        item.setPosition(_pos[0], _pos[1]);
-
-        if(!this.itemEffectLength){
-
-            this.itemEffectLength = Object.keys(ItemEffect).length / 2;
-        }
-
-        item.effect = Math.floor(Math.random() * this.itemEffectLength);
-
-        item.applyForce(Main.config.itemForce, BodyObj.zeroPoint);
+        item.setPosition(_x, _y);
 
         _world.addBody(item);
+
+        item.applyForce(Main.config.itemForce, BodyObj.zeroPoint);
 
         _container.addChild(item.displays[0]);
 
         this.items.push(item);
 
         item.updateDisplaysPosition();
+        
+        if(!this.itemEffectLength){
+
+            this.itemEffectLength = Object.keys(ItemEffect).length / 2;
+        }
+
+        item.effect = Math.floor(Math.random() * this.itemEffectLength);
     }
 
     public static update():void{

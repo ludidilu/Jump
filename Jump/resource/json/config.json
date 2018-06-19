@@ -114,21 +114,25 @@
 
     "solverIterations": 1,
 
+    "itemPropProbability": 0.3,
+
+    "maxItemNum": 3,
+
     "itemRadius":  0.5,
 
-    "itemForce": [-100,0],
+    "itemForce": [-0.002,0],
 
     "itemFriction":  0,
 
-    "itemRelaxation":  100,
+    "itemRelaxation":  4,
 
-    "itemRestitution":  0.8,
+    "itemRestitution":  0.9,
 
-    "itemDampling":  0.1,
+    "itemDampling":  0,
 
     "itemAngularDampling":  0.1,
 
-    "itemGravityScale":  1,
+    "itemGravityScale":  0.8,
 
     "humanBigSize": 2,
 

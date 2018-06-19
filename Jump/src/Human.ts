@@ -237,13 +237,17 @@ class Human extends BodyObj{
         Human.main.isCoinDouble = _b;
     }
 
-    public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _pos:number[]):Human{
+    public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _x:number, _y:number):Human{
         
         this.human = new Human({mass:1, damping:Main.config.humanDampling, angularDampling:Main.config.humanAngularDampling, gravityScale:Main.config.humanGravityScale});
 
         this.human.bodyType = BodyObjType.HUMAN;
 
         this.initHuman(this.human, _world, _length, _radius, _container, _mat, 0xffff00);
+
+        this.human.setPosition(_x, _y);
+        
+        this.human.updateDisplaysPosition(0);
 
         return this.human;
     }

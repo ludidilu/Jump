@@ -24,6 +24,8 @@ class Main extends egret.DisplayObjectContainer {
 
     private coinMat:p2.Material;
 
+    private itemMat:p2.Material;
+
     private humanDisplay:egret.DisplayObject;
 
     private human:Human;
@@ -514,6 +516,8 @@ class Main extends egret.DisplayObjectContainer {
 
         this.coinMat = new p2.Material(3);
 
+        this.itemMat = new p2.Material(4);
+
         //创建world
         this.world = new p2.World({gravity:Main.config.gravity});
         this.world.sleepMode = p2.World.BODY_SLEEPING;
@@ -540,6 +544,13 @@ class Main extends egret.DisplayObjectContainer {
         conMat.friction = Main.config.coinFriction;
         conMat.relaxation = Main.config.coinRelaxation;
         conMat.restitution = Main.config.coinRestitution;
+
+        this.world.addContactMaterial(conMat);
+
+        conMat = new p2.ContactMaterial(this.ladderMat, this.itemMat);
+        conMat.friction = Main.config.itemFriction;
+        conMat.relaxation = Main.config.itemRelaxation;
+        conMat.restitution = Main.config.itemRestitution;
 
         this.world.addContactMaterial(conMat);
 
@@ -571,7 +582,7 @@ class Main extends egret.DisplayObjectContainer {
 
     private createHuman():void{
 
-        this.human = Human.create(this.world, Main.config.humanLength, Main.config.humanRadius, this.humanContainer, this.humanMat, Main.config.humanStartPos);
+        this.human = Human.create(this.world, Main.config.humanLength, Main.config.humanRadius, this.humanContainer, this.humanMat, Main.config.humanStartPos[0], Main.config.humanStartPos[1]);
 
         this.humanDisplay = this.human.displays[0];
 
@@ -703,6 +714,8 @@ class Main extends egret.DisplayObjectContainer {
 
             Coin.update();
 
+            Item.update();
+
             if(Enemy.enemies.length < Main.config.maxEnemyNum && Math.random() < Main.config.enemyPropProbability * dt * 0.001){
 
                 let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.factor / Main.config.unitHeight);
@@ -713,7 +726,7 @@ class Main extends egret.DisplayObjectContainer {
 
                 let y:number = (targetLevel + 1.5) * Main.config.unitHeight;
 
-                Enemy.create(this.world, Main.config.humanLength, Main.config.humanRadius, this.humanContainer, this.humanMat, [x,y]);
+                Enemy.create(this.world, Main.config.humanLength, Main.config.humanRadius, this.humanContainer, this.humanMat, x, y);
             }
 
             if(Line.lineArr.length < Main.config.maxLineNum && Math.random() < Main.config.linePropProbability * dt * 0.001){
@@ -735,11 +748,24 @@ class Main extends egret.DisplayObjectContainer {
 
                 let targetLevel:number = nowLevel + Main.config.propHeightFix;
 
-                let x:number = targetLevel * Main.config.unitWidth + Main.config.triangleWidth * 2 + Math.random() * (Main.config.unitWidth - Main.config.triangleWidth * 2 - Main.config.coinRadius * 0.5);
+                let x:number = targetLevel * Main.config.unitWidth + Main.config.triangleWidth * 2 + Math.random() * (Main.config.unitWidth - Main.config.triangleWidth * 2 - Main.config.coinRadius);
 
                 let y:number = (targetLevel + 2) * Main.config.unitHeight;
 
-                Coin.create(this.world, this.humanContainer, this.coinMat, [x,y]);
+                Coin.create(this.world, this.humanContainer, this.coinMat, x, y);
+            }
+
+            if(Item.items.length < Main.config.maxItemNum && Math.random() < Main.config.itemPropProbability * dt * 0.001){
+
+                let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.factor / Main.config.unitHeight);
+
+                let targetLevel:number = nowLevel + Main.config.propHeightFix;
+
+                let x:number = targetLevel * Main.config.unitWidth + Main.config.triangleWidth * 2 + Math.random() * (Main.config.unitWidth - Main.config.triangleWidth * 2 - Main.config.itemRadius);
+
+                let y:number = (targetLevel + 2) * Main.config.unitHeight;
+
+                Item.create(this.world, this.humanContainer, this.itemMat, x, y);
             }
         }
     }
