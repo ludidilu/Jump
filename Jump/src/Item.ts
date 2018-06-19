@@ -56,9 +56,7 @@ class Item extends Reward{
             item.displays = [itemDisplay];
         }
 
-        item.position[0] = _pos[0];
-
-        item.position[1] = _pos[1];
+        item.setPosition(_pos[0], _pos[1]);
 
         if(!this.itemEffectLength){
 

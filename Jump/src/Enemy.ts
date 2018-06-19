@@ -29,26 +29,24 @@ class Enemy extends Human{
 
         if(Enemy.pool.length == 0){
 
-            enemy = new Enemy({ mass: 1, damping :Main.config.humanDampling, angularDampling:Main.config.humanAngularDampling });
+            enemy = new Enemy({ mass: 1, damping :Main.config.humanDampling, angularDampling:Main.config.humanAngularDampling});
 
             enemy.bodyType = BodyObjType.ENEMY;
 
-            Human.initHuman( enemy, _world, _length, _radius, _container, _mat, 0x0000ff, _pos);
+            Human.initHuman( enemy, _world, _length, _radius, _container, _mat, 0x0000ff);
         }
         else{
 
             enemy = Enemy.pool.pop();
 
-            enemy.position[0] = _pos[0];
-
-            enemy.position[1] = _pos[1];
-
             _container.addChild(enemy.displays[0]);
 
             _world.addBody(enemy);
-
-            enemy.updateDisplaysPosition(0);
         }
+
+        enemy.setPosition(_pos[0], _pos[1]);
+        
+        enemy.updateDisplaysPosition(0);
 
         this.enemies.push(enemy);
 

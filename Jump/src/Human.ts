@@ -8,6 +8,8 @@ enum HumanJumpResult{
 
 class Human extends BodyObj{
 
+    public static main:Main;
+
     public static conBody:BodyObj;
 
     private static human:Human;
@@ -32,11 +34,11 @@ class Human extends BodyObj{
 
             if(this.velocity[0] > 0){
 
-                this.position[0] = this.previousPosition[0] + Main.config.humanSleepXFix * _dt * 0.001;
+                this.setPosition(this.previousPosition[0] + Main.config.humanSleepXFix * _dt * 0.001, this.position[1]);
             }
             else{
 
-                this.position[0] = this.previousPosition[0] - Main.config.humanSleepXFix * _dt * 0.001;
+                this.setPosition(this.previousPosition[0] - Main.config.humanSleepXFix * _dt * 0.001, this.position[1]);
             }
         }
 
@@ -108,20 +110,6 @@ class Human extends BodyObj{
 
     public jump(_jumpAngle:number, _jumpForce:number[], _jumpPoint:number[]):void{
 
-        // let angle:number = this.angle;
-
-        // let x:number = this.position[0] - Math.cos(angle) * this.length * 0.5;
-
-        // let y:number = this.position[1] - Math.sin(angle) * this.length * 0.5;
-
-        // x += Math.cos(_jumpAngle) * this.length * 0.5;
-
-        // y += Math.sin(_jumpAngle) * this.length * 0.5;
-
-        // this.position[0] = x;
-
-        // this.position[1] = y;
-
         //---起跳时整体向上抬升
         let lastHeight:number = Math.abs(Math.sin(this.angle));
 
@@ -129,13 +117,11 @@ class Human extends BodyObj{
 
         if(nowHeight > lastHeight){
 
-            this.position[1] += (nowHeight - lastHeight) * Main.config.humanLength * 0.5 * this.sizeFix;
+            this.setPosition(this.position[0], this.position[1] + (nowHeight - lastHeight) * Main.config.humanLength * 0.5 * this.sizeFix);
         }
         //---
 
-        this.angle = _jumpAngle;
-
-        this.previousAngle = _jumpAngle;
+        this.setAngle(_jumpAngle);
 
         this.jumpDisableTime = Main.config.jumpDisableTime;
 
@@ -181,7 +167,7 @@ class Human extends BodyObj{
 
         if(_b){
 
-            this.removeShape(this.shapes[0]);
+            this.removeShape(Human.humanNormalShape);
 
             this.addShape(Human.humanBigShape);
 
@@ -191,10 +177,64 @@ class Human extends BodyObj{
 
             this.setSizeFix(Main.config.humanBigSize);
 
-            this.setMassFix(Main.config.humanBigSize);
+            this.setMassFix(Main.config.humanBigMassFix);
 
-            this.setJumpForceFix(Main.config.humanBigSize);
+            this.setJumpForceFix(Main.config.humanBigJumpForceFix);
         }
+        else{
+
+            this.removeShape(Human.humanBigShape);
+
+            this.addShape(Human.humanNormalShape);
+
+            this.displays[0].scaleX = 1;
+
+            this.displays[0].scaleY = 1;
+
+            this.setSizeFix(1 / Main.config.humanBigSize);
+
+            this.setMassFix(1 / Main.config.humanBigMassFix);
+
+            this.setJumpForceFix(1 / Main.config.humanBigJumpForceFix);
+        }
+    }
+
+    public setFeather(_b:boolean):void{
+
+        if(_b){
+
+            this.setMassFix(Main.config.humanFeatherMassFix);
+
+            this.setJumpForceFix(Main.config.humanFeatherJumpForceFix);
+        }
+        else{
+
+            this.setMassFix(1 / Main.config.humanFeatherMassFix);
+
+            this.setJumpForceFix(1 / Main.config.humanFeatherJumpForceFix);
+        }
+    }
+
+    public setSlow(_b:boolean):void{
+
+        if(_b){
+
+            Human.main.worldDtFix *= Main.config.humanSlowFix;
+        }
+        else{
+
+            Human.main.worldDtFix /= Main.config.humanSlowFix;
+        }
+    }
+
+    public setMagnet(_b:boolean):void{
+
+        Coin.isMovingToHuman = _b;
+    }
+
+    public setDouble(_b:boolean):void{
+
+        Human.main.isCoinDouble = _b;
     }
 
     public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _pos:number[]):Human{
@@ -203,12 +243,12 @@ class Human extends BodyObj{
 
         this.human.bodyType = BodyObjType.HUMAN;
 
-        this.initHuman(this.human, _world, _length, _radius, _container, _mat, 0xffff00, _pos);
+        this.initHuman(this.human, _world, _length, _radius, _container, _mat, 0xffff00);
 
         return this.human;
     }
 
-    protected static initHuman(_human:Human, _world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _color:number, _pos:number[]):void{
+    protected static initHuman(_human:Human, _world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _color:number):void{
 
         _human.allowSleep = false;
 
@@ -264,11 +304,5 @@ class Human extends BodyObj{
         _world.addBody(_human);
 
         _container.addChild(humanDisplay);
-
-        _human.position[0] = _pos[0];
-
-        _human.position[1] = _pos[1];
-
-        _human.updateDisplaysPosition(0);
     }
 }

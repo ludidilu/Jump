@@ -4,6 +4,8 @@ class Config{
 
     public physicalTimeFix:number = 1.3;
 
+    public worldTimeFix:number = 1;
+
     public factor:number = 80;
 
     public unitHeight:number = 2.4;
@@ -112,8 +114,6 @@ class Config{
 
     public solverIterations:number = 1;
 
-    public humanBigSize:number = 2;
-
     public itemRadius:number = 0.5;
 
     public itemForce:number[] = [-100,0];
@@ -129,4 +129,16 @@ class Config{
     public itemAngularDampling:number = 0.1;
 
     public itemGravityScale:number = 1;
+
+    public humanBigSize:number = 2;
+
+    public humanBigMassFix:number = 2;
+
+    public humanBigJumpForceFix:number = 2;
+
+    public humanFeatherMassFix:number = 0.5;
+
+    public humanFeatherJumpForceFix:number = 0.5;
+
+    public humanSlowFix:number = 0.5;
 }

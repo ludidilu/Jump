@@ -12,6 +12,12 @@ class Main extends egret.DisplayObjectContainer {
 
     private world:p2.World;
 
+    private worldDt:number;
+
+    public worldDtFix:number = 1;
+
+    public isCoinDouble:boolean = false;
+
     private ladderMat:p2.Material;
 
     private humanMat:p2.Material;
@@ -339,7 +345,7 @@ class Main extends egret.DisplayObjectContainer {
 
         console.log("share!!!");
 
-        this.human.setBig(true);
+        this.human.setFeather(true);
 
         // wx.shareAppMessage({success:this.shareSuccess.bind(this), fail:this.shareFail.bind(this), complete:this.shareComplete.bind(this)});
     }
@@ -545,6 +551,8 @@ class Main extends egret.DisplayObjectContainer {
         planeShape.material = this.ladderMat;
 
         this.world.addBody(planeBody);
+
+        this.worldDt = 1 / 60 * Main.config.physicalTimeFix;
     }
 
     private beginContact(aa:{bodyA:BodyObj,bodyB:BodyObj}):void{
@@ -568,6 +576,8 @@ class Main extends egret.DisplayObjectContainer {
         this.humanDisplay = this.human.displays[0];
 
         Coin.human = this.human;
+
+        Human.main = this;
     }
 
     private update(dt:number):void{
@@ -589,9 +599,11 @@ class Main extends egret.DisplayObjectContainer {
             // }
         }
 
-        dt = 1000 / Main.config.fps;//lock fps
+        let worldRealDt:number = dt * 0.001 * Main.config.physicalTimeFix;
 
-        this.world.step(dt * 0.001 * Main.config.physicalTimeFix);
+        this.world.step(this.worldDt, worldRealDt * this.worldDtFix * Main.config.worldTimeFix, 10);
+
+        dt = dt * this.worldDtFix * Main.config.worldTimeFix;
 
         // this.world.step(1 / 60 * Main.config.physicalTimeFix, dt * 0.001 * Main.config.physicalTimeFix);
 
@@ -627,9 +639,11 @@ class Main extends egret.DisplayObjectContainer {
 
             this.nowHeight++;
 
-            this.conBody.position[0] = this.conBody.position[0] + Main.config.unitWidth * Main.config.changeUnitNum;
+            let ladderX:number = this.conBody.position[0] + Main.config.unitWidth * Main.config.changeUnitNum;
 
-            this.conBody.position[1] = this.conBody.position[1] + Main.config.unitHeight * Main.config.changeUnitNum;
+            let ladderY:number = this.conBody.position[1] + Main.config.unitHeight * Main.config.changeUnitNum;
+
+            this.conBody.setPosition(ladderX, ladderY);
 
             this.conBody.updateDisplaysPosition();
         }
@@ -732,9 +746,7 @@ class Main extends egret.DisplayObjectContainer {
 
     private reset():void{
 
-        this.conBody.position[0] = 0;
-
-        this.conBody.position[1] = 0;
+        this.conBody.setPosition(0, 0);
 
         this.conBody.updateDisplaysPosition();
 
@@ -760,9 +772,7 @@ class Main extends egret.DisplayObjectContainer {
 
         this.human.reset();
 
-        this.human.position[0] = Main.config.humanStartPos[0];
-
-        this.human.position[1] = Main.config.humanStartPos[1];
+        this.human.setPosition(Main.config.humanStartPos[0], Main.config.humanStartPos[1]);
 
         this.human.updateDisplaysPosition(0);
 

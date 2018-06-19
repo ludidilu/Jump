@@ -78,9 +78,7 @@ class Coin extends Reward{
             coin.displays = [coinDisplay];
         }
 
-        coin.position[0] = _pos[0];
-
-        coin.position[1] = _pos[1];
+        coin.setPosition(_pos[0], _pos[1]);
 
         coin.applyForce(Main.config.coinForce, BodyObj.zeroPoint);
 
