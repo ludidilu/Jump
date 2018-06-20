@@ -190,36 +190,71 @@ class Main extends egret.DisplayObjectContainer {
         
         
 
-        let kv = {key:"score",value:"12"};
+        // let kv = {key:"score",value:"12"};
 
-        let kv2 = {key:"zxasd12",value:"12322"};
+        // let kv2 = {key:"zxasd12",value:"12322"};
 
-        let data = {KVDataList: [kv, kv2],success:this.setUserCloudStorageSuccess.bind(this), fail:this.setUserCloudStorageFail.bind(this), complete:this.setUserCloudStorageComplete.bind(this)};
+        // let data = {KVDataList: [kv, kv2],success:this.setUserCloudStorageSuccess.bind(this), fail:this.setUserCloudStorageFail.bind(this), complete:this.setUserCloudStorageComplete.bind(this)};
 
-        wx.setUserCloudStorage(data);
+        // wx.setUserCloudStorage(data);
+
+        let obj = {command:"getUserCloudStorage", data:["score"]};
+
+        WeixinTalk.talk(obj, this.getUserCloudStorageSuccess.bind(this));
     }
 
-    private sendTalk(_cmd:any):void{
+    private getUserCloudStorageSuccess(_str:string):void{
 
-        WeixinTalk.talk(_cmd, this.getTalk.bind(this));
+        console.log("main getUserCloudStorageSuccess:" + _str);
+
+        let obj = {command:"getFriendCloudStorage", data:["score"]};
+
+        WeixinTalk.talk(obj, this.getFriendCloudStorageSuccess.bind(this));
     }
 
-    private getTalk(_str:string):void{
+    private getFriendCloudStorageSuccess(_str:string):void{
 
-        console.log("gettalk:" + _str);
+        console.log("main getFriendCloudStorageSuccess:" + _str.length + "   str:" + _str);
+
+        let data:{errMsg:string,data:{avatarUrl:string, nickname:string, openid:string, KVDataList:{key:string, value:string}[]}[]} = JSON.parse(_str);
+
+        console.log("main getFriendCloudStorage success");
+
+        for(let i:number = 0 ; i < data.data.length ; i++){
+            console.log("avatarUrl:" + data.data[i].avatarUrl + "  nickname:" + data.data[i].nickname);
+        }
+
+
+        // let bpd = StringTool.stringToBmp(_str);
+
+        // console.log("bpd.width:" + bpd.width);
+
+        // let tex = new egret.Texture();
+
+        // tex.bitmapData = bpd;
+
+        // let bp = new egret.Bitmap(tex);
+
+        // let kkk = StringTool.objToString2(bp);
+
+        // console.log("ffff:" + kkk);
     }
 
     private setUserCloudStorageSuccess():void{
-        console.log("setUserCloudStorageSuccess");
+
+        console.log("main setUserCloudStorageSuccess");
         
+        let obj = {command:"getUserCloudStorage", data:["score", "zxasd12"]};
+
+        WeixinTalk.talk(obj, this.getUserCloudStorageSuccess.bind(this));
     }
 
     private setUserCloudStorageFail():void{
-        console.log("setUserCloudStorageFail");
+        console.log("main setUserCloudStorageFail");
     }
 
     private setUserCloudStorageComplete():void{
-        console.log("setUserCloudStorageComplete");
+        console.log("main setUserCloudStorageComplete");
     }
 
     private getWeixinImage(_tex:egret.Texture):void{
