@@ -10,13 +10,15 @@ class WeixinTalk{
 
     private static talkOverCommand:{} = {command:"talkOver"};
 
-    public static talk(_obj:any, _cb:(_str:string)=>void):void{
+    public static talk(_obj:any, _cb:(_str:string)=>void, _container:egret.DisplayObjectContainer):void{
 
         if(!this.openDataContext){
 
             this.openDataContext = wx.getOpenDataContext();
 
             this.bitmapData = new egret.BitmapData(window["sharedCanvas"]);
+
+            console.log("talk bpd.width:" + this.bitmapData.width + "  height:" + this.bitmapData.height + "   c.width:" + _container.stage.stageWidth + "  c.height:" + _container.stage.stageHeight);
 
             this.bitmapData.$deleteSource = false;
 
@@ -27,6 +29,18 @@ class WeixinTalk{
             this.bitmap = new egret.Bitmap(texture);
 
             egret.startTick(this.update, this);
+
+            _container.addChild(this.bitmap);
+
+            this.bitmap.scaleX = 100;
+
+            this.bitmap.scaleY = 100;
+
+            this.bitmap.smoothing = false;
+
+            // this.bitmap.width = _container.stage.stageWidth;
+
+            // this.bitmap.height = _container.stage.stageHeight;
         }
 
         this.cb = _cb;
@@ -45,6 +59,12 @@ class WeixinTalk{
             let str = StringTool.objToString2(this.bitmap);
 
             if(str){
+
+                console.log("talk reply:" + str);
+
+                this.cb = null;
+
+                return;
 
                 this.openDataContext.postMessage(this.talkOverCommand);
                 

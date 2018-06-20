@@ -38,7 +38,7 @@ class Main extends egret.DisplayObjectContainer {
 
     private onAddToStage(event: egret.Event) {
 
-        console.log("openDataContext onAddToStage");
+        console.log("openDataContext onAddToStage  stageWidth:" + this.stage.stageWidth + "  stageHeight:" + this.stage.stageHeight);
 
         wx.onMessage(this.getMessage.bind(this));
     }
@@ -107,7 +107,7 @@ class Main extends egret.DisplayObjectContainer {
 
         let str:string = JSON.stringify(data);
 
-        console.log("openDataContext getUserCloudStorage success");
+        console.log("openDataContext getUserCloudStorage success:" + str);
 
         for(let i:number = 0 ; i < data.KVDataList.length ; i++){
             console.log("key:" + data.KVDataList[i].key + "   value:" + data.KVDataList[i].value);
@@ -130,7 +130,9 @@ class Main extends egret.DisplayObjectContainer {
 
         let str:string = JSON.stringify(data);
 
-        console.log("openDataContext getFriendCloudStorage success    stringLength:" + str.length);
+        str = 'abcdefghijklmnopqrstuvwxyz';
+
+        console.log("openDataContext getFriendCloudStorage success  stringLength:" + str.length + "   str:" + str);
 
         for(let i:number = 0 ; i < data.data.length ; i++){
             console.log("avatarUrl:" + data.data[i].avatarUrl + "  nickname:" + data.data[i].nickname);

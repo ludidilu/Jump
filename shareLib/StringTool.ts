@@ -199,6 +199,8 @@ class StringTool{
 
         byteArray.position = 0;
 
+        console.log("stringToObj  length:" + byteArray.length);
+
         let container:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();
 
         let sp:egret.Shape = new egret.Shape();
@@ -227,13 +229,19 @@ class StringTool{
 
             r = byteArray.readByte() + 128;
 
+            console.log("i:" + i + "  r:" + r);
+
             if(byteArray.bytesAvailable > 0){
 
                 g = byteArray.readByte() + 128;
 
+                console.log("i:" + i + "  g:" + g);
+
                 if(byteArray.bytesAvailable > 0){
 
                     b = byteArray.readByte() + 128;
+
+                    console.log("i:" + i + "  b:" + b);
                 }
                 else{
 
@@ -260,7 +268,7 @@ class StringTool{
             container.addChild(sp);
         }
 
-        container.cacheAsBitmap = true;
+        // container.cacheAsBitmap = true;
 
         return container;
     }
@@ -347,6 +355,8 @@ class StringTool{
             return null;
         }
 
+        console.log("objToString2  length:" + length + "   drawWidth:" + drawWidth + "   drawHeight:" + drawHeight);
+
         let times:number = Math.ceil(length / 3) + 1;
 
         let readWidth:number = times < drawWidth ? times : drawWidth;
@@ -355,17 +365,23 @@ class StringTool{
 
         arr = rt.getPixels(0, 0, readWidth, readHeight);
 
+        console.log("arr:" + arr);
+
         let byteArray:egret.ByteArray = new egret.ByteArray();
         
         for(let i:number = 1 ; i < times ; i++){
 
             byteArray.writeByte(arr[i * 4] - 128);
 
+            console.log("i:" + i + "  r:" + arr[i * 4]);
+
             length--;
 
             if(length > 0){
 
                 byteArray.writeByte(arr[i * 4 + 1] - 128);
+
+                console.log("i:" + i + "  g:" + arr[i * 4 + 1]);
 
                 length--;
             }
@@ -377,6 +393,8 @@ class StringTool{
             if(length > 0){
 
                 byteArray.writeByte(arr[i * 4 + 2] - 128);
+
+                console.log("i:" + i + "  b:" + arr[i * 4 + 2]);
 
                 length--;
             }
