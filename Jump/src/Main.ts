@@ -166,6 +166,8 @@ class Main extends egret.DisplayObjectContainer {
 
         if(Main.isWeixin){
 
+            WeixinTalk.init(this.stage.stageWidth, this.stage.stageHeight);
+
             let param:getUserInfoParam = {withCredentials:false, lang:"zh_CN", timeout:3000, success: this.weixinSuccess.bind(this), fail: this.weixinFail, complete:this.weixinComplete}
 
             wx.getUserInfo(param);
@@ -173,8 +175,6 @@ class Main extends egret.DisplayObjectContainer {
 
         this.reset();
     }
-
-    private bitmap: egret.Bitmap;
 
     private weixinSuccess(_param:getUserInfoSuccess):void{
 
