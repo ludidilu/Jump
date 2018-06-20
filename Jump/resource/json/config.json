@@ -60,6 +60,8 @@
 
     "fps": 60,
 
+    "physicsEngineFps": 60,
+
     "humanStartPos": [-4,9],
 
     "firstJumpAngle": 0.7,

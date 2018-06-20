@@ -10,11 +10,15 @@ class WeixinTalk{
 
     private static talkOverCommand:{} = {command:"talkOver"};
 
-    public static init(_width:number, _height:number):void{
+    public static init():void{
 
         this.openDataContext = wx.getOpenDataContext();
 
-        this.bitmapData = new egret.BitmapData(window["sharedCanvas"]);
+        let canvas:Canvas = this.openDataContext.canvas;
+
+        canvas.height = canvas.width;
+
+        this.bitmapData = new egret.BitmapData(canvas);
 
         this.bitmapData.$deleteSource = false;
 
@@ -24,9 +28,9 @@ class WeixinTalk{
 
         this.bitmap = new egret.Bitmap(texture);
 
-        this.bitmap.width = _width;
+        this.bitmap.width = StringTool.width;
 
-        this.bitmap.height = _height;
+        this.bitmap.height = StringTool.height;
 
         this.bitmap.smoothing = false;
 

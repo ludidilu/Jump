@@ -34,6 +34,10 @@ declare class ContextAttributes{
 
 declare interface Canvas{
 
+    width:number;
+
+    height:number;
+
     getContext(contextType: string, contextAttributes: ContextAttributes): RenderingContext;
 }
 

@@ -191,7 +191,9 @@ class StringTool{
         return bpd;
     }
 
-    public static stringToObj(_str:string):egret.DisplayObjectContainer{
+    public static stringToObj(_str:string, _width:number):egret.DisplayObjectContainer{
+
+        let unitWidth:number = _width / this.width;
 
         let byteArray:egret.ByteArray = new egret.ByteArray();
 
@@ -205,7 +207,7 @@ class StringTool{
 
         sp.graphics.beginFill(byteArray.length);
 
-        sp.graphics.drawRect(0,0,1,1);
+        sp.graphics.drawRect(0,0,unitWidth,unitWidth);
 
         sp.graphics.endFill();
 
@@ -253,14 +255,14 @@ class StringTool{
 
             sp.graphics.beginFill(color);
 
-            sp.graphics.drawRect(x,y,1,1);
+            sp.graphics.drawRect(x * unitWidth, y * unitWidth, unitWidth, unitWidth);
 
             sp.graphics.endFill();
 
             container.addChild(sp);
         }
 
-        container.cacheAsBitmap = true;
+        // container.cacheAsBitmap = true;
 
         return container;
     }

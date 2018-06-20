@@ -60,6 +60,8 @@
 
     "fps": 60,帧率
 
+    "physicsEngineFps": 60,物理引擎的帧率
+
     "humanStartPos": [-4,9],出生位置
 
     "firstJumpAngle": 0.7,第一次跳跃角度

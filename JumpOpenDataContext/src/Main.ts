@@ -86,10 +86,6 @@ class Main extends egret.DisplayObjectContainer {
 
                 throw new Error("duplicate talk!");
             }
-
-            this.container = StringTool.stringToObj(str + " -->reply");
-
-            this.addChild(this.container);
         }
 
         // let keyList:string[] = ["score","zxasd12"];
@@ -113,7 +109,7 @@ class Main extends egret.DisplayObjectContainer {
             console.log("key:" + data.KVDataList[i].key + "   value:" + data.KVDataList[i].value);
         }
 
-        this.container = StringTool.stringToObj(str);
+        this.container = StringTool.stringToObj(str, this.stage.stageWidth);
 
         this.addChild(this.container);
     }
@@ -136,7 +132,7 @@ class Main extends egret.DisplayObjectContainer {
             console.log("avatarUrl:" + data.data[i].avatarUrl + "  nickname:" + data.data[i].nickname);
         }
 
-        this.container = StringTool.stringToObj(str);
+        this.container = StringTool.stringToObj(str, this.stage.stageWidth);
 
         this.addChild(this.container);
     }

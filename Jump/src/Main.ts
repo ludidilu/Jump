@@ -166,7 +166,7 @@ class Main extends egret.DisplayObjectContainer {
 
         if(Main.isWeixin){
 
-            WeixinTalk.init(this.stage.stageWidth, this.stage.stageHeight);
+            WeixinTalk.init();
 
             let param:getUserInfoParam = {withCredentials:false, lang:"zh_CN", timeout:3000, success: this.weixinSuccess.bind(this), fail: this.weixinFail, complete:this.weixinComplete}
 
@@ -407,9 +407,9 @@ class Main extends egret.DisplayObjectContainer {
 
         console.log("share!!!");
 
-        this.human.setFeather(true);
+        // this.human.setFeather(true);
 
-        // wx.shareAppMessage({success:this.shareSuccess.bind(this), fail:this.shareFail.bind(this), complete:this.shareComplete.bind(this)});
+        wx.shareAppMessage({success:this.shareSuccess.bind(this), fail:this.shareFail.bind(this), complete:this.shareComplete.bind(this)});
     }
 
     private shareSuccess(v):void{
@@ -623,7 +623,7 @@ class Main extends egret.DisplayObjectContainer {
 
         this.world.addBody(planeBody);
 
-        this.worldDt = 1 / 60 * Main.config.physicalTimeFix;
+        this.worldDt = 1 / Main.config.physicsEngineFps * Main.config.physicalTimeFix;
     }
 
     private beginContact(aa:{bodyA:BodyObj,bodyB:BodyObj}):void{

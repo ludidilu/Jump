@@ -9,6 +9,10 @@ class BodyObj extends p2.Body{
 
     public static zeroPoint:number[] = [0,0];
 
+    private static bodyObjTmpVec:number[] = [0,0];
+
+    private static forceFix:number;
+
     public bodyType:BodyObjType;
 
     public updateDisplaysPosition(_dt?:number):void{
@@ -39,6 +43,20 @@ class BodyObj extends p2.Body{
     public setAngle(_angle):void{
 
         this.angle = this.previousAngle = this.interpolatedAngle = _angle;
+    }
+
+    public applyForce(_force:number[], _point:number[]):void{
+
+        if(!BodyObj.forceFix){
+
+            BodyObj.forceFix = Main.config.physicsEngineFps / 60;
+        }
+
+        BodyObj.bodyObjTmpVec[0] = _force[0] * BodyObj.forceFix;
+
+        BodyObj.bodyObjTmpVec[1] = _force[1] * BodyObj.forceFix;
+
+        super.applyForce(BodyObj.bodyObjTmpVec, _point);
     }
 
     public reset():void{
