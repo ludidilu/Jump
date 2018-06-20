@@ -66,6 +66,8 @@ class Main extends egret.DisplayObjectContainer {
 
     private bestScore:number = 0;
 
+    private nowMoney:number = 0;
+
     private btClickFun:()=>void;
 
     private firstJump:boolean = false;
@@ -317,7 +319,7 @@ class Main extends egret.DisplayObjectContainer {
 
         this.bg = new egret.Shape();
 
-        this.bg.graphics.beginFill(0x00ff00);
+        this.bg.graphics.beginFill(0x888888);
 
         this.bg.graphics.drawRect(0,0,this.stage.stageWidth, this.stage.stageHeight);
 
@@ -611,6 +613,8 @@ class Main extends egret.DisplayObjectContainer {
 
         Coin.human = this.human;
 
+        Coin.main = this;
+
         Human.main = this;
 
         this.itemBt.human = this.human;
@@ -823,6 +827,10 @@ class Main extends egret.DisplayObjectContainer {
 
         this.mainPanel.score.text = this.bestScore.toString();
 
+        this.nowMoney = 0;
+
+        this.mainPanel.money.text = "$" + this.nowMoney;
+
         this.human.reset();
 
         this.human.setPosition(Main.config.humanStartPos[0], Main.config.humanStartPos[1]);
@@ -856,7 +864,15 @@ class Main extends egret.DisplayObjectContainer {
 
                 this.human.jump(Main.config.jumpAngle, Main.config.jumpForce, Main.config.jumpPoint);
             }
-            else if(result == HumanJumpResult.LINE){
+            else if(result == HumanJumpResult.GLINE){
+
+                this.moneyChange(Main.config.greenLineMoneyChange);
+
+                this.human.jump(Main.config.lineJumpAngle, Main.config.lineJumpForce, Main.config.lineJumpPoint);
+            }
+            else if(result == HumanJumpResult.RLINE){
+
+                this.moneyChange(Main.config.redLineMoneyChange);
 
                 this.human.jump(Main.config.lineJumpAngle, Main.config.lineJumpForce, Main.config.lineJumpPoint);
             }
@@ -865,5 +881,12 @@ class Main extends egret.DisplayObjectContainer {
                 // console.log("no jump!");
             }
         }
+    }
+
+    public moneyChange(_v:number):void{
+
+        this.nowMoney += _v;
+
+        this.mainPanel.money.text = "$" + this.nowMoney;
     }
 }

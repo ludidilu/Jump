@@ -146,7 +146,15 @@
 
     "humanSlowFix": 0.5,
 
+    "coinDoubleFix": 2,
+
     "itemBtTime": 10000,
 
-    "itemEffectTime": 10000
+    "itemEffectTime": 10000,
+
+    "redLineMoneyChange": -10,
+
+    "greenLineMoneyChange": 10,
+
+    "coinMoneyChange": 1
 }

@@ -1,5 +1,7 @@
 class Coin extends Reward{
 
+    public static main:Main;
+
     public static coins:Coin[] = [];
 
     private static pool:Coin[] = [];
@@ -98,6 +100,8 @@ class Coin extends Reward{
             let coin:Coin = this.coins[i];
 
             if(coin.isOver){
+
+                this.main.moneyChange(Main.config.coinMoneyChange * (this.main.isCoinDouble ? Main.config.coinDoubleFix : 1));
 
                 coin.reset();
 

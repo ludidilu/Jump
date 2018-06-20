@@ -16,7 +16,7 @@ class Enemy extends Human{
 
                 this.jump(Main.config.jumpAngle, Main.config.jumpForce, Main.config.jumpPoint);
             }
-            else if(result == HumanJumpResult.LINE){
+            else if(result == HumanJumpResult.GLINE || result == HumanJumpResult.RLINE){
 
                 this.jump(Main.config.lineJumpAngle, Main.config.lineJumpForce, Main.config.lineJumpPoint);
             }

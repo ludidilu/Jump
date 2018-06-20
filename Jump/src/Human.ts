@@ -3,7 +3,8 @@ enum HumanJumpResult{
     CANNOT,
     LADDER,
     HUMAN,
-    LINE,
+    GLINE,
+    RLINE
 }
 
 class Human extends BodyObj{
@@ -72,7 +73,14 @@ class Human extends BodyObj{
 
                 if(Math.abs(this.position[1] - line.worldY) < (Main.config.humanLength * 0.5 * Math.abs(Math.sin(this.angle)) + Main.config.humanRadius) * this.sizeFix + Main.config.lineWidth * 0.5){
 
-                    return HumanJumpResult.LINE;
+                    if(line.isG){
+
+                        return HumanJumpResult.GLINE;
+                    }
+                    else{
+
+                        return HumanJumpResult.RLINE;
+                    }
                 }
             }
             

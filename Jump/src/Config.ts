@@ -146,7 +146,15 @@ class Config{
 
     public humanSlowFix:number = 0.5;
 
+    public coinDoubleFix:number = 2;
+
     public itemBtTime:number = 5000;
 
     public itemEffectTime:number = 5000;
+
+    public redLineMoneyChange:number = -10;
+
+    public greenLineMoneyChange:number = 10;
+
+    public coinMoneyChange:number = 1;
 }

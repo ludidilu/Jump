@@ -2,27 +2,57 @@ class Line extends egret.Shape{
 
     public static lineArr:Line[] = []
 
-    private static pool:Line[] = [];
+    private static gPool:Line[] = [];
+
+    private static rPool:Line[] = [];
 
     public worldY:number;
 
+    public isG:boolean;
+
     public static create(_worldY:number, _container:egret.DisplayObjectContainer):void{
+
+        let isG:boolean = Math.random() < 0.5;
 
         let line:Line;
 
-        if(Line.pool.length > 0){
+        if(isG){
 
-            line = Line.pool.pop();
+            if(Line.gPool.length > 0){
+
+                line = Line.gPool.pop();
+            }
+            else{
+
+                line = new Line();
+
+                line.graphics.beginFill(0x00ff00, 0.5);
+
+                line.graphics.drawRect(0,0,_container.stage.stageWidth, Main.config.lineWidth * Main.config.factor);
+
+                line.graphics.endFill();
+
+                line.isG = true;
+            }
         }
         else{
 
-            line = new Line();
+            if(Line.rPool.length > 0){
 
-            line.graphics.beginFill(0x00ffff, 0.5);
+                line = Line.rPool.pop();
+            }
+            else{
 
-            line.graphics.drawRect(0,0,_container.stage.stageWidth, Main.config.lineWidth * Main.config.factor);
+                line = new Line();
 
-            line.graphics.endFill();
+                line.graphics.beginFill(0xff0000, 0.5);
+
+                line.graphics.drawRect(0,0,_container.stage.stageWidth, Main.config.lineWidth * Main.config.factor);
+
+                line.graphics.endFill();
+
+                line.isG = false;
+            }
         }
 
         line.worldY = _worldY;
@@ -46,7 +76,14 @@ class Line extends egret.Shape{
 
                 line.parent.removeChild(line);
 
-                this.pool.push(line);
+                if(line.isG){
+
+                    this.gPool.push(line);
+                }
+                else{
+
+                    this.rPool.push(line);
+                }
 
                 this.lineArr.splice(i, 1);
             }
@@ -65,7 +102,14 @@ class Line extends egret.Shape{
 
             line.parent.removeChild(line);
 
-            this.pool.push(line);
+            if(line.isG){
+
+                this.gPool.push(line);
+            }
+            else{
+
+                this.rPool.push(line);
+            }
         }
 
         this.lineArr.length = 0;
