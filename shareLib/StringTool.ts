@@ -27,6 +27,8 @@ class StringTool{
 
         byteArray.writeInt(this.width);//width
 
+        let posHeight:number = byteArray.position;
+
         byteArray.writeInt(this.height);//height
 
         byteArray.writeShort(1);
@@ -45,32 +47,144 @@ class StringTool{
 
         byteArray.writeInt(0);
 
-        let num = this.width * this.height * 3;
 
-        let length = _str.length;
 
-        let t0:number = length>>16 & 0xff;
 
-        let t1:number = length>>8 & 0xff;
+        let pos0:number = byteArray.position;
+
+        byteArray.writeByte(0);
+
+        byteArray.writeByte(0);
+
+        byteArray.writeByte(0);
+
+        let pos1:number = byteArray.position;
+
+        byteArray.writeUTFBytes(_str);
+
+        let pos2:number = byteArray.position;
+
+        let length:number = pos2 - pos1;
+
+        let pixelNum:number = Math.ceil(length / 3) + 1;
+
+        let drawHeight:number = Math.ceil(pixelNum / this.width);
+
+        let num:number = pixelNum * 3 - 3 - length;
+
+        let t0:number = length >> 16 & 0xff;
+
+        let t1:number = length >> 8 & 0xff;
 
         let t2:number = length & 0xff;
 
-        byteArray.writeByte(t0);
+        byteArray.position = pos0;
+
+        byteArray.writeByte(t0);        
 
         byteArray.writeByte(t1);
 
         byteArray.writeByte(t2);
 
-        num -= 3;
-
-        byteArray.writeUTFBytes(_str);
-
-        num -= _str.length;
+        byteArray.position = pos2;
 
         for(let i:number = 0 ; i < num ; i++){
 
-            byteArray.writeByte(255);
+            byteArray.writeByte(0);
         }
+
+        let times:number = Math.ceil(length / 3) + 1;
+
+        for(let i:number = 0 ; i < times ; i++){
+
+            let y:number = Math.floor(i / this.width);
+
+            if(y >= Math.ceil(drawHeight / 2)){
+
+                break;
+            }
+
+            let x:number = i % this.width;
+
+            let nowPos:number = pos0 + i * 3;
+
+            let targetPos:number = pos0 + ((drawHeight - 1 - y) * this.width + x) * 3;
+
+            byteArray.position = nowPos;
+
+            let n0:number = byteArray.readByte();
+
+            let n1:number = byteArray.readByte();
+
+            let n2:number = byteArray.readByte();
+
+            if(i != 0){
+
+                n0 += 128;
+
+                n1 += 128;
+
+                n2 += 128;
+            }
+
+            byteArray.position = targetPos;
+
+            t0 = byteArray.readByte() + 128;
+
+            t1 = byteArray.readByte() + 128;
+
+            t2 = byteArray.readByte() + 128;
+
+            let tmp:number = n0;
+
+            n0 = n2;
+
+            n2 = tmp;
+
+            tmp = t0;
+
+            t0 = t2;
+
+            t2 = tmp;
+
+            tmp = n0;
+
+            n0 = t0;
+
+            t0 = tmp;
+
+            tmp = n1;
+
+            n1 = t1;
+
+            t1 = tmp;
+
+            tmp = n2;
+
+            n2 = t2;
+
+            t2 = tmp;
+
+            byteArray.position = nowPos;
+
+            byteArray.writeByte(n0);
+
+            byteArray.writeByte(n1);
+
+            byteArray.writeByte(n2);
+
+            byteArray.position = targetPos;
+
+            byteArray.writeByte(t0);
+
+            byteArray.writeByte(t1);
+
+            byteArray.writeByte(t2);
+        }
+
+        byteArray.position = posHeight;
+
+        byteArray.writeInt(drawHeight);
 
         let bpd:egret.BitmapData = egret.BitmapData.create("arraybuffer", byteArray.rawBuffer);
 
@@ -81,29 +195,25 @@ class StringTool{
 
         let byteArray:egret.ByteArray = new egret.ByteArray();
 
-        let length:number = _str.length;
-
-        let t0:number = length>>16 & 0xff;
-
-        let t1:number = length>>8 & 0xff;
-
-        let t2:number = length & 0xff;
-
-        byteArray.writeByte(t0);
-
-        byteArray.writeByte(t1);
-
-        byteArray.writeByte(t2);
-
         byteArray.writeUTFBytes(_str);
 
         byteArray.position = 0;
 
         let container:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();
 
+        let sp:egret.Shape = new egret.Shape();
+
+        sp.graphics.beginFill(byteArray.length);
+
+        sp.graphics.drawRect(0,0,1,1);
+
+        sp.graphics.endFill();
+
+        container.addChild(sp);
+
         let times:number = Math.ceil(byteArray.length / 3);
 
-        for(let i:number = 0 ; i < times ; i++){
+        for(let i:number = 1 ; i <= times ; i++){
 
             let x:number = i % this.width;
 
@@ -115,15 +225,15 @@ class StringTool{
 
             let b:number;
 
-            r = byteArray.readByte();
+            r = byteArray.readByte() + 128;
 
             if(byteArray.bytesAvailable > 0){
 
-                g = byteArray.readByte();
+                g = byteArray.readByte() + 128;
 
                 if(byteArray.bytesAvailable > 0){
 
-                    b = byteArray.readByte();
+                    b = byteArray.readByte() + 128;
                 }
                 else{
 
@@ -186,13 +296,13 @@ class StringTool{
 
             arr = rt.getPixel32(x,y);
 
-            byteArray.writeByte(arr[0]);
+            byteArray.writeByte(arr[0] - 128);
 
             length--;
 
             if(length > 0){
 
-                byteArray.writeByte(arr[1]);
+                byteArray.writeByte(arr[1] - 128);
 
                 length--;
             }
@@ -203,7 +313,7 @@ class StringTool{
 
             if(length > 0){
 
-                byteArray.writeByte(arr[2]);
+                byteArray.writeByte(arr[2] - 128);
 
                 length--;
             }
@@ -249,13 +359,13 @@ class StringTool{
         
         for(let i:number = 1 ; i < times ; i++){
 
-            byteArray.writeByte(arr[i * 4]);
+            byteArray.writeByte(arr[i * 4] - 128);
 
             length--;
 
             if(length > 0){
 
-                byteArray.writeByte(arr[i * 4 + 1]);
+                byteArray.writeByte(arr[i * 4 + 1] - 128);
 
                 length--;
             }
@@ -266,7 +376,7 @@ class StringTool{
 
             if(length > 0){
 
-                byteArray.writeByte(arr[i * 4 + 2]);
+                byteArray.writeByte(arr[i * 4 + 2] - 128);
 
                 length--;
             }
@@ -277,7 +387,7 @@ class StringTool{
         }
 
         byteArray.position = 0;
-        
+
         return byteArray.readUTFBytes(byteArray.length);
     }
 }
