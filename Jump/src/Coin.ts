@@ -6,8 +6,6 @@ class Coin extends Reward{
 
     private static pool:Coin[] = [];
 
-    public static human:Human;
-
     private static tmpVec1:number[] = [0,0];
 
     private static tmpVec2:number[] = [0,0];
@@ -18,11 +16,11 @@ class Coin extends Reward{
 
     public updateDisplaysPosition(_dt?:number):void{
 
-        if(Coin.isMovingToHuman && p2.vec2.distance(this.position, Coin.human.position) < Main.config.coinMoveToHumanRadius){
+        if(Coin.isMovingToHuman && p2.vec2.distance(this.position, Human.human.position) < Main.config.coinMoveToHumanRadius){
 
             let length = p2.vec2.length(this.velocity);
 
-            p2.vec2.sub(Coin.tmpVec1, Coin.human.position, this.position);
+            p2.vec2.sub(Coin.tmpVec1, Human.human.position, this.position);
 
             p2.vec2.normalize(Coin.tmpVec2, Coin.tmpVec1);
 
@@ -99,7 +97,7 @@ class Coin extends Reward{
 
             let coin:Coin = this.coins[i];
 
-            if(coin.isOver){
+            if(coin.overlaps(Human.human)){
 
                 this.main.moneyChange(Main.config.coinMoneyChange * (this.main.isCoinDouble ? Main.config.coinDoubleFix : 1));
 
@@ -124,8 +122,6 @@ class Coin extends Reward{
     }
 
     public reset():void{
-
-        this.isOver = false;
 
         this.world.removeBody(this);
 

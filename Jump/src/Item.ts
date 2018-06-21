@@ -82,7 +82,7 @@ class Item extends Reward{
 
             let item:Item = this.items[i];
 
-            if(item.isOver){
+            if(item.overlaps(Human.human)){
 
                 this.getItemCallBack(item.effect);
 
@@ -107,8 +107,6 @@ class Item extends Reward{
     }
 
     public reset():void{
-
-        this.isOver = false;
 
         this.world.removeBody(this);
 

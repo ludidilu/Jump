@@ -13,7 +13,7 @@ class Human extends BodyObj{
 
     public static conBody:BodyObj;
 
-    private static human:Human;
+    public static human:Human;
 
     private static humanNormalShape:p2.Capsule;
 

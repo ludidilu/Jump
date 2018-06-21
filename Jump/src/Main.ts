@@ -490,7 +490,7 @@ class Main extends egret.DisplayObjectContainer {
 
         (<p2.GSSolver>this.world.solver).iterations = Main.config.solverIterations;
 
-        this.world.on("beginContact", this.beginContact, this);
+        // this.world.on("beginContact", this.beginContact, this);
 
         let conMat:p2.ContactMaterial = new p2.ContactMaterial(this.ladderMat, this.humanMat);
         conMat.friction = Main.config.friction;
@@ -532,19 +532,19 @@ class Main extends egret.DisplayObjectContainer {
         this.worldDt = 1 / Main.config.physicsEngineFps * Main.config.physicalTimeFix;
     }
 
-    private beginContact(aa:{bodyA:BodyObj,bodyB:BodyObj}):void{
+    // private beginContact(aa:{bodyA:BodyObj,bodyB:BodyObj}):void{
 
-        // console.log("beginContact   bodyA:" + aa.bodyA.bodyType + "  bodyB:" + aa.bodyB.bodyType);
+    //     // console.log("beginContact   bodyA:" + aa.bodyA.bodyType + "  bodyB:" + aa.bodyB.bodyType);
 
-        if(aa.bodyA.bodyType == BodyObjType.HUMAN && aa.bodyB.bodyType == BodyObjType.REWARD){
+    //     if(aa.bodyA.bodyType == BodyObjType.HUMAN && aa.bodyB.bodyType == BodyObjType.REWARD){
             
-            (<Reward>aa.bodyB).isOver = true;
-        }
-        else if(aa.bodyA.bodyType == BodyObjType.REWARD && aa.bodyB.bodyType == BodyObjType.HUMAN){
+    //         (<Reward>aa.bodyB).isOver = true;
+    //     }
+    //     else if(aa.bodyA.bodyType == BodyObjType.REWARD && aa.bodyB.bodyType == BodyObjType.HUMAN){
             
-            (<Reward>aa.bodyA).isOver = true;
-        }
-    }
+    //         (<Reward>aa.bodyA).isOver = true;
+    //     }
+    // }
 
     private createHuman():void{
 
@@ -552,13 +552,9 @@ class Main extends egret.DisplayObjectContainer {
 
         this.humanDisplay = this.human.displays[0];
 
-        Coin.human = this.human;
-
         Coin.main = this;
 
         Human.main = this;
-
-        this.itemBt.human = this.human;
     }
 
     private update(_dt:number):void{

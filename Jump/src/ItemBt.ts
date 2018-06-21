@@ -7,8 +7,6 @@ enum ItemBtState{
 
 class ItemBt extends egret.DisplayObjectContainer{
 
-    public human:Human;
-
     private tf:egret.TextField;
 
     private maskSp:egret.Shape;
@@ -198,31 +196,31 @@ class ItemBt extends egret.DisplayObjectContainer{
 
             case ItemEffect.BIG:
 
-            this.human.setBig(_b);
+            Human.human.setBig(_b);
 
             break;
 
             case ItemEffect.DOUBLE:
 
-            this.human.setDouble(_b);
+            Human.human.setDouble(_b);
 
             break;
 
             case ItemEffect.FEATHER:
 
-            this.human.setFeather(_b);
+            Human.human.setFeather(_b);
 
             break;
 
             case ItemEffect.MAGNET:
 
-            this.human.setMagnet(_b);
+            Human.human.setMagnet(_b);
 
             break;
 
             case ItemEffect.SLOW:
 
-            this.human.setSlow(_b);
+            Human.human.setSlow(_b);
 
             break;
         }
