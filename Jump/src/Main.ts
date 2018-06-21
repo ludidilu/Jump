@@ -521,13 +521,13 @@ class Main extends egret.DisplayObjectContainer {
         this.world.addContactMaterial(conMat);
 
         //创建plane
-        var planeShape: p2.Plane = new p2.Plane();
-        var planeBody: p2.Body = new p2.Body();
-        planeBody.addShape(planeShape);
-        planeBody.displays = [];
-        planeShape.material = this.ladderMat;
+        // var planeShape: p2.Plane = new p2.Plane();
+        // var planeBody: p2.Body = new p2.Body();
+        // planeBody.addShape(planeShape);
+        // planeBody.displays = [];
+        // planeShape.material = this.ladderMat;
 
-        this.world.addBody(planeBody);
+        // this.world.addBody(planeBody);
 
         this.worldDt = 1 / Main.config.physicsEngineFps * Main.config.physicalTimeFix;
     }

@@ -33,8 +33,6 @@ class WeixinTalk{
         this.bitmap.height = StringTool.height;
 
         this.bitmap.smoothing = false;
-
-        egret.startTick(this.update, this);
     }
 
     public static Talk(_obj:any):Promise<string>{
@@ -43,6 +41,8 @@ class WeixinTalk{
 
             throw new Error("duplicated talk!");
         }
+
+        egret.startTick(this.update, this);
 
         let cb:(resolve:(str:string)=>void)=>void = function(resolve:(str:string)=>void):void{
 
@@ -77,6 +77,8 @@ class WeixinTalk{
             let str = StringTool.objToString2(this.bitmap);
 
             if(str){
+
+                egret.stopTick(this.update, this);
 
                 this.openDataContext.postMessage(this.talkOverCommand);
                 
