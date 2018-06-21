@@ -6,7 +6,7 @@ class WeixinTalk{
 
     private static bitmapData:egret.BitmapData;
 
-    private static cb:(_str:string)=>void;
+    private static cb:(str:string)=>void;
 
     private static talkOverCommand:{} = {command:"talkOver"};
 
@@ -37,7 +37,29 @@ class WeixinTalk{
         egret.startTick(this.update, this);
     }
 
+    public static Talk(_obj:any):Promise<string>{
+
+        if(this.cb){
+
+            throw new Error("duplicated talk!");
+        }
+
+        let cb:(resolve:(str:string)=>void)=>void = function(resolve:(str:string)=>void):void{
+
+            WeixinTalk.cb = resolve;
+        };
+
+        this.openDataContext.postMessage(_obj);
+
+        return new Promise<string>(cb);
+    }
+
     public static talk(_obj:any, _cb:(_str:string)=>void):void{
+
+        if(this.cb){
+
+            throw new Error("duplicated talk!");
+        }
 
         this.cb = _cb;
 

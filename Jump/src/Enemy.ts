@@ -4,6 +4,8 @@ class Enemy extends Human{
 
     public static enemies:Enemy[] = [];
 
+    private bitmap:egret.Bitmap;
+
     public updateDisplaysPosition(_dt:number):void{
 
         super.updateDisplaysPosition(_dt);

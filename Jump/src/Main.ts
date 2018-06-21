@@ -46,6 +46,8 @@ class Main extends egret.DisplayObjectContainer {
 
     private humanContainer:egret.DisplayObjectContainer;
 
+    private iconContainer:egret.DisplayObjectContainer;
+
     private hintContainer:egret.DisplayObjectContainer;
 
     private itemBtContainer:egret.DisplayObjectContainer;
@@ -166,110 +168,10 @@ class Main extends egret.DisplayObjectContainer {
 
         if(Main.isWeixin){
 
-            WeixinTalk.init();
-
-            let param:getUserInfoParam = {withCredentials:false, lang:"zh_CN", timeout:3000, success: this.weixinSuccess.bind(this), fail: this.weixinFail, complete:this.weixinComplete}
-
-            wx.getUserInfo(param);
+            WeixinData.init();
         }
 
         this.reset();
-    }
-
-    private weixinSuccess(_param:getUserInfoSuccess):void{
-
-        console.log("weixinSuccess!");
-
-        for(let key in _param.userInfo){
-
-            console.log("key:" + key + "   value:" + _param.userInfo[key]);
-        }
-
-        RES.getResByUrl(_param.userInfo.avatarUrl, this.getWeixinImage, this, RES.ResourceItem.TYPE_IMAGE);
-
-        
-        
-
-        // let kv = {key:"score",value:"12"};
-
-        // let kv2 = {key:"zxasd12",value:"12322"};
-
-        // let data = {KVDataList: [kv, kv2],success:this.setUserCloudStorageSuccess.bind(this), fail:this.setUserCloudStorageFail.bind(this), complete:this.setUserCloudStorageComplete.bind(this)};
-
-        // wx.setUserCloudStorage(data);
-
-        let obj = {command:"getUserCloudStorage", data:["score"]};
-
-        WeixinTalk.talk(obj, this.getUserCloudStorageSuccess.bind(this));
-    }
-
-    private getUserCloudStorageSuccess(_str:string):void{
-
-        console.log("main getUserCloudStorageSuccess:" + _str);
-
-        let obj = {command:"getFriendCloudStorage", data:["score"]};
-
-        WeixinTalk.talk(obj, this.getFriendCloudStorageSuccess.bind(this));
-    }
-
-    private getFriendCloudStorageSuccess(_str:string):void{
-
-        console.log("main getFriendCloudStorageSuccess:" + _str.length + "   str:" + _str);
-
-        let data:{errMsg:string,data:{avatarUrl:string, nickname:string, openid:string, KVDataList:{key:string, value:string}[]}[]} = JSON.parse(_str);
-
-        console.log("main getFriendCloudStorage success");
-
-        for(let i:number = 0 ; i < data.data.length ; i++){
-            console.log("avatarUrl:" + data.data[i].avatarUrl + "  nickname:" + data.data[i].nickname);
-        }
-
-
-        // let bpd = StringTool.stringToBmp(_str);
-
-        // console.log("bpd.width:" + bpd.width);
-
-        // let tex = new egret.Texture();
-
-        // tex.bitmapData = bpd;
-
-        // let bp = new egret.Bitmap(tex);
-
-        // let kkk = StringTool.objToString2(bp);
-
-        // console.log("ffff:" + kkk);
-    }
-
-    private setUserCloudStorageSuccess():void{
-
-        console.log("main setUserCloudStorageSuccess");
-        
-        let obj = {command:"getUserCloudStorage", data:["score", "zxasd12"]};
-
-        WeixinTalk.talk(obj, this.getUserCloudStorageSuccess.bind(this));
-    }
-
-    private setUserCloudStorageFail():void{
-        console.log("main setUserCloudStorageFail");
-    }
-
-    private setUserCloudStorageComplete():void{
-        console.log("main setUserCloudStorageComplete");
-    }
-
-    private getWeixinImage(_tex:egret.Texture):void{
-
-        let bp:egret.Bitmap = new egret.Bitmap(_tex);
-
-        this.uiContainer.addChild(bp);
-    }
-
-    private weixinFail():void{
-        console.log("weixinFail!");
-    }
-
-    private weixinComplete():void{
-        console.log("weixinComplete!");
     }
 
     private pause():void{
@@ -321,6 +223,10 @@ class Main extends egret.DisplayObjectContainer {
 
         this.gameContainer.addChild(this.humanContainer);
 
+        this.iconContainer = new egret.DisplayObjectContainer();
+
+        this.gameContainer.addChild(this.iconContainer);
+
         this.hintContainer = new egret.DisplayObjectContainer();
 
         this.hintContainer.touchChildren = false;
@@ -354,7 +260,7 @@ class Main extends egret.DisplayObjectContainer {
 
         this.bg = new egret.Shape();
 
-        this.bg.graphics.beginFill(0x888888);
+        this.bg.graphics.beginFill(0x666666);
 
         this.bg.graphics.drawRect(0,0,this.stage.stageWidth, this.stage.stageHeight);
 

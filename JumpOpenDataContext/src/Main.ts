@@ -60,13 +60,23 @@ class Main extends egret.DisplayObjectContainer {
 
             break;
 
+            case "getUserInfo":
+
+            let openIdList:string[] = _data.data;
+
+            let getUserInfoParam = {openIdList:openIdList, lang:"zh_CN", success:this.getUserInfoSuccess.bind(this), fail:this.callApiFail.bind(this), complete:this.callApiComplete.bind(this)};
+
+            wx.getUserInfo(getUserInfoParam);
+
+            break;
+
             case "getUserCloudStorage":
 
             let keyList:string[] = _data.data;
 
-            let param = {keyList:keyList, success:this.getUserCloudStorageSuccess.bind(this), fail:this.getUserCloudStorageFail.bind(this), complete:this.getUserCloudStorageComplete.bind(this)};
+            let getUserCloudStorageParam = {keyList:keyList, success:this.getUserCloudStorageSuccess.bind(this), fail:this.callApiFail.bind(this), complete:this.callApiComplete.bind(this)};
 
-            wx.getUserCloudStorage(param);
+            wx.getUserCloudStorage(getUserCloudStorageParam);
 
             break;
 
@@ -74,9 +84,9 @@ class Main extends egret.DisplayObjectContainer {
 
             keyList = _data.data;
 
-            param = {keyList:keyList, success:this.getFriendCloudStorageSuccess.bind(this), fail:this.getFriendCloudStorageFail.bind(this), complete:this.getFriendCloudStorageComplete.bind(this)};
+            let getFriendCloudStorageParam = {keyList:keyList, success:this.getFriendCloudStorageSuccess.bind(this), fail:this.callApiFail.bind(this), complete:this.callApiComplete.bind(this)};
 
-            wx.getFriendCloudStorage(param);
+            wx.getFriendCloudStorage(getFriendCloudStorageParam);
 
             break;
 
@@ -87,61 +97,51 @@ class Main extends egret.DisplayObjectContainer {
                 throw new Error("duplicate talk!");
             }
         }
-
-        // let keyList:string[] = ["score","zxasd12"];
-
-        // let param = {keyList:keyList, success:this.getUserCloudStorageSuccess.bind(this), fail:this.getUserCloudStorageFail.bind(this), complete:this.getUserCloudStorageComplete.bind(this)};
-
-        // wx.getUserCloudStorage(param);
-
-        // param = {keyList:keyList, success:this.getFriendCloudStorageSuccess.bind(this), fail:this.getFriendCloudStorageFail.bind(this), complete:this.getFriendCloudStorageComplete.bind(this)};
-
-        // wx.getFriendCloudStorage(param);
     }
 
-    private getUserCloudStorageSuccess(data:{errMsg:string,KVDataList:{key:string,value:string}[]}):void{
+    private callBackData(obj:any):void{
 
-        let str:string = JSON.stringify(data);
-
-        console.log("openDataContext getUserCloudStorage success");
-
-        for(let i:number = 0 ; i < data.KVDataList.length ; i++){
-            console.log("key:" + data.KVDataList[i].key + "   value:" + data.KVDataList[i].value);
-        }
+        let str:string = JSON.stringify(obj);
 
         this.container = StringTool.stringToObj(str, this.stage.stageWidth);
 
         this.addChild(this.container);
     }
 
-    private getUserCloudStorageFail():void{    
-        console.log("openDataContext getUserCloudStorage fail");
+    private getUserInfoSuccess(data:{data:userInfo[]}):void{
+
+        console.log("getUserInfoSuccess:" + data);
+
+        this.callBackData(data);
     }
 
-    private getUserCloudStorageComplete():void{
-        console.log("openDataContext getUserCloudStorage complete");
-    }
+    private callApiFail(obj:any):void{
 
-    private getFriendCloudStorageSuccess(data:{errMsg:string,data:{avatarUrl:string, nickname:string, openid:string, KVDataList:{key:string, value:string}[]}[]}):void{
+        console.log("callApiFail");
+        
+        for(let key in obj){
 
-        let str:string = JSON.stringify(data);
-
-        console.log("openDataContext getFriendCloudStorage success    stringLength:" + str.length);
-
-        for(let i:number = 0 ; i < data.data.length ; i++){
-            console.log("avatarUrl:" + data.data[i].avatarUrl + "  nickname:" + data.data[i].nickname);
+            console.log("key:" + key + "  value:" + obj[key]);
         }
-
-        this.container = StringTool.stringToObj(str, this.stage.stageWidth);
-
-        this.addChild(this.container);
     }
 
-    private getFriendCloudStorageFail():void{    
-        console.log("getFriendCloudStorage fail");
+    private callApiComplete(obj:any):void{
+
+        console.log("getUserInfoComplete");
+
+        for(let key in obj){
+
+            console.log("key:" + key + "  value:" + obj[key]);
+        }
     }
 
-    private getFriendCloudStorageComplete():void{
-        console.log("getFriendCloudStorage complete");
+    private getUserCloudStorageSuccess(data:{KVDataList:KVData[]}):void{
+
+        this.callBackData(data);
+    }
+
+    private getFriendCloudStorageSuccess(data:{data:userGameData[]}):void{
+
+        this.callBackData(data);
     }
 }
