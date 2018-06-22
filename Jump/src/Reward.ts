@@ -1,3 +1,0 @@
-class Reward extends BodyObj{
-
-}

@@ -7,7 +7,7 @@ enum HumanJumpResult{
     RLINE
 }
 
-class Human extends BodyObj{
+class Human extends MoveBodyObj{
 
     public static main:Main;
 
@@ -29,7 +29,9 @@ class Human extends BodyObj{
 
     public sizeFix:number = 1;
 
-    public collisionGroup:number;
+    private static normalRadius:number;
+
+    private static bigRadius:number;
 
     public updateDisplaysPosition(_dt:number):void{
 
@@ -52,30 +54,6 @@ class Human extends BodyObj{
         p2.vec2.rotate(Human.tmpVec1, Main.config.humanFixForcePoint, this.angle);
 
         this.applyForce(Human.tmpVec, Human.tmpVec1);
-
-
-        let posIndex:number = Math.floor(this.position[0] / Main.config.unitWidth);
-
-        let minX:number = posIndex * Main.config.unitWidth;
-
-        let maxX:number = minX + Main.config.unitWidth;
-
-        let minY:number = (posIndex + 1) * Main.config.unitHeight;
-
-        let maxY:number = minY + Main.config.unitHeight;
-
-        if(this.position[1] - Main.config.humanLength * 0.5 - Main.config.humanRadius - Main.config.collisionCheckFix < minY){
-
-            this.shapes[0].collisionMask = this.shapes[0].collisionMask | Main.LADDER_GROUP;
-        }
-        else if(this.position[1] - Main.config.humanLength * 0.5 - Main.config.humanRadius - Main.config.collisionCheckFix < maxY && this.position[0] + Main.config.humanLength * 0.5 + Main.config.humanRadius + Main.config.collisionCheckFix > maxX){
-
-            this.shapes[0].collisionMask = this.shapes[0].collisionMask | Main.LADDER_GROUP;
-        }
-        else{
-
-            this.shapes[0].collisionMask = this.shapes[0].collisionMask & ~Main.LADDER_GROUP;
-        }
 
         super.updateDisplaysPosition();
 
@@ -214,6 +192,8 @@ class Human extends BodyObj{
             this.setMassFix(Main.config.humanBigMassFix);
 
             this.setJumpForceFix(Main.config.humanBigJumpForceFix);
+
+            this.radius = Human.bigRadius;
         }
         else{
 
@@ -230,6 +210,8 @@ class Human extends BodyObj{
             this.setMassFix(1 / Main.config.humanBigMassFix);
 
             this.setJumpForceFix(1 / Main.config.humanBigJumpForceFix);
+
+            this.radius = Human.normalRadius;
         }
     }
 
@@ -277,7 +259,7 @@ class Human extends BodyObj{
 
         this.human.bodyType = BodyObjType.HUMAN;
 
-        this.initHuman(this.human, _world, _length, _radius, _container, _mat, 0xffff00, Main.HUMAN_GROUP);
+        this.initHuman(this.human, _world, _length, _radius, _container, _mat, 0xffff00);
 
         this.human.setPosition(_x, _y);
         
@@ -286,11 +268,11 @@ class Human extends BodyObj{
         return this.human;
     }
 
-    protected static initHuman(_human:Human, _world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _color:number, _collisionGroup:number):void{
+    protected static initHuman(_human:Human, _world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _color:number):void{
 
         _human.allowSleep = false;
 
-        _human.collisionGroup = _collisionGroup;
+        _human.radius = _length * 0.5 + _radius;
 
         let boxShape: p2.Capsule = new p2.Capsule({length: _length, radius: _radius});
 
@@ -298,20 +280,19 @@ class Human extends BodyObj{
 
         if(_human.bodyType == BodyObjType.ENEMY){
 
-            boxShape.collisionGroup = _collisionGroup;
+            boxShape.collisionGroup = Main.ENEMY_GROUP;
 
-            boxShape.collisionMask = 0;
+            boxShape.collisionMask = Main.HUMAN_GROUP;
         }
         else{
 
-            boxShape.collisionGroup = _collisionGroup;
+            boxShape.collisionGroup = Main.HUMAN_GROUP;
 
-            boxShape.collisionMask = Main.REWARD_GROUP;
+            boxShape.collisionMask = Main.REWARD_GROUP | Main.ENEMY_GROUP;
 
-            for(let i:number = Main.ENEMY_GROUP_START, m:number = 0 ; m < Main.config.maxEnemyNum ; i++,m++){
+            this.normalRadius = _human.radius;
 
-                boxShape.collisionMask = boxShape.collisionMask | Math.pow(2, i);
-            }
+            this.bigRadius = this.normalRadius * Main.config.humanBigSize;
 
             this.humanNormalShape = boxShape;
 
