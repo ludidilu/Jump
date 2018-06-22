@@ -313,9 +313,11 @@ class Main extends egret.DisplayObjectContainer {
 
         console.log("share!!!");
 
-        // this.human.setFeather(true);
+        // wx.shareAppMessage({success:this.shareSuccess.bind(this), fail:this.shareFail.bind(this), complete:this.shareComplete.bind(this)});
 
-        wx.shareAppMessage({success:this.shareSuccess.bind(this), fail:this.shareFail.bind(this), complete:this.shareComplete.bind(this)});
+        this.pause();
+
+        SuperTicker.getInstance().resume();
     }
 
     private shareSuccess(v):void{
@@ -660,6 +662,8 @@ class Main extends egret.DisplayObjectContainer {
             this.btClickFun = this.restart;
 
             this.bg.touchEnabled = false;
+
+            this.itemBt.reset();
         }
         else{
 
@@ -757,8 +761,6 @@ class Main extends egret.DisplayObjectContainer {
         Coin.reset();
 
         Line.reset();
-
-        this.itemBt.reset();
 
         this.bestScore = 0;
 
