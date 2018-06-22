@@ -159,4 +159,6 @@ class Config{
     public greenLineMoneyChange:number = 10;
 
     public coinMoneyChange:number = 1;
+
+    public collisionCheckFix:number = 0.5;
 }

@@ -19,6 +19,51 @@ class Item extends Reward{
 
     public effect:ItemEffect;
 
+    private static disWithHuman:number;
+
+    public updateDisplaysPosition(_dt?:number):void{
+
+        if(!Item.disWithHuman){
+
+            Item.disWithHuman = Main.config.itemRadius + Main.config.humanLength * 0.5 + Main.config.humanRadius + Main.config.collisionCheckFix;
+        }
+
+        if(p2.vec2.distance(this.position, Human.human.position) < Item.disWithHuman){
+
+            this.shapes[0].collisionMask = this.shapes[0].collisionMask | Main.HUMAN_GROUP;
+        }
+        else{
+
+            this.shapes[0].collisionMask = this.shapes[0].collisionMask & ~Main.HUMAN_GROUP;
+        }
+
+
+        let posIndex:number = Math.floor(this.position[0] / Main.config.unitWidth);
+
+        let minX:number = posIndex * Main.config.unitWidth;
+
+        let maxX:number = minX + Main.config.unitWidth;
+
+        let minY:number = (posIndex + 1) * Main.config.unitHeight;
+
+        let maxY:number = minY + Main.config.unitHeight;
+
+        if(this.position[1] - Main.config.itemRadius - Main.config.collisionCheckFix < minY){
+
+            this.shapes[0].collisionMask = this.shapes[0].collisionMask | Main.LADDER_GROUP;
+        }
+        else if(this.position[1] - Main.config.itemRadius - Main.config.collisionCheckFix < maxY && this.position[0] + Main.config.itemRadius + Main.config.collisionCheckFix > maxX){
+
+            this.shapes[0].collisionMask = this.shapes[0].collisionMask | Main.LADDER_GROUP;
+        }
+        else{
+
+            this.shapes[0].collisionMask = this.shapes[0].collisionMask & ~Main.LADDER_GROUP;
+        }
+
+        super.updateDisplaysPosition();
+    }
+
     public static create(_world:p2.World, _container:egret.DisplayObjectContainer, _mat:p2.Material, _x:number, _y:number):void{
 
         let item:Item;
@@ -39,7 +84,7 @@ class Item extends Reward{
 
             itemShape.collisionGroup = Main.REWARD_GROUP;
 
-            itemShape.collisionMask = Main.LADDER_GROUP | Main.HUMAN_GROUP;
+            itemShape.collisionMask = 0;
 
             itemShape.material = _mat;
 

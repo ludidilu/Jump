@@ -6,6 +6,8 @@ class Enemy extends Human{
 
     private bitmap:egret.Bitmap;
 
+    private static disWithHuman:number;
+
     public updateDisplaysPosition(_dt:number):void{
 
         super.updateDisplaysPosition(_dt);
@@ -23,6 +25,50 @@ class Enemy extends Human{
                 this.jump(Main.config.lineJumpAngle, Main.config.lineJumpForce, Main.config.lineJumpPoint);
             }
         }
+
+        if(!Enemy.disWithHuman){
+
+            Enemy.disWithHuman = (Main.config.humanLength * 0.5 + Main.config.humanRadius) * 2 + Main.config.collisionCheckFix;
+        }
+
+        if(p2.vec2.distance(this.position, Human.human.position) < Enemy.disWithHuman){
+
+            this.shapes[0].collisionMask = this.shapes[0].collisionMask | Main.HUMAN_GROUP;
+        }
+        else{
+
+            this.shapes[0].collisionMask = this.shapes[0].collisionMask & ~Main.HUMAN_GROUP;
+        }
+
+        for(let i:number = 0, m:number = Enemy.enemies.length ; i < m ; i++){
+
+            let enemy:Enemy = Enemy.enemies[i];
+
+            if(enemy == this){
+
+                continue;
+            }
+
+            if(p2.vec2.distance(this.position, enemy.position) < Enemy.disWithHuman){
+
+                this.shapes[0].collisionMask = this.shapes[0].collisionMask | enemy.collisionGroup;
+            }
+            else{
+
+                this.shapes[0].collisionMask = this.shapes[0].collisionMask & ~enemy.collisionGroup;
+            }
+        }
+    }
+
+    private static enemyIndex:number = Main.ENEMY_GROUP_START;
+
+    private static getEnemyIndex():number{
+
+        let result:number = this.enemyIndex;
+
+        this.enemyIndex++;
+
+        return result;
     }
 
     public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _x:number, _y:number):Enemy{
@@ -35,7 +81,11 @@ class Enemy extends Human{
 
             enemy.bodyType = BodyObjType.ENEMY;
 
-            Human.initHuman( enemy, _world, _length, _radius, _container, _mat, 0x0000ff);
+            let index:number = this.getEnemyIndex();
+
+            let collisionGroup:number = Math.pow(2, index);
+
+            Human.initHuman( enemy, _world, _length, _radius, _container, _mat, 0x0000ff, collisionGroup);
         }
         else{
 

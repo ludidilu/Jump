@@ -8,7 +8,7 @@ class Main extends egret.DisplayObjectContainer {
 
     public static REWARD_GROUP:number = Math.pow(2, 2);
 
-    public static ENEMY_GROUP:number = Math.pow(2, 3);
+    public static ENEMY_GROUP_START:number = 3;
 
     private world:p2.World;
 
@@ -84,6 +84,8 @@ class Main extends egret.DisplayObjectContainer {
     }
 
     private onAddToStage(event: egret.Event):void {
+
+        console.log("version:" + 32200);
 
         egret.registerImplementation("eui.IAssetAdapter", new AssetAdapter());
         egret.registerImplementation("eui.IThemeAdapter", new ThemeAdapter());
@@ -440,7 +442,12 @@ class Main extends egret.DisplayObjectContainer {
 
             shape.collisionGroup = Main.LADDER_GROUP;
 
-            shape.collisionMask = Main.HUMAN_GROUP | Main.REWARD_GROUP | Main.ENEMY_GROUP;
+            shape.collisionMask = Main.HUMAN_GROUP | Main.REWARD_GROUP;
+
+            for(let i:number = Main.ENEMY_GROUP_START, m:number = 0 ; m < Main.config.maxEnemyNum ; i++,m++){
+
+                shape.collisionMask = shape.collisionMask | Math.pow(2, i);
+            }
 
             let pos:number[] = shape.position;
 

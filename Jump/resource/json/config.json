@@ -158,5 +158,7 @@
 
     "greenLineMoneyChange": 10,
 
-    "coinMoneyChange": 1
+    "coinMoneyChange": 1,
+
+    "collisionCheckFix": 0.5
 }

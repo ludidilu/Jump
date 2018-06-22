@@ -14,6 +14,8 @@ class Coin extends Reward{
 
     public static isMovingToHuman:boolean = false;
 
+    private static disWithHuman:number;
+
     public updateDisplaysPosition(_dt?:number):void{
 
         if(Coin.isMovingToHuman && p2.vec2.distance(this.position, Human.human.position) < Main.config.coinMoveToHumanRadius){
@@ -36,6 +38,45 @@ class Coin extends Reward{
             this.velocity[0] = Coin.tmpVec3[0] * length;
 
             this.velocity[1] = Coin.tmpVec3[1] * length;
+        }
+
+        if(!Coin.disWithHuman){
+
+            Coin.disWithHuman = Main.config.coinRadius + Main.config.humanLength * 0.5 + Main.config.humanRadius + Main.config.collisionCheckFix;
+        }
+
+        if(p2.vec2.distance(this.position, Human.human.position) < Coin.disWithHuman){
+
+            this.shapes[0].collisionMask = this.shapes[0].collisionMask | Main.HUMAN_GROUP;
+        }
+        else{
+
+            this.shapes[0].collisionMask = this.shapes[0].collisionMask & ~Main.HUMAN_GROUP;
+        }
+
+
+
+        let posIndex:number = Math.floor(this.position[0] / Main.config.unitWidth);
+
+        let minX:number = posIndex * Main.config.unitWidth;
+
+        let maxX:number = minX + Main.config.unitWidth;
+
+        let minY:number = (posIndex + 1) * Main.config.unitHeight;
+
+        let maxY:number = minY + Main.config.unitHeight;
+
+        if(this.position[1] - Main.config.coinRadius - Main.config.collisionCheckFix < minY){
+
+            this.shapes[0].collisionMask = this.shapes[0].collisionMask | Main.LADDER_GROUP;
+        }
+        else if(this.position[1] - Main.config.coinRadius - Main.config.collisionCheckFix < maxY && this.position[0] + Main.config.coinRadius + Main.config.collisionCheckFix > maxX){
+
+            this.shapes[0].collisionMask = this.shapes[0].collisionMask | Main.LADDER_GROUP;
+        }
+        else{
+
+            this.shapes[0].collisionMask = this.shapes[0].collisionMask & ~Main.LADDER_GROUP;
         }
 
         super.updateDisplaysPosition();
@@ -61,7 +102,7 @@ class Coin extends Reward{
 
             coinShape.collisionGroup = Main.REWARD_GROUP;
 
-            coinShape.collisionMask = Main.LADDER_GROUP | Main.HUMAN_GROUP;
+            coinShape.collisionMask = 0;
 
             coinShape.material = _mat;
 
