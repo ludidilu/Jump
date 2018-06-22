@@ -593,8 +593,6 @@ class Main extends egret.DisplayObjectContainer {
 
         // this.world.step(1 / 60 * Main.config.physicalTimeFix, dt * 0.001 * Main.config.physicalTimeFix);
 
-        let lastY:number = this.gameContainer.y;
-
         this.gameContainer.y += Main.config.heightAddSpeed * Main.config.factor * dt * 0.001;
 
         let targetY:number = this.human.position[1] * Main.config.factor - this.stage.stageHeight * 0.5;
@@ -621,7 +619,7 @@ class Main extends egret.DisplayObjectContainer {
 
         let changeHeightValue:number = (this.nowHeight + 1) * Main.config.changeUnitNum * Main.config.unitHeight * Main.config.factor;
 
-        if(lastY < changeHeightValue && this.gameContainer.y >= changeHeightValue){
+        if(this.gameContainer.y > changeHeightValue){
 
             this.nowHeight++;
 

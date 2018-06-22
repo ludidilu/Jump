@@ -16,9 +16,9 @@
 
     "triangleHeight":  0.4,
 
-    "unitNum":  15,
+    "unitNum":  12,
 
-    "changeUnitNum":  5,
+    "changeUnitNum":  1,
 
     "humanLength":  0.7,
 
@@ -50,7 +50,7 @@
 
     "enemyPropProbability":  0.2,
 
-    "propHeightFix":  10,
+    "propHeightFix":  8,
 
     "maxEnemyNum":  2,
 
@@ -60,7 +60,7 @@
 
     "fps": 60,
 
-    "physicsEngineFps": 60,
+    "physicsEngineFps": 30,
 
     "humanStartPos": [-4,9],
 
