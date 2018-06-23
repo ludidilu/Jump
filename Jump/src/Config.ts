@@ -161,4 +161,6 @@ class Config{
     public coinMoneyChange:number = 1;
 
     public collisionCheckFix:number = 0.5;
+
+    public rewardGravity:number = 9.8;
 }

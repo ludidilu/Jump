@@ -33,6 +33,10 @@ class Human extends MoveBodyObj{
 
     private static bigRadius:number;
 
+    public static headPoint:number[] = [0, 0];
+
+    public static footPoint:number[] = [0, 0];
+
     public updateDisplaysPosition(_dt:number):void{
 
         if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Main.config.humanSleepXFix) * _dt * 0.001){
@@ -64,6 +68,21 @@ class Human extends MoveBodyObj{
         else if(this.jumpDisableTime > 0){
 
             this.jumpDisableTime = 0;
+        }
+
+        if(this.bodyType == BodyObjType.HUMAN){
+
+            let cos:number = Math.cos(this.angle) * Main.config.humanLength * 0.5;
+
+            let sin:number = Math.sin(this.angle) * Main.config.humanLength * 0.5;
+
+            Human.headPoint[0] = this.position[0] + cos;
+
+            Human.headPoint[1] = this.position[1] + sin;
+
+            Human.footPoint[0] = this.position[0] - cos;
+
+            Human.footPoint[1] = this.position[1] - sin;
         }
     }
 

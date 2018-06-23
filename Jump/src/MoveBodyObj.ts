@@ -4,6 +4,8 @@ class MoveBodyObj extends BodyObj{
 
     public updateDisplaysPosition(_dt?:number):void{
 
+        let shape:p2.Shape = this.shapes[0];
+
         let posIndex:number = Math.floor(this.position[0] / Main.config.unitWidth);
 
         let minX:number = posIndex * Main.config.unitWidth;
@@ -16,15 +18,15 @@ class MoveBodyObj extends BodyObj{
 
         if(this.position[1] - this.radius - Main.config.collisionCheckFix < minY){
 
-            this.shapes[0].collisionMask = this.shapes[0].collisionMask | Main.LADDER_GROUP;
+            shape.collisionMask = shape.collisionMask | Main.LADDER_GROUP;
         }
         else if(this.position[1] - this.radius - Main.config.collisionCheckFix < maxY && this.position[0] + this.radius + Main.config.collisionCheckFix > maxX){
 
-            this.shapes[0].collisionMask = this.shapes[0].collisionMask | Main.LADDER_GROUP;
+            shape.collisionMask = shape.collisionMask | Main.LADDER_GROUP;
         }
         else{
 
-            this.shapes[0].collisionMask = this.shapes[0].collisionMask & ~Main.LADDER_GROUP;
+            shape.collisionMask = shape.collisionMask & ~Main.LADDER_GROUP;
         }
 
         super.updateDisplaysPosition();

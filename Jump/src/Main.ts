@@ -147,6 +147,12 @@ class Main extends egret.DisplayObjectContainer {
 
         this.createHint();
 
+        Reward.initAngle();
+
+        Coin2.init();
+
+        Item2.init();
+
         try{
 
             wx.onHide(this.pause.bind(this));
@@ -317,9 +323,26 @@ class Main extends egret.DisplayObjectContainer {
 
         // wx.shareAppMessage({success:this.shareSuccess.bind(this), fail:this.shareFail.bind(this), complete:this.shareComplete.bind(this)});
 
-        this.pause();
+        // this.pause();
 
-        SuperTicker.getInstance().resume();
+        // SuperTicker.getInstance().resume();
+
+        let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.factor / Main.config.unitHeight);
+
+        let targetLevel:number = nowLevel + Main.config.propHeightFix;
+
+        let x:number = (targetLevel + 0.5) * Main.config.unitWidth;
+
+        this.human.reset();
+
+        if(Math.random() < 0.5){
+
+            Coin2.create(this.humanContainer, -1 + Math.random() - 0.5, 2, x);
+        }
+        else{
+
+            Item2.create(this.humanContainer, -1 + Math.random() - 0.5, 2, x);
+        }
     }
 
     private shareSuccess(v):void{
@@ -628,6 +651,10 @@ class Main extends egret.DisplayObjectContainer {
         }
 
         Line.update();
+
+        Coin2.update(_dt);
+
+        Item2.update(_dt);
 
         let humanY:number = Math.floor(this.human.position[1] / Main.config.unitHeight);
 

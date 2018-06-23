@@ -1,12 +1,12 @@
 {
 
-    "heightAddSpeed": 0.625,
+    "heightAddSpeed": 0,
 
     "physicalTimeFix": 1.3,
 
     "worldTimeFix": 1,
 
-    "factor":  80,
+    "factor":  30,
 
     "unitHeight":  2.4,
 
@@ -44,11 +44,11 @@
 
     "humanGravityScale": 1,
 
-    "humanSleepXFix":  0.5,
+    "humanSleepXFix":  0,
 
     "enemyJumpProbability":  1,
 
-    "enemyPropProbability":  0.2,
+    "enemyPropProbability":  0,
 
     "propHeightFix":  8,
 
@@ -82,7 +82,7 @@
 
     "maxLineNum": 1,
 
-    "coinPropProbability": 1,
+    "coinPropProbability": 0,
 
     "maxCoinNum": 5,
 
@@ -116,7 +116,7 @@
 
     "solverIterations": 10,
 
-    "itemPropProbability": 0.3,
+    "itemPropProbability": 0,
 
     "maxItemNum": 3,
 
@@ -160,5 +160,7 @@
 
     "coinMoneyChange": 1,
 
-    "collisionCheckFix": 0
+    "collisionCheckFix": 0,
+
+    "rewardGravity": 9.8
 }
