@@ -7,19 +7,37 @@ enum ItemEffect{
     SLOW
 }
 
-class Item extends MoveBodyObj{
+class Item extends Reward{
 
-    public static getItemCallBack:(_effect:ItemEffect)=>void;
+    private static getItemCallBack:(_effect:ItemEffect)=>void;
+
+    private static itemEffectLength:number;
 
     public static items:Item[] = [];
 
     private static pool:Item[] = [];
 
-    private static itemEffectLength:number;
+    private static disWithHuman:number;
 
     public effect:ItemEffect;
 
-    public static create(_world:p2.World, _container:egret.DisplayObjectContainer, _mat:p2.Material, _x:number, _y:number):void{
+    public static init(_getItemCallBack:(_effect:ItemEffect)=>void):void{
+
+        this.getItemCallBack = _getItemCallBack;
+
+        let dis:number = Main.config.humanLength * 0.5 + Main.config.humanRadius + Main.config.itemRadius;
+
+        Item.disWithHuman = dis * dis;
+    }
+
+    public reset():void{
+
+        this.parent.removeChild(this);
+
+        Item.pool.push(this);
+    }
+
+    public static create(_container:egret.DisplayObjectContainer, _xSpeed:number, _jumpHeight:number, _x:number):void{
 
         let item:Item;
 
@@ -29,47 +47,43 @@ class Item extends MoveBodyObj{
         }
         else{
 
-            item = new Item({mass: 0.0001, dampling: Main.config.itemDampling, angularDampling:Main.config.itemAngularDampling, gravityScale:Main.config.itemGravityScale, fixedRotation:true});
+            let shape:egret.Shape = new egret.Shape();
 
-            item.radius = Main.config.itemRadius;
+            shape.graphics.beginFill(0xffff00);
 
-            item.allowSleep = false;
+            shape.graphics.drawCircle(0, 0, Main.config.itemRadius * Main.config.factor);
 
-            item.bodyType = BodyObjType.REWARD;
+            shape.graphics.endFill();
 
-            let itemShape:p2.Circle = new p2.Circle({radius: Main.config.itemRadius});
+            item = new Item();
 
-            itemShape.collisionGroup = Main.REWARD_GROUP;
+            item.addChild(shape);
 
-            itemShape.collisionMask = Main.HUMAN_GROUP;
-
-            itemShape.material = _mat;
-
-            item.addShape(itemShape);
-
-            let itemDisplay:egret.Shape = new egret.Shape();
-
-            itemDisplay.graphics.beginFill(0xffff00);
-
-            itemDisplay.graphics.drawCircle(0,0,Main.config.itemRadius * Main.config.factor);
-
-            itemDisplay.graphics.endFill();
-
-            item.displays = [itemDisplay];
+            item.touchChildren = false;
         }
 
-        item.setPosition(_x, _y);
+        _container.addChild(item);
 
-        _world.addBody(item);
+        item.radius = Main.config.itemRadius;
 
-        item.applyForce(Main.config.itemForce, BodyObj.zeroPoint);
+        item.worldX = _x;
 
-        _container.addChild(item.displays[0]);
+        let posIndex:number = Math.floor(item.worldX / Main.config.unitWidth);
+
+        let minY:number = (posIndex + 1) * Main.config.unitHeight;
+
+        item.worldY = minY + _jumpHeight;
+
+        item.xSpeed = _xSpeed;
+
+        item.ySpeed = 0;
+
+        item.jumpHeight = _jumpHeight;
+
+        item.updateDisplaysPosition();
 
         this.items.push(item);
 
-        item.updateDisplaysPosition();
-        
         if(!this.itemEffectLength){
 
             this.itemEffectLength = Object.keys(ItemEffect).length / 2;
@@ -78,13 +92,15 @@ class Item extends MoveBodyObj{
         item.effect = Math.floor(Math.random() * this.itemEffectLength);
     }
 
-    public static update():void{
+    public static update(_dt:number):void{
 
         for(let i:number = this.items.length - 1 ; i > -1 ; i--){
 
             let item:Item = this.items[i];
 
-            if(item.overlaps(Human.human)){
+            item.update(_dt);
+
+            if(item.isHitHuman(Item.disWithHuman)){
 
                 this.getItemCallBack(item.effect);
 
@@ -94,11 +110,7 @@ class Item extends MoveBodyObj{
             }
             else{
 
-                item.updateDisplaysPosition();
-
-                let itemDisplay:egret.DisplayObject = item.displays[0];
-
-                if(itemDisplay.parent.parent.y + itemDisplay.y - Main.config.itemRadius * Main.config.factor > itemDisplay.stage.stageHeight){
+                if(item.parent.parent.y + item.y - item.radius * Main.config.factor > item.stage.stageHeight){
 
                     item.reset();
 
@@ -106,19 +118,6 @@ class Item extends MoveBodyObj{
                 }
             }
         }
-    }
-
-    public reset():void{
-
-        this.world.removeBody(this);
-
-        let display:egret.DisplayObject = this.displays[0];
-
-        display.parent.removeChild(display);
-
-        Item.pool.push(this);
-
-        super.reset();
     }
 
     public static reset():void{

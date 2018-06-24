@@ -307,7 +307,7 @@ class Human extends MoveBodyObj{
 
             boxShape.collisionGroup = Main.HUMAN_GROUP;
 
-            boxShape.collisionMask = Main.REWARD_GROUP | Main.ENEMY_GROUP;
+            boxShape.collisionMask = Main.ENEMY_GROUP;
 
             this.normalRadius = _human.radius;
 

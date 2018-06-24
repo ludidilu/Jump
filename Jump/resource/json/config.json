@@ -1,12 +1,12 @@
 {
 
-    "heightAddSpeed": 0,
+    "heightAddSpeed": 0.625,
 
     "physicalTimeFix": 1.3,
 
     "worldTimeFix": 1,
 
-    "factor":  30,
+    "factor":  80,
 
     "unitHeight":  2.4,
 
@@ -44,11 +44,11 @@
 
     "humanGravityScale": 1,
 
-    "humanSleepXFix":  0,
+    "humanSleepXFix":  0.5,
 
     "enemyJumpProbability":  1,
 
-    "enemyPropProbability":  0,
+    "enemyPropProbability":  0.2,
 
     "propHeightFix":  8,
 
@@ -82,25 +82,15 @@
 
     "maxLineNum": 1,
 
-    "coinPropProbability": 0,
+    "coinPropProbability": 5,
 
-    "maxCoinNum": 5,
+    "maxCoinNum": 25,
 
     "coinRadius": 0.15,
 
-    "coinForce": [-0.002,0],
+    "coinXSpeed": -1,
 
-    "coinFriction": 0,
-
-    "coinRelaxation": 4,
-
-    "coinRestitution": 0.9,
-
-    "coinDampling": 0,
-
-    "coinAngularDampling": 0.1,
-
-    "coinGravityScale": 0.8,
+    "coinJumpHeight": 2.4,
 
     "coinMoveToHumanSpeed": 8,
 
@@ -116,25 +106,15 @@
 
     "solverIterations": 10,
 
-    "itemPropProbability": 0,
+    "itemPropProbability": 3,
 
-    "maxItemNum": 3,
+    "maxItemNum": 15,
 
     "itemRadius":  0.3,
 
-    "itemForce": [-0.002,0],
+    "itemXSpeed": -1,
 
-    "itemFriction":  0,
-
-    "itemRelaxation":  4,
-
-    "itemRestitution":  0.9,
-
-    "itemDampling":  0,
-
-    "itemAngularDampling":  0.1,
-
-    "itemGravityScale":  0.8,
+    "itemJumpHeight": 2.4,
 
     "humanBigSize": 2,
 

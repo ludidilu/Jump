@@ -1,47 +1,89 @@
-class Coin extends MoveBodyObj{
+class Coin extends Reward{
 
-    public static main:Main;
+    private static main:Main;
 
     public static coins:Coin[] = [];
 
     private static pool:Coin[] = [];
 
-    private static tmpVec1:number[] = [0,0];
-
-    private static tmpVec2:number[] = [0,0];
-
-    private static tmpVec3:number[] = [0,0];
+    private static disWithHuman:number;
 
     public static isMovingToHuman:boolean = false;
 
-    public updateDisplaysPosition(_dt?:number):void{
+    private static tmpVec0:number[] = [0, 0];
 
-        if(Coin.isMovingToHuman && p2.vec2.distance(this.position, Human.human.position) < Main.config.coinMoveToHumanRadius){
+    private static tmpVec1:number[] = [0, 0];
 
-            let length = p2.vec2.length(this.velocity);
+    private static tmpVec2:number[] = [0, 0];
 
-            p2.vec2.sub(Coin.tmpVec1, Human.human.position, this.position);
+    private static tmpVec3:number[] = [0, 0];
+
+    public isMovingToHuman:boolean = false;
+
+    public static init(_main:Main):void{
+
+        this.main = _main;
+
+        let dis:number = Main.config.humanLength * 0.5 + Main.config.humanRadius + Main.config.coinRadius;
+
+        Coin.disWithHuman = dis * dis;
+    }
+
+    public reset():void{
+
+        this.isMovingToHuman = false;
+
+        this.parent.removeChild(this);
+
+        Coin.pool.push(this);
+    }
+
+    public update(_dt:number):void{
+
+        Coin.tmpVec0[0] = this.worldX;
+
+        Coin.tmpVec0[1] = this.worldY;
+
+        if(this.isMovingToHuman || (Coin.isMovingToHuman && p2.vec2.distance(Coin.tmpVec0, Human.human.position) < Main.config.coinMoveToHumanRadius)){
+
+            this.isMovingToHuman = true;
+
+            Coin.tmpVec1[0] = this.xSpeed;
+
+            Coin.tmpVec1[1] = this.ySpeed;
+
+            let length = p2.vec2.length(Coin.tmpVec1);
+
+            p2.vec2.sub(Coin.tmpVec2, Human.human.position, Coin.tmpVec0);
+
+            p2.vec2.normalize(Coin.tmpVec3, Coin.tmpVec2);
 
             p2.vec2.normalize(Coin.tmpVec2, Coin.tmpVec1);
 
-            p2.vec2.normalize(Coin.tmpVec1, this.velocity);
-
-            p2.vec2.lerp(Coin.tmpVec3, Coin.tmpVec1, Coin.tmpVec2, Main.config.coinMoveToHumanAngularSpeed);
+            p2.vec2.lerp(Coin.tmpVec0, Coin.tmpVec2, Coin.tmpVec3, Main.config.coinMoveToHumanAngularSpeed);
 
             if(length < Main.config.coinMoveToHumanSpeed){
 
                 length = Main.config.coinMoveToHumanSpeed;
             }
 
-            this.velocity[0] = Coin.tmpVec3[0] * length;
+            this.xSpeed = Coin.tmpVec0[0] * length;
 
-            this.velocity[1] = Coin.tmpVec3[1] * length;
+            this.ySpeed = Coin.tmpVec0[1] * length;
+
+            this.worldX += (Coin.tmpVec1[0] + this.xSpeed) * _dt * 0.0005;
+
+            this.worldY += (Coin.tmpVec1[1] + this.ySpeed) * _dt * 0.0005;
+
+            super.updateDisplaysPosition();
         }
+        else{
 
-        super.updateDisplaysPosition();
+            super.update(_dt);
+        }
     }
 
-    public static create(_world:p2.World, _container:egret.DisplayObjectContainer, _mat:p2.Material, _x:number, _y:number):void{
+    public static create(_container:egret.DisplayObjectContainer, _xSpeed:number, _jumpHeight:number, _x:number):void{
 
         let coin:Coin;
 
@@ -51,55 +93,53 @@ class Coin extends MoveBodyObj{
         }
         else{
 
-            coin = new Coin({mass: 0.0001, dampling: Main.config.coinDampling, angularDampling:Main.config.coinAngularDampling, gravityScale:Main.config.coinGravityScale, fixedRotation:true});
+            let shape:egret.Shape = new egret.Shape();
 
-            coin.radius = Main.config.coinRadius;
+            shape.graphics.beginFill(0x000000);
 
-            coin.allowSleep = false;
+            shape.graphics.drawCircle(0, 0, Main.config.coinRadius * Main.config.factor);
 
-            coin.bodyType = BodyObjType.REWARD;
+            shape.graphics.endFill();
 
-            let coinShape:p2.Circle = new p2.Circle({radius: Main.config.coinRadius});
+            coin = new Coin();
 
-            coinShape.collisionGroup = Main.REWARD_GROUP;
+            coin.addChild(shape);
 
-            coinShape.collisionMask = Main.HUMAN_GROUP;
-
-            coinShape.material = _mat;
-
-            coin.addShape(coinShape);
-
-            let coinDisplay:egret.Shape = new egret.Shape();
-
-            coinDisplay.graphics.beginFill(0x000000);
-
-            coinDisplay.graphics.drawCircle(0,0,Main.config.coinRadius * Main.config.factor);
-
-            coinDisplay.graphics.endFill();
-
-            coin.displays = [coinDisplay];
+            coin.touchChildren = false;
         }
 
-        coin.setPosition(_x, _y);
+        _container.addChild(coin);
 
-        _world.addBody(coin);
+        coin.radius = Main.config.coinRadius;
 
-        coin.applyForce(Main.config.coinForce, BodyObj.zeroPoint);
+        coin.worldX = _x;
 
-        _container.addChild(coin.displays[0]);
+        let posIndex:number = Math.floor(coin.worldX / Main.config.unitWidth);
 
-        this.coins.push(coin);
+        let minY:number = (posIndex + 1) * Main.config.unitHeight;
+
+        coin.worldY = minY + _jumpHeight;
+
+        coin.xSpeed = _xSpeed;
+
+        coin.ySpeed = 0;
+
+        coin.jumpHeight = _jumpHeight;
 
         coin.updateDisplaysPosition();
+
+        this.coins.push(coin);
     }
 
-    public static update():void{
+    public static update(_dt:number):void{
 
         for(let i:number = this.coins.length - 1 ; i > -1 ; i--){
 
             let coin:Coin = this.coins[i];
 
-            if(coin.overlaps(Human.human)){
+            coin.update(_dt);
+
+            if(coin.isHitHuman(Coin.disWithHuman)){
 
                 this.main.moneyChange(Main.config.coinMoneyChange * (this.main.isCoinDouble ? Main.config.coinDoubleFix : 1));
 
@@ -109,11 +149,7 @@ class Coin extends MoveBodyObj{
             }
             else{
 
-                coin.updateDisplaysPosition();
-
-                let coinDisplay:egret.DisplayObject = coin.displays[0];
-
-                if(coinDisplay.parent.parent.y + coinDisplay.y - Main.config.coinRadius * Main.config.factor > coinDisplay.stage.stageHeight){
+                if(coin.parent.parent.y + coin.y - coin.radius * Main.config.factor > coin.stage.stageHeight){
 
                     coin.reset();
 
@@ -121,19 +157,6 @@ class Coin extends MoveBodyObj{
                 }
             }
         }
-    }
-
-    public reset():void{
-
-        this.world.removeBody(this);
-
-        let display:egret.DisplayObject = this.displays[0];
-
-        display.parent.removeChild(display);
-
-        Coin.pool.push(this);
-
-        super.reset();
     }
 
     public static reset():void{

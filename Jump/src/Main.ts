@@ -6,9 +6,7 @@ class Main extends egret.DisplayObjectContainer {
 
     public static LADDER_GROUP:number = Math.pow(2, 1);
 
-    public static REWARD_GROUP:number = Math.pow(2, 2);
-
-    public static ENEMY_GROUP:number = Math.pow(2, 3);
+    public static ENEMY_GROUP:number = Math.pow(2, 2);
 
     private world:p2.World;
 
@@ -21,10 +19,6 @@ class Main extends egret.DisplayObjectContainer {
     private ladderMat:p2.Material;
 
     private humanMat:p2.Material;
-
-    private coinMat:p2.Material;
-
-    private itemMat:p2.Material;
 
     private humanDisplay:egret.DisplayObject;
 
@@ -149,9 +143,11 @@ class Main extends egret.DisplayObjectContainer {
 
         Reward.initAngle();
 
-        Coin2.init();
+        Coin.init(this);
 
-        Item2.init();
+        Item.init(this.itemBt.show.bind(this.itemBt));
+
+        Human.main = this;
 
         try{
 
@@ -290,8 +286,6 @@ class Main extends egret.DisplayObjectContainer {
         this.itemBt.x = 80;
 
         this.itemBt.y = this.stage.stageHeight - 80;
-
-        Item.getItemCallBack = this.itemBt.show.bind(this.itemBt);
     }
 
     private createUi():void{
@@ -337,11 +331,11 @@ class Main extends egret.DisplayObjectContainer {
 
         if(Math.random() < 0.5){
 
-            Coin2.create(this.humanContainer, -1 + Math.random() - 0.5, 2, x);
+            Coin.create(this.humanContainer, -1 + Math.random() - 0.5, 2, x);
         }
         else{
 
-            Item2.create(this.humanContainer, -1 + Math.random() - 0.5, 2, x);
+            Item.create(this.humanContainer, -1 + Math.random() - 0.5, 2, x);
         }
     }
 
@@ -465,7 +459,7 @@ class Main extends egret.DisplayObjectContainer {
 
             shape.collisionGroup = Main.LADDER_GROUP;
 
-            shape.collisionMask = Main.HUMAN_GROUP | Main.REWARD_GROUP | Main.ENEMY_GROUP;
+            shape.collisionMask = Main.HUMAN_GROUP | Main.ENEMY_GROUP;
 
             let pos:number[] = shape.position;
 
@@ -507,10 +501,6 @@ class Main extends egret.DisplayObjectContainer {
 
         this.humanMat = new p2.Material(2);
 
-        this.coinMat = new p2.Material(3);
-
-        this.itemMat = new p2.Material(4);
-
         //创建world
         this.world = new p2.World({gravity:Main.config.gravity});
         this.world.sleepMode = p2.World.BODY_SLEEPING;
@@ -530,20 +520,6 @@ class Main extends egret.DisplayObjectContainer {
         conMat.friction = Main.config.friction;
         conMat.relaxation = Main.config.relaxation;
         conMat.restitution = Main.config.restitution;
-
-        this.world.addContactMaterial(conMat);
-
-        conMat = new p2.ContactMaterial(this.ladderMat, this.coinMat);
-        conMat.friction = Main.config.coinFriction;
-        conMat.relaxation = Main.config.coinRelaxation;
-        conMat.restitution = Main.config.coinRestitution;
-
-        this.world.addContactMaterial(conMat);
-
-        conMat = new p2.ContactMaterial(this.ladderMat, this.itemMat);
-        conMat.friction = Main.config.itemFriction;
-        conMat.relaxation = Main.config.itemRelaxation;
-        conMat.restitution = Main.config.itemRestitution;
 
         this.world.addContactMaterial(conMat);
 
@@ -578,10 +554,6 @@ class Main extends egret.DisplayObjectContainer {
         this.human = Human.create(this.world, Main.config.humanLength, Main.config.humanRadius, this.humanContainer, this.humanMat, Main.config.humanStartPos[0], Main.config.humanStartPos[1]);
 
         this.humanDisplay = this.human.displays[0];
-
-        Coin.main = this;
-
-        Human.main = this;
     }
 
     private update(_dt:number):void{
@@ -650,11 +622,7 @@ class Main extends egret.DisplayObjectContainer {
             this.conBody.updateDisplaysPosition();
         }
 
-        Line.update();
-
-        Coin2.update(_dt);
-
-        Item2.update(_dt);
+        
 
         let humanY:number = Math.floor(this.human.position[1] / Main.config.unitHeight);
 
@@ -709,9 +677,11 @@ class Main extends egret.DisplayObjectContainer {
 
             Enemy.update(dt);
 
-            Coin.update();
+            Line.update();
 
-            Item.update();
+            Coin.update(_dt);
+
+            Item.update(_dt);
 
             if(Enemy.enemies.length < Main.config.maxEnemyNum && Math.random() < Main.config.enemyPropProbability * dt * 0.001){
 
@@ -747,9 +717,7 @@ class Main extends egret.DisplayObjectContainer {
 
                 let x:number = targetLevel * Main.config.unitWidth + Main.config.triangleWidth * 2 + Math.random() * (Main.config.unitWidth - Main.config.triangleWidth * 2 - Main.config.coinRadius);
 
-                let y:number = (targetLevel + 2) * Main.config.unitHeight;
-
-                Coin.create(this.world, this.humanContainer, this.coinMat, x, y);
+                Coin.create(this.humanContainer, Main.config.coinXSpeed, Main.config.coinJumpHeight, x);
             }
 
             if(Item.items.length < Main.config.maxItemNum && Math.random() < Main.config.itemPropProbability * dt * 0.001){
@@ -760,9 +728,7 @@ class Main extends egret.DisplayObjectContainer {
 
                 let x:number = targetLevel * Main.config.unitWidth + Main.config.triangleWidth * 2 + Math.random() * (Main.config.unitWidth - Main.config.triangleWidth * 2 - Main.config.itemRadius);
 
-                let y:number = (targetLevel + 2) * Main.config.unitHeight;
-
-                Item.create(this.world, this.humanContainer, this.itemMat, x, y);
+                Item.create(this.humanContainer, Main.config.itemXSpeed, Main.config.itemJumpHeight, x);
             }
         }
     }
@@ -785,9 +751,11 @@ class Main extends egret.DisplayObjectContainer {
 
         Enemy.reset();
 
+        Line.reset();
+
         Coin.reset();
 
-        Line.reset();
+        Item.reset();
 
         this.bestScore = 0;
 

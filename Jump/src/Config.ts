@@ -88,19 +88,9 @@ class Config{
 
     public coinRadius:number = 0.3;
 
-    public coinForce:number[] = [-100,0];
+    public coinXSpeed:number = -1;
 
-    public coinFriction:number = 0;
-
-    public coinRelaxation:number = 100;
-
-    public coinRestitution:number = 0.8;
-
-    public coinDampling:number = 0.1;
-
-    public coinAngularDampling:number = 0.1;
-
-    public coinGravityScale:number = 1;
+    public coinJumpHeight:number = 2.4;
 
     public coinMoveToHumanSpeed:number = 8;
 
@@ -122,19 +112,9 @@ class Config{
 
     public itemRadius:number = 0.5;
 
-    public itemForce:number[] = [-100,0];
+    public itemXSpeed:number = -1;
 
-    public itemFriction:number = 0;
-
-    public itemRelaxation:number = 100;
-
-    public itemRestitution:number = 0.8;
-
-    public itemDampling:number = 0.1;
-
-    public itemAngularDampling:number = 0.1;
-
-    public itemGravityScale:number = 1;
+    public itemJumpHeight:number = 2.4;
 
     public humanBigSize:number = 2;
 
