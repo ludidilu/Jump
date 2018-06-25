@@ -80,8 +80,8 @@ class Main extends egret.DisplayObjectContainer {
 
         this.game = new Game();
 
-        this.game.maxLevel = 20;
-
         this.addChild(this.game);
+
+        this.game.start(15);
     }
 }

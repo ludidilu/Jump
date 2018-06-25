@@ -9,6 +9,12 @@
 
         "ladderWidthFix": 10,
 
+        "ladderXFix": 1,
+
+        "finalLadderXFix": 3,
+
+        "terminalWidth": 10,
+
         "heightAddSpeed": 0.625,
 
         "physicalTimeFix": 1.3,
@@ -60,6 +66,8 @@
         "enemyPropProbability":  0.2,
 
         "propHeightFix":  8,
+
+        "finalPropHeightFix": 3,
 
         "maxEnemyNum":  2,
 

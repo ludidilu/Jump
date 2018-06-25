@@ -14,6 +14,12 @@ class GameConfig{
 
     public ladderWidthFix:number = 10;
 
+    public ladderXFix:number = 1;
+
+    public finalLadderXFix:number = 2;
+
+    public terminalWidth:number = 5;
+
     public heightAddSpeed:number = 0.625;
 
     public physicalTimeFix:number = 1.3;
@@ -65,6 +71,8 @@ class GameConfig{
     public enemyPropProbability:number = 0.2;
 
     public propHeightFix:number = 10;
+
+    public finalPropHeightFix:number = 5;
 
     public maxEnemyNum:number = 2;
 

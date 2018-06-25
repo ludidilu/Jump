@@ -8,7 +8,7 @@ class Game extends egret.DisplayObjectContainer {
 
     public static ENEMY_GROUP:number = Math.pow(2, 2);
 
-    public maxLevel:number;
+    private maxLevel:number;
 
     private world:p2.World;
 
@@ -122,6 +122,16 @@ class Game extends egret.DisplayObjectContainer {
         }
 
         this.reset();
+    }
+
+    public start(_maxLevel:number):void{
+
+        this.maxLevel = _maxLevel;
+
+        if(this.maxLevel > 0){
+
+            Terminal.create(this.otherContainer, this.maxLevel);
+        }
     }
 
     private pause():void{
@@ -539,17 +549,56 @@ class Game extends egret.DisplayObjectContainer {
             }
         }
         
+        let xPos:number = this.human.position[0] / Main.config.gameConfig.unitWidth;
 
-        let score:number = Math.floor(this.human.position[0] / Main.config.gameConfig.unitWidth) + 1;
+        let xLevel:number = Math.floor(xPos);
+
+        let score:number;
+
+        if(this.maxLevel > 0 && xLevel + 1 >= this.maxLevel){
+
+            let xPosFix:number = (xPos - this.maxLevel + 1) * Main.config.gameConfig.unitWidth;
+
+            if(xPosFix > Main.config.gameConfig.finalLadderXFix){
+
+                score = this.maxLevel;
+
+                SuperTicker.getInstance().removeEventListener(this.update, this);
+
+                this.alertPanel.visible = true;
+
+                this.alertPanel.message.text = "You win!";
+
+                this.alertPanel.bt.label = "Restart";
+
+                this.btClickFun = this.restart;
+
+                this.bg.touchEnabled = false;
+
+                this.itemBt.reset();
+            }
+            else{
+
+                score = this.maxLevel - 1;
+            }
+        }
+        else{
+
+            let xPosFix:number = (xPos - xLevel) * Main.config.gameConfig.unitWidth;
+
+            if(xPosFix > Main.config.gameConfig.ladderXFix){
+
+                score = xLevel + 1;
+            }
+            else{
+
+                score = xLevel;
+            }
+        }
 
         // console.log("get score:" + humanY);
 
         if(score > this.bestScore){
-
-            if(this.maxLevel > 0 && score > this.maxLevel){
-
-                score = this.maxLevel;
-            }
 
             this.bestScore = score;
 
@@ -601,17 +650,25 @@ class Game extends egret.DisplayObjectContainer {
 
             Item.update(_dt);
 
+            if(this.maxLevel > 0){
+
+                Terminal.update();
+            }
+
             if(Enemy.enemies.length < Main.config.gameConfig.maxEnemyNum && Math.random() < Main.config.gameConfig.enemyPropProbability * dt * 0.001){
 
                 let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.gameConfig.factor / Main.config.gameConfig.unitHeight);
 
                 let targetLevel:number = nowLevel + Main.config.gameConfig.propHeightFix;
 
-                let x:number = (targetLevel + 0.5) * Main.config.gameConfig.unitWidth;
+                if(this.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < this.maxLevel){
+                    
+                    let x:number = (targetLevel + 0.5) * Main.config.gameConfig.unitWidth;
 
-                let y:number = (targetLevel + 1.5) * Main.config.gameConfig.unitHeight;
+                    let y:number = (targetLevel + 1.5) * Main.config.gameConfig.unitHeight;
 
-                Enemy.create(this.world, Main.config.gameConfig.humanLength, Main.config.gameConfig.humanRadius, this.humanContainer, this.humanMat, x, y);
+                    Enemy.create(this.world, Main.config.gameConfig.humanLength, Main.config.gameConfig.humanRadius, this.humanContainer, this.humanMat, x, y);
+                }
             }
 
             if(Line.lineArr.length < Main.config.gameConfig.maxLineNum && Math.random() < Main.config.gameConfig.linePropProbability * dt * 0.001){
@@ -620,11 +677,12 @@ class Game extends egret.DisplayObjectContainer {
 
                 let targetLevel:number = nowLevel + Main.config.gameConfig.propHeightFix;
 
-                // let y:number = (targetLevel + 0.5) * Main.config.unitHeight + (Math.random() - 0.5) * Main.config.unitHeight;
+                if(this.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < this.maxLevel){
 
-                let y:number = (targetLevel + 0.5) * Main.config.gameConfig.unitHeight;
+                    let y:number = (targetLevel + 0.5) * Main.config.gameConfig.unitHeight;
 
-                Line.create(y, this.otherContainer);
+                    Line.create(y, this.otherContainer);
+                }
             }
 
             if(Coin.coins.length < Main.config.gameConfig.maxCoinNum && Math.random() < Main.config.gameConfig.coinPropProbability * dt * 0.001){
@@ -633,9 +691,12 @@ class Game extends egret.DisplayObjectContainer {
 
                 let targetLevel:number = nowLevel + Main.config.gameConfig.propHeightFix;
 
-                let x:number = targetLevel * Main.config.gameConfig.unitWidth + Main.config.gameConfig.triangleWidth * 2 + Math.random() * (Main.config.gameConfig.unitWidth - Main.config.gameConfig.triangleWidth * 2 - Main.config.gameConfig.coinRadius);
+                if(this.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < this.maxLevel){
 
-                Coin.create(this.humanContainer, Main.config.gameConfig.coinXSpeed, Main.config.gameConfig.coinJumpHeight, x);
+                    let x:number = targetLevel * Main.config.gameConfig.unitWidth + Main.config.gameConfig.triangleWidth * 2 + Math.random() * (Main.config.gameConfig.unitWidth - Main.config.gameConfig.triangleWidth * 2 - Main.config.gameConfig.coinRadius);
+
+                    Coin.create(this.humanContainer, Main.config.gameConfig.coinXSpeed, Main.config.gameConfig.coinJumpHeight, x);
+                }
             }
 
             if(Item.items.length < Main.config.gameConfig.maxItemNum && Math.random() < Main.config.gameConfig.itemPropProbability * dt * 0.001){
@@ -644,9 +705,12 @@ class Game extends egret.DisplayObjectContainer {
 
                 let targetLevel:number = nowLevel + Main.config.gameConfig.propHeightFix;
 
-                let x:number = targetLevel * Main.config.gameConfig.unitWidth + Main.config.gameConfig.triangleWidth * 2 + Math.random() * (Main.config.gameConfig.unitWidth - Main.config.gameConfig.triangleWidth * 2 - Main.config.gameConfig.itemRadius);
+                if(this.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < this.maxLevel){
 
-                Item.create(this.humanContainer, Main.config.gameConfig.itemXSpeed, Main.config.gameConfig.itemJumpHeight, x);
+                    let x:number = targetLevel * Main.config.gameConfig.unitWidth + Main.config.gameConfig.triangleWidth * 2 + Math.random() * (Main.config.gameConfig.unitWidth - Main.config.gameConfig.triangleWidth * 2 - Main.config.gameConfig.itemRadius);
+
+                    Item.create(this.humanContainer, Main.config.gameConfig.itemXSpeed, Main.config.gameConfig.itemJumpHeight, x);
+                }
             }
         }
     }
@@ -674,6 +738,11 @@ class Game extends egret.DisplayObjectContainer {
         Coin.reset();
 
         Item.reset();
+
+        if(this.maxLevel > 0){
+
+            Terminal.reset();
+        }
 
         this.bestScore = 0;
 
