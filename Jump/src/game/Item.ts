@@ -25,7 +25,7 @@ class Item extends Reward{
 
         this.getItemCallBack = _getItemCallBack;
 
-        let dis:number = Main.config.humanLength * 0.5 + Main.config.humanRadius + Main.config.itemRadius;
+        let dis:number = Main.config.gameConfig.humanLength * 0.5 + Main.config.gameConfig.humanRadius + Main.config.gameConfig.itemRadius;
 
         Item.disWithHuman = dis * dis;
     }
@@ -51,7 +51,7 @@ class Item extends Reward{
 
             shape.graphics.beginFill(0xffff00);
 
-            shape.graphics.drawCircle(0, 0, Main.config.itemRadius * Main.config.factor);
+            shape.graphics.drawCircle(0, 0, Main.config.gameConfig.itemRadius * Main.config.gameConfig.factor);
 
             shape.graphics.endFill();
 
@@ -64,13 +64,13 @@ class Item extends Reward{
 
         _container.addChild(item);
 
-        item.radius = Main.config.itemRadius;
+        item.radius = Main.config.gameConfig.itemRadius;
 
         item.worldX = _x;
 
-        let posIndex:number = Math.floor(item.worldX / Main.config.unitWidth);
+        let posIndex:number = Math.floor(item.worldX / Main.config.gameConfig.unitWidth);
 
-        let minY:number = (posIndex + 1) * Main.config.unitHeight;
+        let minY:number = (posIndex + 1) * Main.config.gameConfig.unitHeight;
 
         item.worldY = minY + _jumpHeight;
 
@@ -110,7 +110,7 @@ class Item extends Reward{
             }
             else{
 
-                if(item.parent.parent.y + item.y - item.radius * Main.config.factor > item.stage.stageHeight){
+                if(item.parent.parent.y + item.y - item.radius * Main.config.gameConfig.factor > item.stage.stageHeight){
 
                     item.reset();
 

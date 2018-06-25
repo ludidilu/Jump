@@ -1,5 +1,17 @@
 class Config{
 
+    public gameConfig:GameConfig;
+
+    public mainConfig:MainConfig;
+}
+
+class MainConfig{
+
+    public fps:number = 60;
+}
+
+class GameConfig{
+
     public heightAddSpeed:number = 0.625;
 
     public physicalTimeFix:number = 1.3;
@@ -57,8 +69,6 @@ class Config{
     public cameraFollowSpeedFix:number = 0.02;
 
     public firstCameraFollowTime:number = 1000;
-
-    public fps:number = 60;
 
     public physicsEngineFps:number = 30;
 

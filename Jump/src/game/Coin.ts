@@ -1,6 +1,6 @@
 class Coin extends Reward{
 
-    private static main:Main;
+    private static main:Game;
 
     public static coins:Coin[] = [];
 
@@ -20,11 +20,11 @@ class Coin extends Reward{
 
     public isMovingToHuman:boolean = false;
 
-    public static init(_main:Main):void{
+    public static init(_main:Game):void{
 
         this.main = _main;
 
-        let dis:number = Main.config.humanLength * 0.5 + Main.config.humanRadius + Main.config.coinRadius;
+        let dis:number = Main.config.gameConfig.humanLength * 0.5 + Main.config.gameConfig.humanRadius + Main.config.gameConfig.coinRadius;
 
         Coin.disWithHuman = dis * dis;
     }
@@ -44,7 +44,7 @@ class Coin extends Reward{
 
         Coin.tmpVec0[1] = this.worldY;
 
-        if(this.isMovingToHuman || (Coin.isMovingToHuman && p2.vec2.distance(Coin.tmpVec0, Human.human.position) < Main.config.coinMoveToHumanRadius)){
+        if(this.isMovingToHuman || (Coin.isMovingToHuman && p2.vec2.distance(Coin.tmpVec0, Human.human.position) < Main.config.gameConfig.coinMoveToHumanRadius)){
 
             this.isMovingToHuman = true;
 
@@ -60,11 +60,11 @@ class Coin extends Reward{
 
             p2.vec2.normalize(Coin.tmpVec2, Coin.tmpVec1);
 
-            p2.vec2.lerp(Coin.tmpVec0, Coin.tmpVec2, Coin.tmpVec3, Main.config.coinMoveToHumanAngularSpeed);
+            p2.vec2.lerp(Coin.tmpVec0, Coin.tmpVec2, Coin.tmpVec3, Main.config.gameConfig.coinMoveToHumanAngularSpeed);
 
-            if(length < Main.config.coinMoveToHumanSpeed){
+            if(length < Main.config.gameConfig.coinMoveToHumanSpeed){
 
-                length = Main.config.coinMoveToHumanSpeed;
+                length = Main.config.gameConfig.coinMoveToHumanSpeed;
             }
 
             this.xSpeed = Coin.tmpVec0[0] * length;
@@ -97,7 +97,7 @@ class Coin extends Reward{
 
             shape.graphics.beginFill(0x000000);
 
-            shape.graphics.drawCircle(0, 0, Main.config.coinRadius * Main.config.factor);
+            shape.graphics.drawCircle(0, 0, Main.config.gameConfig.coinRadius * Main.config.gameConfig.factor);
 
             shape.graphics.endFill();
 
@@ -110,13 +110,13 @@ class Coin extends Reward{
 
         _container.addChild(coin);
 
-        coin.radius = Main.config.coinRadius;
+        coin.radius = Main.config.gameConfig.coinRadius;
 
         coin.worldX = _x;
 
-        let posIndex:number = Math.floor(coin.worldX / Main.config.unitWidth);
+        let posIndex:number = Math.floor(coin.worldX / Main.config.gameConfig.unitWidth);
 
-        let minY:number = (posIndex + 1) * Main.config.unitHeight;
+        let minY:number = (posIndex + 1) * Main.config.gameConfig.unitHeight;
 
         coin.worldY = minY + _jumpHeight;
 
@@ -141,7 +141,7 @@ class Coin extends Reward{
 
             if(coin.isHitHuman(Coin.disWithHuman)){
 
-                this.main.moneyChange(Main.config.coinMoneyChange * (this.main.isCoinDouble ? Main.config.coinDoubleFix : 1));
+                this.main.moneyChange(Main.config.gameConfig.coinMoneyChange * (this.main.isCoinDouble ? Main.config.gameConfig.coinDoubleFix : 1));
 
                 coin.reset();
 
@@ -149,7 +149,7 @@ class Coin extends Reward{
             }
             else{
 
-                if(coin.parent.parent.y + coin.y - coin.radius * Main.config.factor > coin.stage.stageHeight){
+                if(coin.parent.parent.y + coin.y - coin.radius * Main.config.gameConfig.factor > coin.stage.stageHeight){
 
                     coin.reset();
 

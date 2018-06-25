@@ -18,7 +18,7 @@ class Reward extends egret.DisplayObjectContainer{
 
     public static initAngle():void{
 
-        let angle:number = Math.atan(Main.config.triangleWidth / Main.config.triangleHeight);
+        let angle:number = Math.atan(Main.config.gameConfig.triangleWidth / Main.config.gameConfig.triangleHeight);
 
         Reward.sin = -Math.sin(angle);
 
@@ -49,7 +49,7 @@ class Reward extends egret.DisplayObjectContainer{
 
             let dist:number = MathTool.checkCircleContactWithLine(x0, y0, x1, y1, x2, y2);
 
-            if(dist < this.radius + Main.config.humanRadius){
+            if(dist < this.radius + Main.config.gameConfig.humanRadius){
 
                 return true;
             }
@@ -64,19 +64,19 @@ class Reward extends egret.DisplayObjectContainer{
 
         let nowYSpeed:number = this.ySpeed;
 
-        let newYSpeed:number = this.ySpeed - _dt * 0.001 * Main.config.rewardGravity;
+        let newYSpeed:number = this.ySpeed - _dt * 0.001 * Main.config.gameConfig.rewardGravity;
 
         this.worldY += (nowYSpeed + newYSpeed) * _dt * 0.001 * 0.5;
 
-        let posIndex:number = Math.floor(this.worldX / Main.config.unitWidth);
+        let posIndex:number = Math.floor(this.worldX / Main.config.gameConfig.unitWidth);
 
-        let minX:number = posIndex * Main.config.unitWidth;
+        let minX:number = posIndex * Main.config.gameConfig.unitWidth;
 
-        let maxX:number = minX + Main.config.unitWidth;
+        let maxX:number = minX + Main.config.gameConfig.unitWidth;
 
-        let minY:number = (posIndex + 1) * Main.config.unitHeight;
+        let minY:number = (posIndex + 1) * Main.config.gameConfig.unitHeight;
 
-        let maxY:number = minY + Main.config.unitHeight;
+        let maxY:number = minY + Main.config.gameConfig.unitHeight;
 
         if(this.worldX + this.radius > maxX){
 
@@ -88,9 +88,9 @@ class Reward extends egret.DisplayObjectContainer{
 
                 let x0:number = maxX;
 
-                let y0:number = maxY - Main.config.triangleHeight;
+                let y0:number = maxY - Main.config.gameConfig.triangleHeight;
 
-                let x1:number = maxX + Main.config.triangleWidth;
+                let x1:number = maxX + Main.config.gameConfig.triangleWidth;
 
                 let y1:number = maxY;
 
@@ -116,7 +116,7 @@ class Reward extends egret.DisplayObjectContainer{
                 }
             }
         }
-        else if(this.worldX < minX + Main.config.triangleWidth){
+        else if(this.worldX < minX + Main.config.gameConfig.triangleWidth){
 
             if(this.worldY - this.radius > minY){
 
@@ -126,9 +126,9 @@ class Reward extends egret.DisplayObjectContainer{
 
                 let x0:number = minX;
 
-                let y0:number = minY - Main.config.triangleHeight;
+                let y0:number = minY - Main.config.gameConfig.triangleHeight;
 
-                let x1:number = minX + Main.config.triangleWidth;
+                let x1:number = minX + Main.config.gameConfig.triangleWidth;
 
                 let y1:number = minY;
 
@@ -160,7 +160,7 @@ class Reward extends egret.DisplayObjectContainer{
 
                 this.worldY = (minY + this.radius) * 2 - this.worldY;
 
-                this.ySpeed = Math.sqrt(this.jumpHeight * 2 * Main.config.rewardGravity);
+                this.ySpeed = Math.sqrt(this.jumpHeight * 2 * Main.config.gameConfig.rewardGravity);
             }
             else{
 
@@ -173,8 +173,8 @@ class Reward extends egret.DisplayObjectContainer{
 
     public updateDisplaysPosition():void{
 
-        this.x = this.worldX * Main.config.factor;
+        this.x = this.worldX * Main.config.gameConfig.factor;
 
-        this.y = this.stage.stageHeight - this.worldY * Main.config.factor;
+        this.y = this.stage.stageHeight - this.worldY * Main.config.gameConfig.factor;
     }
 }

@@ -19,8 +19,8 @@ class BodyObj extends p2.Body{
 
         let display: egret.DisplayObject = this.displays[0];
 
-        display.x = this.interpolatedPosition[0] * Main.config.factor;
-        display.y = display.stage.stageHeight - this.interpolatedPosition[1] * Main.config.factor;
+        display.x = this.interpolatedPosition[0] * Main.config.gameConfig.factor;
+        display.y = display.stage.stageHeight - this.interpolatedPosition[1] * Main.config.gameConfig.factor;
         display.rotation = 360 - (this.interpolatedAngle + this.shapes[0].angle) * 180 / Math.PI;
     }
 
@@ -49,7 +49,7 @@ class BodyObj extends p2.Body{
 
         if(!BodyObj.forceFix){
 
-            BodyObj.forceFix = Main.config.physicsEngineFps / 60;
+            BodyObj.forceFix = Main.config.gameConfig.physicsEngineFps / 60;
         }
 
         BodyObj.bodyObjTmpVec[0] = _force[0] * BodyObj.forceFix;

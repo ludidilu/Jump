@@ -1,146 +1,152 @@
 {
 
-    "heightAddSpeed": 0.625,
+    "mainConfig":{
 
-    "physicalTimeFix": 1.3,
+        "fps": 60
+    },
 
-    "worldTimeFix": 1,
+    "gameConfig":{
 
-    "factor":  80,
+        "heightAddSpeed": 0.625,
 
-    "unitHeight":  2.4,
+        "physicalTimeFix": 1.3,
 
-    "unitWidth":  2,
+        "worldTimeFix": 1,
 
-    "triangleWidth":  0.2,
+        "factor":  80,
 
-    "triangleHeight":  0.4,
+        "unitHeight":  2.4,
 
-    "unitNum":  12,
+        "unitWidth":  2,
 
-    "changeUnitNum":  1,
+        "triangleWidth":  0.2,
 
-    "humanLength":  0.7,
+        "triangleHeight":  0.4,
 
-    "humanRadius":  0.2,
+        "unitNum":  12,
 
-    "jumpAngle":  0.935,
+        "changeUnitNum":  1,
 
-    "jumpForce": [230,450],
+        "humanLength":  0.7,
 
-    "jumpPoint": [0,0],
+        "humanRadius":  0.2,
 
-    "jumpDisableTime":  300,
+        "jumpAngle":  0.935,
 
-    "friction":  0,
+        "jumpForce": [230,450],
 
-    "relaxation":  4,
+        "jumpPoint": [0,0],
 
-    "restitution": 0,
+        "jumpDisableTime":  300,
 
-    "humanDumpling": 0.1,
+        "friction":  0,
 
-    "humanAngularDampling": 0.1,
+        "relaxation":  4,
 
-    "humanGravityScale": 1,
+        "restitution": 0,
 
-    "humanSleepXFix":  0.5,
+        "humanDumpling": 0.1,
 
-    "enemyJumpProbability":  1,
+        "humanAngularDampling": 0.1,
 
-    "enemyPropProbability":  0.2,
+        "humanGravityScale": 1,
 
-    "propHeightFix":  8,
+        "humanSleepXFix":  0.5,
 
-    "maxEnemyNum":  2,
+        "enemyJumpProbability":  1,
 
-    "cameraFollowSpeedFix":  0.05,
+        "enemyPropProbability":  0.2,
 
-    "firstCameraFollowTime": 2000,
+        "propHeightFix":  8,
 
-    "fps": 60,
+        "maxEnemyNum":  2,
 
-    "physicsEngineFps": 30,
+        "cameraFollowSpeedFix":  0.05,
 
-    "humanStartPos": [-4,9],
+        "firstCameraFollowTime": 2000,
 
-    "firstJumpAngle": 0.7,
+        "physicsEngineFps": 30,
 
-    "firstJumpForce": [400,450],
+        "humanStartPos": [-4,9],
 
-    "firstJumpPoint": [0,0],
+        "firstJumpAngle": 0.7,
 
-    "lineWidth": 0.5,
+        "firstJumpForce": [400,450],
 
-    "lineJumpAngle": 1.2,
+        "firstJumpPoint": [0,0],
 
-    "lineJumpForce": [400,700],
+        "lineWidth": 0.5,
 
-    "lineJumpPoint": [0,0],
+        "lineJumpAngle": 1.2,
 
-    "linePropProbability": 0.2,
+        "lineJumpForce": [400,700],
 
-    "maxLineNum": 1,
+        "lineJumpPoint": [0,0],
 
-    "coinPropProbability": 5,
+        "linePropProbability": 0.2,
 
-    "maxCoinNum": 25,
+        "maxLineNum": 1,
 
-    "coinRadius": 0.15,
+        "coinPropProbability": 5,
 
-    "coinXSpeed": -1,
+        "maxCoinNum": 25,
 
-    "coinJumpHeight": 2.4,
+        "coinRadius": 0.15,
 
-    "coinMoveToHumanSpeed": 8,
+        "coinXSpeed": -1,
 
-    "coinMoveToHumanAngularSpeed": 0.2,
+        "coinJumpHeight": 2.4,
 
-    "coinMoveToHumanRadius": 5,
+        "coinMoveToHumanSpeed": 8,
 
-    "gravity": [0, -9.78],
+        "coinMoveToHumanAngularSpeed": 0.2,
 
-    "humanFixForce": [0,-0.1],
+        "coinMoveToHumanRadius": 5,
 
-    "humanFixForcePoint": [0.35,0],
+        "gravity": [0, -9.78],
 
-    "solverIterations": 10,
+        "humanFixForce": [0,-0.1],
 
-    "itemPropProbability": 3,
+        "humanFixForcePoint": [0.35,0],
 
-    "maxItemNum": 15,
+        "solverIterations": 10,
 
-    "itemRadius":  0.3,
+        "itemPropProbability": 3,
 
-    "itemXSpeed": -1,
+        "maxItemNum": 15,
 
-    "itemJumpHeight": 2.4,
+        "itemRadius":  0.3,
 
-    "humanBigSize": 2,
+        "itemXSpeed": -1,
 
-    "humanBigMassFix": 2,
+        "itemJumpHeight": 2.4,
 
-    "humanBigJumpForceFix": 2,
+        "humanBigSize": 2,
 
-    "humanFeatherMassFix": 0.5,
+        "humanBigMassFix": 2,
 
-    "humanFeatherJumpForceFix": 0.8,
+        "humanBigJumpForceFix": 2,
 
-    "humanSlowFix": 0.5,
+        "humanFeatherMassFix": 0.5,
 
-    "coinDoubleFix": 2,
+        "humanFeatherJumpForceFix": 0.8,
 
-    "itemBtTime": 10000,
+        "humanSlowFix": 0.5,
 
-    "itemEffectTime": 10000,
+        "coinDoubleFix": 2,
 
-    "redLineMoneyChange": -10,
+        "itemBtTime": 10000,
 
-    "greenLineMoneyChange": 10,
+        "itemEffectTime": 10000,
 
-    "coinMoneyChange": 1,
+        "redLineMoneyChange": -10,
 
-    "collisionCheckFix": 0,
+        "greenLineMoneyChange": 10,
 
-    "rewardGravity": 9.8
+        "coinMoneyChange": 1,
+
+        "collisionCheckFix": 0,
+
+        "rewardGravity": 9.8
+    }
 }

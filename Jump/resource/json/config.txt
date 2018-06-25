@@ -1,146 +1,152 @@
 {
 
-    "heightAddSpeed": 0.625,摄像机上升速度
+    "mainConfig:{
 
-    "physicalTimeFix": 1.3,物理引擎时间系数(废弃的参数，如果修改会关联到所有的力，所以先不要去改动他了)
+        "fps": 60,帧率
+    },
 
-    "worldTimeFix": 1,世界时间缩放系数
+    "gameConfig":{
 
-    "factor":  80,画面缩放系数
+        "heightAddSpeed": 0.625,摄像机上升速度
 
-    "unitHeight":  2.4,台阶高度
+        "physicalTimeFix": 1.3,物理引擎时间系数(废弃的参数，如果修改会关联到所有的力，所以先不要去改动他了)
 
-    "unitWidth":  2,台阶宽度
+        "worldTimeFix": 1,世界时间缩放系数
 
-    "triangleWidth":  0.3,台阶切角宽度
+        "factor":  80,画面缩放系数
 
-    "triangleHeight":  0.4,台阶切角高度
+        "unitHeight":  2.4,台阶高度
 
-    "unitNum":  15,台阶总数
+        "unitWidth":  2,台阶宽度
 
-    "changeUnitNum":  5,移动多少台阶后重置位置
+        "triangleWidth":  0.3,台阶切角宽度
 
-    "humanLength":  0.7,人的长度
+        "triangleHeight":  0.4,台阶切角高度
 
-    "humanRadius":  0.3,人的半径
+        "unitNum":  15,台阶总数
 
-    "jumpAngle":  0.935,跳跃角度
+        "changeUnitNum":  5,移动多少台阶后重置位置
 
-    "jumpForce": [230,450],跳跃时受到的力
+        "humanLength":  0.7,人的长度
 
-    public jumpPoint:number[] = [0,0],跳跃受力点
+        "humanRadius":  0.3,人的半径
 
-    "jumpDisableTime":  300,跳跃后禁止跳跃时间
+        "jumpAngle":  0.935,跳跃角度
 
-    "friction":  0,阻力系数
+        "jumpForce": [230,450],跳跃时受到的力
 
-    "relaxation":  10,缓和系数
+        public jumpPoint:number[] = [0,0],跳跃受力点
 
-    "restitution": 0,弹力系数
+        "jumpDisableTime":  300,跳跃后禁止跳跃时间
 
-    "humanDumpling": 0.1,人的空气阻力
+        "friction":  0,阻力系数
 
-    "humanAngularDampling": 0.1,人的角空气阻力
+        "relaxation":  10,缓和系数
 
-    "humanSleepXFix":  0.5,人的移动修正
+        "restitution": 0,弹力系数
 
-    "humanGravityScale": 1,人的重力系数
+        "humanDumpling": 0.1,人的空气阻力
 
-    "enemyJumpProbability":  1,敌人跳跃概率
+        "humanAngularDampling": 0.1,人的角空气阻力
 
-    "enemyPropProbability":  0.2,敌人出现概率
+        "humanSleepXFix":  0.5,人的移动修正
 
-    "propHeightFix":  10,敌人、金币、线出现位置修正
+        "humanGravityScale": 1,人的重力系数
 
-    "maxEnemyNum":  2,最大敌人是数量
+        "enemyJumpProbability":  1,敌人跳跃概率
 
-    "cameraFollowSpeedFix":  0.02,摄像机跟随系数
+        "enemyPropProbability":  0.2,敌人出现概率
 
-    "firstCameraFollowTime": 2000,初始摄像机修正时间
+        "propHeightFix":  10,敌人、金币、线出现位置修正
 
-    "fps": 60,帧率
+        "maxEnemyNum":  2,最大敌人是数量
 
-    "physicsEngineFps": 60,物理引擎的帧率
+        "cameraFollowSpeedFix":  0.02,摄像机跟随系数
 
-    "humanStartPos": [-4,9],出生位置
+        "firstCameraFollowTime": 2000,初始摄像机修正时间
 
-    "firstJumpAngle": 0.7,第一次跳跃角度
+        "physicsEngineFps": 60,物理引擎的帧率
 
-    "firstJumpForce": [400,450],第一次跳跃的力
+        "humanStartPos": [-4,9],出生位置
 
-    "firstJumpPoint": [0,0],第一次跳跃的受力点
+        "firstJumpAngle": 0.7,第一次跳跃角度
 
-    "lineWidth": 0.5,线宽
-    
-    "lineJumpAngle": 1.2,触线跳跃角度
+        "firstJumpForce": [400,450],第一次跳跃的力
 
-    "lineJumpForce": [400,700],触线跳跃力度
+        "firstJumpPoint": [0,0],第一次跳跃的受力点
 
-    "lineJumpPoint": [0,0],触线跳跃力受力点
+        "lineWidth": 0.5,线宽
+        
+        "lineJumpAngle": 1.2,触线跳跃角度
 
-    "linePropProbability": 0.2,线出现的概率
+        "lineJumpForce": [400,700],触线跳跃力度
 
-    "maxLineNum": 1,线的数量上限
+        "lineJumpPoint": [0,0],触线跳跃力受力点
 
-    "coinPropProbability": 0.3,金币出现概率
+        "linePropProbability": 0.2,线出现的概率
 
-    "maxCoinNum": 3,金币上限
+        "maxLineNum": 1,线的数量上限
 
-    "coinRadius": 0.15,金币半径
+        "coinPropProbability": 0.3,金币出现概率
 
-    "coinXSpeed": -1,金币x轴移动速度
+        "maxCoinNum": 3,金币上限
 
-    "coinJumpHeight": 2.4,金币弹跳高度
+        "coinRadius": 0.15,金币半径
 
-    "coinMoveToHumanSpeed": 8,金币追逐玩家的速度
+        "coinXSpeed": -1,金币x轴移动速度
 
-    "coinMoveToHumanAngularSpeed": 0.2,金币追逐玩家的角速度
+        "coinJumpHeight": 2.4,金币弹跳高度
 
-    "coinMoveToHumanRadius": 5,金币追逐玩家的范围半径
+        "coinMoveToHumanSpeed": 8,金币追逐玩家的速度
 
-    "gravity": [0, -9.78],重力系数
+        "coinMoveToHumanAngularSpeed": 0.2,金币追逐玩家的角速度
 
-    "humanFixForce": [0,-0.3],人物修正力
+        "coinMoveToHumanRadius": 5,金币追逐玩家的范围半径
 
-    "humanFixForcePoint": [0.35,0]，人物修正力的受力点
+        "gravity": [0, -9.78],重力系数
 
-    "solverIterations": 1,最大求解次数
+        "humanFixForce": [0,-0.3],人物修正力
 
-    "itemPropProbability": 0.3,物品出现概率
+        "humanFixForcePoint": [0.35,0]，人物修正力的受力点
 
-    "maxItemNum": 3,最大物品数量
+        "solverIterations": 1,最大求解次数
 
-    "itemRadius":  0.5,物品半径
+        "itemPropProbability": 0.3,物品出现概率
 
-    "itemXSpeed": -1,物品x轴移动速度
+        "maxItemNum": 3,最大物品数量
 
-    "itemJumpHeight": 2.4,物品弹跳高度
+        "itemRadius":  0.5,物品半径
 
-    "humanBigSize": 2,人物放大系数
+        "itemXSpeed": -1,物品x轴移动速度
 
-    "humanBigMassFix": 2,人物放大的质量系数
+        "itemJumpHeight": 2.4,物品弹跳高度
 
-    "humanBigJumpForceFix": 2,人物放大的弹跳受力系数
+        "humanBigSize": 2,人物放大系数
 
-    "humanFeatherMassFix": 0.5,人物变轻的质量系数
+        "humanBigMassFix": 2,人物放大的质量系数
 
-    "humanFeatherJumpForceFix": 0.5,人物变轻的弹跳受力系数
+        "humanBigJumpForceFix": 2,人物放大的弹跳受力系数
 
-    "humanSlowFix": 0.5,速度放慢的系数
+        "humanFeatherMassFix": 0.5,人物变轻的质量系数
 
-    "coinDoubleFix": 2,金币加成的系数
+        "humanFeatherJumpForceFix": 0.5,人物变轻的弹跳受力系数
 
-    "itemBtTime": 10000,获得物品后按钮持续时间
+        "humanSlowFix": 0.5,速度放慢的系数
 
-    "itemEffectTime": 10000,使用物品后持续时间
+        "coinDoubleFix": 2,金币加成的系数
 
-    "redLineMoneyChange": -10,踩红线跳金钱变化数量
+        "itemBtTime": 10000,获得物品后按钮持续时间
 
-    "greenLineMoneyChange": 10,踩绿线跳金钱变化数量
+        "itemEffectTime": 10000,使用物品后持续时间
 
-    "coinMoneyChange": 1,吃金币金钱变化数量
+        "redLineMoneyChange": -10,踩红线跳金钱变化数量
 
-    "collisionCheckFix": 0,包围盒检测的修正系数
+        "greenLineMoneyChange": 10,踩绿线跳金钱变化数量
 
-    "rewardGravity": 9.8,金币和物品的重力系数
+        "coinMoneyChange": 1,吃金币金钱变化数量
+
+        "collisionCheckFix": 0,包围盒检测的修正系数
+
+        "rewardGravity": 9.8,金币和物品的重力系数
+    }
 }

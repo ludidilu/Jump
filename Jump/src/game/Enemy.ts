@@ -10,17 +10,17 @@ class Enemy extends Human{
 
         super.updateDisplaysPosition(_dt);
 
-        if(Math.random() < Main.config.enemyJumpProbability * _dt * 0.001){
+        if(Math.random() < Main.config.gameConfig.enemyJumpProbability * _dt * 0.001){
 
             let result:HumanJumpResult = this.checkCanJump();
 
             if(result == HumanJumpResult.LADDER || result == HumanJumpResult.HUMAN){
 
-                this.jump(Main.config.jumpAngle, Main.config.jumpForce, Main.config.jumpPoint);
+                this.jump(Main.config.gameConfig.jumpAngle, Main.config.gameConfig.jumpForce, Main.config.gameConfig.jumpPoint);
             }
             else if(result == HumanJumpResult.GLINE || result == HumanJumpResult.RLINE){
 
-                this.jump(Main.config.lineJumpAngle, Main.config.lineJumpForce, Main.config.lineJumpPoint);
+                this.jump(Main.config.gameConfig.lineJumpAngle, Main.config.gameConfig.lineJumpForce, Main.config.gameConfig.lineJumpPoint);
             }
         }
     }
@@ -31,7 +31,7 @@ class Enemy extends Human{
 
         if(Enemy.pool.length == 0){
 
-            enemy = new Enemy({ mass: 1, damping :Main.config.humanDampling, angularDampling:Main.config.humanAngularDampling});
+            enemy = new Enemy({ mass: 1, damping :Main.config.gameConfig.humanDampling, angularDampling:Main.config.gameConfig.humanAngularDampling});
 
             enemy.bodyType = BodyObjType.ENEMY;
 

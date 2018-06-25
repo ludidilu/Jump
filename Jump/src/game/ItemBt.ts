@@ -97,7 +97,7 @@ class ItemBt extends egret.DisplayObjectContainer{
 
         this.btState = ItemBtState.IN_USE;
 
-        this.timeLeft = Main.config.itemEffectTime;
+        this.timeLeft = Main.config.gameConfig.itemEffectTime;
 
         this.tf.textColor = 0x000000;
 
@@ -186,7 +186,7 @@ class ItemBt extends egret.DisplayObjectContainer{
                 this.visible = true;
             }
             
-            this.timeLeft = Main.config.itemBtTime;
+            this.timeLeft = Main.config.gameConfig.itemBtTime;
         }
     }
 
@@ -251,11 +251,11 @@ class ItemBt extends egret.DisplayObjectContainer{
 
             if(this.btState == ItemBtState.CAN_USE){
 
-                this.setPercent(this.timeLeft / Main.config.itemBtTime);
+                this.setPercent(this.timeLeft / Main.config.gameConfig.itemBtTime);
             }
             else{
 
-                this.setPercent(this.timeLeft / Main.config.itemEffectTime);
+                this.setPercent(this.timeLeft / Main.config.gameConfig.itemEffectTime);
             }
         }
     }

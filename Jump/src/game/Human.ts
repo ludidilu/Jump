@@ -9,7 +9,7 @@ enum HumanJumpResult{
 
 class Human extends MoveBodyObj{
 
-    public static main:Main;
+    public static main:Game;
 
     public static conBody:BodyObj;
 
@@ -39,23 +39,23 @@ class Human extends MoveBodyObj{
 
     public updateDisplaysPosition(_dt:number):void{
 
-        if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Main.config.humanSleepXFix) * _dt * 0.001){
+        if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Main.config.gameConfig.humanSleepXFix) * _dt * 0.001){
 
             if(this.velocity[0] > 0){
 
-                this.setPosition(this.previousPosition[0] + Main.config.humanSleepXFix * _dt * 0.001, this.position[1]);
+                this.setPosition(this.previousPosition[0] + Main.config.gameConfig.humanSleepXFix * _dt * 0.001, this.position[1]);
             }
             else{
 
-                this.setPosition(this.previousPosition[0] - Main.config.humanSleepXFix * _dt * 0.001, this.position[1]);
+                this.setPosition(this.previousPosition[0] - Main.config.gameConfig.humanSleepXFix * _dt * 0.001, this.position[1]);
             }
         }
 
-        Human.tmpVec[0] = Main.config.humanFixForce[0] * this.mass;
+        Human.tmpVec[0] = Main.config.gameConfig.humanFixForce[0] * this.mass;
 
-        Human.tmpVec[1] = Main.config.humanFixForce[1] * this.mass;
+        Human.tmpVec[1] = Main.config.gameConfig.humanFixForce[1] * this.mass;
 
-        p2.vec2.rotate(Human.tmpVec1, Main.config.humanFixForcePoint, this.angle);
+        p2.vec2.rotate(Human.tmpVec1, Main.config.gameConfig.humanFixForcePoint, this.angle);
 
         this.applyForce(Human.tmpVec, Human.tmpVec1);
 
@@ -72,9 +72,9 @@ class Human extends MoveBodyObj{
 
         if(this.bodyType == BodyObjType.HUMAN){
 
-            let cos:number = Math.cos(this.angle) * Main.config.humanLength * 0.5;
+            let cos:number = Math.cos(this.angle) * Main.config.gameConfig.humanLength * 0.5;
 
-            let sin:number = Math.sin(this.angle) * Main.config.humanLength * 0.5;
+            let sin:number = Math.sin(this.angle) * Main.config.gameConfig.humanLength * 0.5;
 
             Human.headPoint[0] = this.position[0] + cos;
 
@@ -94,7 +94,7 @@ class Human extends MoveBodyObj{
 
                 let line:Line = Line.lineArr[i];
 
-                if(Math.abs(this.position[1] - line.worldY) < (Main.config.humanLength * 0.5 * Math.abs(Math.sin(this.angle)) + Main.config.humanRadius) * this.sizeFix + Main.config.lineWidth * 0.5){
+                if(Math.abs(this.position[1] - line.worldY) < (Main.config.gameConfig.humanLength * 0.5 * Math.abs(Math.sin(this.angle)) + Main.config.gameConfig.humanRadius) * this.sizeFix + Main.config.gameConfig.lineWidth * 0.5){
 
                     if(line.isG){
 
@@ -148,13 +148,13 @@ class Human extends MoveBodyObj{
 
         if(nowHeight > lastHeight){
 
-            this.setPosition(this.position[0], this.position[1] + (nowHeight - lastHeight) * Main.config.humanLength * 0.5 * this.sizeFix);
+            this.setPosition(this.position[0], this.position[1] + (nowHeight - lastHeight) * Main.config.gameConfig.humanLength * 0.5 * this.sizeFix);
         }
         //---
 
         this.setAngle(_jumpAngle);
 
-        this.jumpDisableTime = Main.config.jumpDisableTime;
+        this.jumpDisableTime = Main.config.gameConfig.jumpDisableTime;
 
         this.angularVelocity = 0;
 
@@ -202,15 +202,15 @@ class Human extends MoveBodyObj{
 
             this.addShape(Human.humanBigShape);
 
-            this.displays[0].scaleX = Main.config.humanBigSize;
+            this.displays[0].scaleX = Main.config.gameConfig.humanBigSize;
 
-            this.displays[0].scaleY = Main.config.humanBigSize;
+            this.displays[0].scaleY = Main.config.gameConfig.humanBigSize;
 
-            this.setSizeFix(Main.config.humanBigSize);
+            this.setSizeFix(Main.config.gameConfig.humanBigSize);
 
-            this.setMassFix(Main.config.humanBigMassFix);
+            this.setMassFix(Main.config.gameConfig.humanBigMassFix);
 
-            this.setJumpForceFix(Main.config.humanBigJumpForceFix);
+            this.setJumpForceFix(Main.config.gameConfig.humanBigJumpForceFix);
 
             this.radius = Human.bigRadius;
         }
@@ -224,11 +224,11 @@ class Human extends MoveBodyObj{
 
             this.displays[0].scaleY = 1;
 
-            this.setSizeFix(1 / Main.config.humanBigSize);
+            this.setSizeFix(1 / Main.config.gameConfig.humanBigSize);
 
-            this.setMassFix(1 / Main.config.humanBigMassFix);
+            this.setMassFix(1 / Main.config.gameConfig.humanBigMassFix);
 
-            this.setJumpForceFix(1 / Main.config.humanBigJumpForceFix);
+            this.setJumpForceFix(1 / Main.config.gameConfig.humanBigJumpForceFix);
 
             this.radius = Human.normalRadius;
         }
@@ -238,15 +238,15 @@ class Human extends MoveBodyObj{
 
         if(_b){
 
-            this.setMassFix(Main.config.humanFeatherMassFix);
+            this.setMassFix(Main.config.gameConfig.humanFeatherMassFix);
 
-            this.setJumpForceFix(Main.config.humanFeatherJumpForceFix);
+            this.setJumpForceFix(Main.config.gameConfig.humanFeatherJumpForceFix);
         }
         else{
 
-            this.setMassFix(1 / Main.config.humanFeatherMassFix);
+            this.setMassFix(1 / Main.config.gameConfig.humanFeatherMassFix);
 
-            this.setJumpForceFix(1 / Main.config.humanFeatherJumpForceFix);
+            this.setJumpForceFix(1 / Main.config.gameConfig.humanFeatherJumpForceFix);
         }
     }
 
@@ -254,11 +254,11 @@ class Human extends MoveBodyObj{
 
         if(_b){
 
-            Human.main.worldDtFix *= Main.config.humanSlowFix;
+            Human.main.worldDtFix *= Main.config.gameConfig.humanSlowFix;
         }
         else{
 
-            Human.main.worldDtFix /= Main.config.humanSlowFix;
+            Human.main.worldDtFix /= Main.config.gameConfig.humanSlowFix;
         }
     }
 
@@ -274,7 +274,7 @@ class Human extends MoveBodyObj{
 
     public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _x:number, _y:number):Human{
         
-        this.human = new Human({mass:1, damping:Main.config.humanDampling, angularDampling:Main.config.humanAngularDampling, gravityScale:Main.config.humanGravityScale});
+        this.human = new Human({mass:1, damping:Main.config.gameConfig.humanDampling, angularDampling:Main.config.gameConfig.humanAngularDampling, gravityScale:Main.config.gameConfig.humanGravityScale});
 
         this.human.bodyType = BodyObjType.HUMAN;
 
@@ -299,23 +299,23 @@ class Human extends MoveBodyObj{
 
         if(_human.bodyType == BodyObjType.ENEMY){
 
-            boxShape.collisionGroup = Main.ENEMY_GROUP;
+            boxShape.collisionGroup = Game.ENEMY_GROUP;
 
-            boxShape.collisionMask = Main.HUMAN_GROUP;
+            boxShape.collisionMask = Game.HUMAN_GROUP;
         }
         else{
 
-            boxShape.collisionGroup = Main.HUMAN_GROUP;
+            boxShape.collisionGroup = Game.HUMAN_GROUP;
 
-            boxShape.collisionMask = Main.ENEMY_GROUP;
+            boxShape.collisionMask = Game.ENEMY_GROUP;
 
             this.normalRadius = _human.radius;
 
-            this.bigRadius = this.normalRadius * Main.config.humanBigSize;
+            this.bigRadius = this.normalRadius * Main.config.gameConfig.humanBigSize;
 
             this.humanNormalShape = boxShape;
 
-            this.humanBigShape = new p2.Capsule({length: _length * Main.config.humanBigSize, radius: _radius * Main.config.humanBigSize});
+            this.humanBigShape = new p2.Capsule({length: _length * Main.config.gameConfig.humanBigSize, radius: _radius * Main.config.gameConfig.humanBigSize});
 
             this.humanBigShape.material = boxShape.material;
 
@@ -326,8 +326,8 @@ class Human extends MoveBodyObj{
 
         _human.addShape(boxShape);
 
-        let width = (_length + _radius * 2) * Main.config.factor;
-        let height = _radius * 2 * Main.config.factor;
+        let width = (_length + _radius * 2) * Main.config.gameConfig.factor;
+        let height = _radius * 2 * Main.config.gameConfig.factor;
 
         // let humanDisplay:egret.Shape = new egret.Shape();
         // humanDisplay.graphics.beginFill(_color);

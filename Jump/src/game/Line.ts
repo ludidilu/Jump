@@ -28,7 +28,7 @@ class Line extends egret.Shape{
 
                 line.graphics.beginFill(0x00ff00, 0.5);
 
-                line.graphics.drawRect(0,0,_container.stage.stageWidth, Main.config.lineWidth * Main.config.factor);
+                line.graphics.drawRect(0,0,_container.stage.stageWidth, Main.config.gameConfig.lineWidth * Main.config.gameConfig.factor);
 
                 line.graphics.endFill();
 
@@ -47,7 +47,7 @@ class Line extends egret.Shape{
 
                 line.graphics.beginFill(0xff0000, 0.5);
 
-                line.graphics.drawRect(0,0,_container.stage.stageWidth, Main.config.lineWidth * Main.config.factor);
+                line.graphics.drawRect(0,0,_container.stage.stageWidth, Main.config.gameConfig.lineWidth * Main.config.gameConfig.factor);
 
                 line.graphics.endFill();
 
@@ -59,7 +59,7 @@ class Line extends egret.Shape{
 
         _container.addChild(line);
         
-        line.y = _container.stage.stageHeight - _worldY * Main.config.factor - Main.config.lineWidth * 0.5 * Main.config.factor;
+        line.y = _container.stage.stageHeight - _worldY * Main.config.gameConfig.factor - Main.config.gameConfig.lineWidth * 0.5 * Main.config.gameConfig.factor;
 
         line.x = -_container.parent.x;
 
@@ -72,7 +72,7 @@ class Line extends egret.Shape{
 
             let line:Line = this.lineArr[i];
 
-            if(line.parent.parent.y + line.y - Main.config.lineWidth * 0.5 * Main.config.factor > line.stage.stageHeight){
+            if(line.parent.parent.y + line.y - Main.config.gameConfig.lineWidth * 0.5 * Main.config.gameConfig.factor > line.stage.stageHeight){
 
                 line.parent.removeChild(line);
 
