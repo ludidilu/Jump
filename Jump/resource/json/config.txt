@@ -7,6 +7,8 @@
 
     "gameConfig":{
 
+        "ladderWidthFix": 10,最高一层楼梯水平宽度
+
         "heightAddSpeed": 0.625,摄像机上升速度
 
         "physicalTimeFix": 1.3,物理引擎时间系数(废弃的参数，如果修改会关联到所有的力，所以先不要去改动他了)
