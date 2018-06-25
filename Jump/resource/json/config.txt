@@ -86,21 +86,11 @@
 
     "maxCoinNum": 3,金币上限
 
-    "coinRadius": 0.3,金币半径
+    "coinRadius": 0.15,金币半径
 
-    "coinForce": [-0.01,0],金币初始获得的力
+    "coinXSpeed": -1,金币x轴移动速度
 
-    "coinFriction": 0,金币与地面的摩擦系数
-
-    "coinRelaxation": 10,金币与地面的缓和系数
-
-    "coinRestitution": 0.5,金币与地面的弹力系数
-
-    "coinDampling": 0.1,金币空气阻力
-
-    "coinAngularDampling": 0.1,金币的角空气阻力
-
-    "coinGravityScale": 1,金币重力系数
+    "coinJumpHeight": 2.4,金币弹跳高度
 
     "coinMoveToHumanSpeed": 8,金币追逐玩家的速度
 
@@ -122,19 +112,9 @@
 
     "itemRadius":  0.5,物品半径
 
-    "itemForce": [-100,0],物品初始获得的力
+    "itemXSpeed": -1,物品x轴移动速度
 
-    "itemFriction":  0,物品与地面的摩擦系数
-
-    "itemRelaxation":  100,物品与地面的缓和系数
-
-    "itemRestitution":  0.8,物品与地面的弹力系数
-
-    "itemDampling":  0.1,物品空气阻力
-
-    "itemAngularDampling":  0.1,物品的角空气阻力
-
-    "itemGravityScale":  1,物品重力系数
+    "itemJumpHeight": 2.4,物品弹跳高度
 
     "humanBigSize": 2,人物放大系数
 
@@ -159,4 +139,8 @@
     "greenLineMoneyChange": 10,踩绿线跳金钱变化数量
 
     "coinMoneyChange": 1,吃金币金钱变化数量
+
+    "collisionCheckFix": 0,包围盒检测的修正系数
+
+    "rewardGravity": 9.8,金币和物品的重力系数
 }
