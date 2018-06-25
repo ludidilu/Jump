@@ -7,13 +7,15 @@
 
     "gameConfig":{
 
+        "ladderWidthFix": 10,
+
         "heightAddSpeed": 0.625,
 
         "physicalTimeFix": 1.3,
 
         "worldTimeFix": 1,
 
-        "factor":  80,
+        "factor":  20,
 
         "unitHeight":  2.4,
 

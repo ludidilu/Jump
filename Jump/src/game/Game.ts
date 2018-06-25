@@ -8,6 +8,8 @@ class Game extends egret.DisplayObjectContainer {
 
     public static ENEMY_GROUP:number = Math.pow(2, 2);
 
+    public maxLevel:number;
+
     private world:p2.World;
 
     private worldDt:number;
@@ -324,7 +326,7 @@ class Game extends egret.DisplayObjectContainer {
 
     private createLadder():void{
 
-        let verticesOrigin = [[Main.config.gameConfig.unitWidth, Main.config.gameConfig.unitHeight], [Main.config.gameConfig.triangleWidth, Main.config.gameConfig.unitHeight],[0, Main.config.gameConfig.unitHeight - Main.config.gameConfig.triangleHeight],[0,0]];
+        let verticesOrigin:number[][] = [[Main.config.gameConfig.unitWidth, Main.config.gameConfig.unitHeight], [Main.config.gameConfig.triangleWidth, Main.config.gameConfig.unitHeight],[0, Main.config.gameConfig.unitHeight - Main.config.gameConfig.triangleHeight],[0,0]];
 
         let conDisplay:egret.Shape = new egret.Shape();
 
@@ -334,23 +336,23 @@ class Game extends egret.DisplayObjectContainer {
 
         let factor:number = Main.config.gameConfig.factor * factorFix;
 
-        conDisplay.graphics.moveTo(Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum * factor, 0);
+        conDisplay.graphics.moveTo((Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix) * factor, 0);
 
-        conDisplay.graphics.lineTo(Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum * factor, Main.config.gameConfig.unitHeight * Main.config.gameConfig.unitNum * -factor);
+        conDisplay.graphics.lineTo((Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix) * factor, Main.config.gameConfig.unitHeight * Main.config.gameConfig.unitNum * -factor);
 
-        let vertices = [];
+        let vertices:number[][] = [];
 
-        vertices.push([Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum, 0]);
+        vertices.push([Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix, 0]);
 
-        vertices.push([Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum, Main.config.gameConfig.unitHeight * Main.config.gameConfig.unitNum]);
+        vertices.push([Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix, Main.config.gameConfig.unitHeight * Main.config.gameConfig.unitNum]);
 
         for(let m:number = Main.config.gameConfig.unitNum - 1 ; m > -1 ; m--){
 
             for(let i:number = 1, n:number = verticesOrigin.length ; i < n ; i++){
 
-                let arr = verticesOrigin[i];
+                let arr:number[] = verticesOrigin[i];
 
-                let arr2 = [arr[0] + m * Main.config.gameConfig.unitWidth,arr[1] + m * Main.config.gameConfig.unitHeight];
+                let arr2:number[]= [arr[0] + m * Main.config.gameConfig.unitWidth,arr[1] + m * Main.config.gameConfig.unitHeight];
 
                 vertices.push(arr2);
 
@@ -358,7 +360,7 @@ class Game extends egret.DisplayObjectContainer {
             }
         }
 
-        conDisplay.graphics.lineTo(Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum * factor, 0);
+        conDisplay.graphics.lineTo((Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix) * factor, 0);
 
         conDisplay.graphics.endFill();
 
@@ -453,31 +455,8 @@ class Game extends egret.DisplayObjectContainer {
 
         this.world.addContactMaterial(conMat);
 
-        //创建plane
-        // var planeShape: p2.Plane = new p2.Plane();
-        // var planeBody: p2.Body = new p2.Body();
-        // planeBody.addShape(planeShape);
-        // planeBody.displays = [];
-        // planeShape.material = this.ladderMat;
-
-        // this.world.addBody(planeBody);
-
         this.worldDt = 1 / Main.config.gameConfig.physicsEngineFps * Main.config.gameConfig.physicalTimeFix;
     }
-
-    // private beginContact(aa:{bodyA:BodyObj,bodyB:BodyObj}):void{
-
-    //     // console.log("beginContact   bodyA:" + aa.bodyA.bodyType + "  bodyB:" + aa.bodyB.bodyType);
-
-    //     if(aa.bodyA.bodyType == BodyObjType.HUMAN && aa.bodyB.bodyType == BodyObjType.REWARD){
-            
-    //         (<Reward>aa.bodyB).isOver = true;
-    //     }
-    //     else if(aa.bodyA.bodyType == BodyObjType.REWARD && aa.bodyB.bodyType == BodyObjType.HUMAN){
-            
-    //         (<Reward>aa.bodyA).isOver = true;
-    //     }
-    // }
 
     private createHuman():void{
 
@@ -511,8 +490,6 @@ class Game extends egret.DisplayObjectContainer {
 
         let dt = _dt * this.worldDtFix * Main.config.gameConfig.worldTimeFix;
 
-        // this.world.step(1 / 60 * Main.config.physicalTimeFix, dt * 0.001 * Main.config.physicalTimeFix);
-
         this.gameContainer.y += Main.config.gameConfig.heightAddSpeed * Main.config.gameConfig.factor * dt * 0.001;
 
         let targetY:number = this.human.position[1] * Main.config.gameConfig.factor - this.stage.stageHeight * 0.5;
@@ -537,35 +514,46 @@ class Game extends egret.DisplayObjectContainer {
             this.gameContainer.x = targetX;
         }
 
-        let changeHeightValue:number = (this.nowHeight + 1) * Main.config.gameConfig.changeUnitNum * Main.config.gameConfig.unitHeight * Main.config.gameConfig.factor;
+        if(this.maxLevel == 0 || this.nowHeight < this.maxLevel - Main.config.gameConfig.unitNum){
 
-        if(this.gameContainer.y > changeHeightValue){
+            let changeHeightValue:number = (this.nowHeight + 1) * Main.config.gameConfig.changeUnitNum * Main.config.gameConfig.unitHeight * Main.config.gameConfig.factor;
 
-            this.nowHeight++;
+            if(this.gameContainer.y > changeHeightValue){
 
-            let ladderX:number = this.conBody.position[0] + Main.config.gameConfig.unitWidth * Main.config.gameConfig.changeUnitNum;
+                let addNum:number = Math.floor((this.gameContainer.y - changeHeightValue) / (Main.config.gameConfig.changeUnitNum * Main.config.gameConfig.unitHeight * Main.config.gameConfig.factor)) + 1;
 
-            let ladderY:number = this.conBody.position[1] + Main.config.gameConfig.unitHeight * Main.config.gameConfig.changeUnitNum;
+                if(this.maxLevel > 0 && this.nowHeight + addNum > this.maxLevel - Main.config.gameConfig.unitNum){
 
-            this.conBody.setPosition(ladderX, ladderY);
+                    addNum = this.maxLevel - Main.config.gameConfig.unitNum - this.nowHeight;
+                }
 
-            this.conBody.updateDisplaysPosition();
+                this.nowHeight += addNum;
+
+                let ladderX:number = this.conBody.position[0] + (Main.config.gameConfig.unitWidth * Main.config.gameConfig.changeUnitNum * addNum);
+
+                let ladderY:number = this.conBody.position[1] + (Main.config.gameConfig.unitHeight * Main.config.gameConfig.changeUnitNum * addNum);
+
+                this.conBody.setPosition(ladderX, ladderY);
+
+                this.conBody.updateDisplaysPosition();
+            }
         }
-
         
 
-        let humanY:number = Math.floor(this.human.position[1] / Main.config.gameConfig.unitHeight);
+        let score:number = Math.floor(this.human.position[0] / Main.config.gameConfig.unitWidth) + 1;
 
-        if(this.human.position[0] > (humanY - 1) * Main.config.gameConfig.unitWidth && this.human.position[0] < humanY * Main.config.gameConfig.unitWidth){
+        // console.log("get score:" + humanY);
 
-            // console.log("get score:" + humanY);
+        if(score > this.bestScore){
 
-            if(humanY > this.bestScore){
+            if(this.maxLevel > 0 && score > this.maxLevel){
 
-                this.bestScore = humanY;
-
-                this.mainPanel.score.text = this.bestScore.toString();
+                score = this.maxLevel;
             }
+
+            this.bestScore = score;
+
+            this.mainPanel.score.text = this.bestScore.toString();
         }
 
         let p:egret.Point = this.gameContainer.localToGlobal(this.humanDisplay.x, this.humanDisplay.y);

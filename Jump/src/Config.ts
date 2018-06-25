@@ -12,6 +12,8 @@ class MainConfig{
 
 class GameConfig{
 
+    public ladderWidthFix:number = 10;
+
     public heightAddSpeed:number = 0.625;
 
     public physicalTimeFix:number = 1.3;
