@@ -82,6 +82,11 @@ class Main extends egret.DisplayObjectContainer {
 
         this.addChild(this.game);
 
-        this.game.start(15);
+        this.game.start(15, this.gameOver.bind(this));
+    }
+
+    private gameOver(_score:number, _money:number):void{
+
+        this.removeChild(this.game);
     }
 }

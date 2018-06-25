@@ -8,7 +8,7 @@ class Game extends egret.DisplayObjectContainer {
 
     public static ENEMY_GROUP:number = Math.pow(2, 2);
 
-    private maxLevel:number;
+    public maxLevel:number;
 
     private world:p2.World;
 
@@ -23,10 +23,6 @@ class Game extends egret.DisplayObjectContainer {
     private humanMat:p2.Material;
 
     private humanDisplay:egret.DisplayObject;
-
-    private human:Human;
-
-    private conBody:BodyObj;
 
     private bg:egret.Shape;
 
@@ -50,8 +46,6 @@ class Game extends egret.DisplayObjectContainer {
 
     private uiContainer:egret.DisplayObjectContainer;
 
-    private nowHeight:number = 0;
-
     private firstCameraFollowTime:number;
 
     private firstCameraPosX:number;
@@ -70,8 +64,12 @@ class Game extends egret.DisplayObjectContainer {
 
     private firstJump:boolean = false;
 
+    private overCallBack:(_level:number, _money:number)=>void;
+
     public constructor() {
+
         super();
+
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
     }
 
@@ -108,6 +106,8 @@ class Game extends egret.DisplayObjectContainer {
 
         Human.main = this;
 
+        Ladder.main = this;
+
         if(Main.isWeixin){
 
             wx.onHide(this.pause.bind(this));
@@ -120,13 +120,15 @@ class Game extends egret.DisplayObjectContainer {
 
             egret.lifecycle.onResume = this.resume.bind(this);
         }
-
-        this.reset();
     }
 
-    public start(_maxLevel:number):void{
+    public start(_maxLevel:number, _overCallBack:(_level:number, _money:number)=>void):void{
+
+        this.reset();
 
         this.maxLevel = _maxLevel;
+
+        this.overCallBack = _overCallBack;
 
         if(this.maxLevel > 0){
 
@@ -141,8 +143,6 @@ class Game extends egret.DisplayObjectContainer {
         if(SuperTicker.getInstance().hasEventListener(this.update, this)){
 
             SuperTicker.getInstance().removeEventListener(this.update, this);
-
-            this.bg.touchEnabled = false;
 
             this.alertPanel.visible = true;
 
@@ -214,9 +214,9 @@ class Game extends egret.DisplayObjectContainer {
 
         this.bgContainer.addChild(this.bg);
 
-        this.bg.touchEnabled = false;
+        this.bg.touchEnabled = true;
 
-        this.bg.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.addOneBox, this);
+        this.bg.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBg, this);
     }
 
     private createItemBt():void{
@@ -269,7 +269,7 @@ class Game extends egret.DisplayObjectContainer {
 
         let x:number = (targetLevel + 0.5) * Main.config.gameConfig.unitWidth;
 
-        this.human.reset();
+        Human.human.reset();
 
         if(Math.random() < 0.5){
 
@@ -322,119 +322,19 @@ class Game extends egret.DisplayObjectContainer {
         this.btClickFun();
     }
 
-    private restart():void{
+    private gameOver():void{
 
-        this.reset();
+        this.overCallBack(this.bestScore, this.nowMoney);
     }
 
     private resumeReal():void{
 
         SuperTicker.getInstance().addEventListener(this.update, this);
-
-        this.bg.touchEnabled = true;
     }
 
     private createLadder():void{
 
-        let verticesOrigin:number[][] = [[Main.config.gameConfig.unitWidth, Main.config.gameConfig.unitHeight], [Main.config.gameConfig.triangleWidth, Main.config.gameConfig.unitHeight],[0, Main.config.gameConfig.unitHeight - Main.config.gameConfig.triangleHeight],[0,0]];
-
-        let conDisplay:egret.Shape = new egret.Shape();
-
-        conDisplay.graphics.beginFill(0xff0000);
-
-        let factorFix:number = 0.2;
-
-        let factor:number = Main.config.gameConfig.factor * factorFix;
-
-        conDisplay.graphics.moveTo((Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix) * factor, 0);
-
-        conDisplay.graphics.lineTo((Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix) * factor, Main.config.gameConfig.unitHeight * Main.config.gameConfig.unitNum * -factor);
-
-        let vertices:number[][] = [];
-
-        vertices.push([Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix, 0]);
-
-        vertices.push([Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix, Main.config.gameConfig.unitHeight * Main.config.gameConfig.unitNum]);
-
-        for(let m:number = Main.config.gameConfig.unitNum - 1 ; m > -1 ; m--){
-
-            for(let i:number = 1, n:number = verticesOrigin.length ; i < n ; i++){
-
-                let arr:number[] = verticesOrigin[i];
-
-                let arr2:number[]= [arr[0] + m * Main.config.gameConfig.unitWidth,arr[1] + m * Main.config.gameConfig.unitHeight];
-
-                vertices.push(arr2);
-
-                conDisplay.graphics.lineTo((arr[0] + m * Main.config.gameConfig.unitWidth) * factor, (arr[1] + m * Main.config.gameConfig.unitHeight) * -factor);
-            }
-        }
-
-        conDisplay.graphics.lineTo((Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix) * factor, 0);
-
-        conDisplay.graphics.endFill();
-
-        let container:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();
-
-        container.addChild(conDisplay);
-        
-        conDisplay.scaleX = 1 / factorFix;
-
-        conDisplay.scaleY = 1 / factorFix;
-
-        this.mapContainer.addChild(container);
-
-        this.conBody = new BodyObj();
-        this.conBody.bodyType = BodyObjType.LADDER;
-        this.conBody.fromPolygon(vertices);
-        this.conBody.displays = [container];
-        this.world.addBody(this.conBody);
-
-        let minX:number = Number.MAX_VALUE;
-        let minY:number = Number.MAX_VALUE;
-
-        for(let i:number = 0, n:number = this.conBody.shapes.length; i < n ; i++){
-
-            let shape:p2.Convex = <p2.Convex>this.conBody.shapes[i];
-
-            shape.material = this.ladderMat;
-
-            shape.collisionGroup = Game.LADDER_GROUP;
-
-            shape.collisionMask = Game.HUMAN_GROUP | Game.ENEMY_GROUP;
-
-            let pos:number[] = shape.position;
-
-            for(let m:number = 0, l:number = shape.vertices.length; m < l ; m++){
-
-                let x:number = shape.vertices[m][0] + pos[0];
-
-                if(x < minX){
-
-                    minX = x;
-                }
-
-                let y:number = shape.vertices[m][1] + pos[1];
-
-                if(y < minY){
-
-                    minY = y;
-                }
-            }
-        }
-
-        for(let i:number = 0, n:number = this.conBody.shapes.length; i < n ; i++){
-
-            let shape:p2.Shape = this.conBody.shapes[i];
-
-            shape.position[0] -= minX;
-
-            shape.position[1] -= minY;
-        }
-
-        this.conBody.updateDisplaysPosition();
-
-        Human.conBody = this.conBody;
+        Ladder.create(this.world, this.gameContainer, this.mapContainer, this.ladderMat);
     }
 
     private createWorldAndPlane():void{
@@ -470,9 +370,9 @@ class Game extends egret.DisplayObjectContainer {
 
     private createHuman():void{
 
-        this.human = Human.create(this.world, Main.config.gameConfig.humanLength, Main.config.gameConfig.humanRadius, this.humanContainer, this.humanMat, Main.config.gameConfig.humanStartPos[0], Main.config.gameConfig.humanStartPos[1]);
+        let human:Human = Human.create(this.world, Main.config.gameConfig.humanLength, Main.config.gameConfig.humanRadius, this.humanContainer, this.humanMat, Main.config.gameConfig.humanStartPos[0], Main.config.gameConfig.humanStartPos[1]);
 
-        this.humanDisplay = this.human.displays[0];
+        this.humanDisplay = human.displays[0];
     }
 
     private update(_dt:number):void{
@@ -502,7 +402,7 @@ class Game extends egret.DisplayObjectContainer {
 
         this.gameContainer.y += Main.config.gameConfig.heightAddSpeed * Main.config.gameConfig.factor * dt * 0.001;
 
-        let targetY:number = this.human.position[1] * Main.config.gameConfig.factor - this.stage.stageHeight * 0.5;
+        let targetY:number = Human.human.position[1] * Main.config.gameConfig.factor - this.stage.stageHeight * 0.5;
 
         if(targetY > this.gameContainer.y){
 
@@ -523,37 +423,10 @@ class Game extends egret.DisplayObjectContainer {
 
             this.gameContainer.x = targetX;
         }
-
-        if(this.maxLevel == 0 || this.nowHeight < this.maxLevel - Main.config.gameConfig.unitNum){
-
-            let changeHeightValue:number = (this.nowHeight + 1) * Main.config.gameConfig.changeUnitNum * Main.config.gameConfig.unitHeight * Main.config.gameConfig.factor;
-
-            if(this.gameContainer.y > changeHeightValue){
-
-                let addNum:number = Math.floor((this.gameContainer.y - changeHeightValue) / (Main.config.gameConfig.changeUnitNum * Main.config.gameConfig.unitHeight * Main.config.gameConfig.factor)) + 1;
-
-                if(this.maxLevel > 0 && this.nowHeight + addNum > this.maxLevel - Main.config.gameConfig.unitNum){
-
-                    addNum = this.maxLevel - Main.config.gameConfig.unitNum - this.nowHeight;
-                }
-
-                this.nowHeight += addNum;
-
-                let ladderX:number = this.conBody.position[0] + (Main.config.gameConfig.unitWidth * Main.config.gameConfig.changeUnitNum * addNum);
-
-                let ladderY:number = this.conBody.position[1] + (Main.config.gameConfig.unitHeight * Main.config.gameConfig.changeUnitNum * addNum);
-
-                this.conBody.setPosition(ladderX, ladderY);
-
-                this.conBody.updateDisplaysPosition();
-            }
-        }
         
-        let xPos:number = this.human.position[0] / Main.config.gameConfig.unitWidth;
+        let xPos:number = Human.human.position[0] / Main.config.gameConfig.unitWidth;
 
         let xLevel:number = Math.floor(xPos);
-
-        let score:number;
 
         if(this.maxLevel > 0 && xLevel + 1 >= this.maxLevel){
 
@@ -561,25 +434,15 @@ class Game extends egret.DisplayObjectContainer {
 
             if(xPosFix > Main.config.gameConfig.finalLadderXFix){
 
-                score = this.maxLevel;
+                this.setScore(this.maxLevel);
 
-                SuperTicker.getInstance().removeEventListener(this.update, this);
+                this.win();
 
-                this.alertPanel.visible = true;
-
-                this.alertPanel.message.text = "You win!";
-
-                this.alertPanel.bt.label = "Restart";
-
-                this.btClickFun = this.restart;
-
-                this.bg.touchEnabled = false;
-
-                this.itemBt.reset();
+                return;
             }
             else{
 
-                score = this.maxLevel - 1;
+                this.setScore(this.maxLevel - 1);
             }
         }
         else{
@@ -588,148 +451,163 @@ class Game extends egret.DisplayObjectContainer {
 
             if(xPosFix > Main.config.gameConfig.ladderXFix){
 
-                score = xLevel + 1;
+                this.setScore(xLevel + 1);
             }
             else{
 
-                score = xLevel;
+                this.setScore(xLevel);
             }
-        }
-
-        // console.log("get score:" + humanY);
-
-        if(score > this.bestScore){
-
-            this.bestScore = score;
-
-            this.mainPanel.score.text = this.bestScore.toString();
         }
 
         let p:egret.Point = this.gameContainer.localToGlobal(this.humanDisplay.x, this.humanDisplay.y);
 
-        if(p.y > this.stage.stageHeight + (Main.config.gameConfig.humanLength * 0.5 + Main.config.gameConfig.humanRadius) * this.human.sizeFix * Main.config.gameConfig.factor){
+        if(p.y > this.stage.stageHeight + (Main.config.gameConfig.humanLength * 0.5 + Main.config.gameConfig.humanRadius) * Human.human.sizeFix * Main.config.gameConfig.factor){
 
-            console.log("lose!!!");
+            this.lose();
 
-            this.hint.visible = false;
-
-            SuperTicker.getInstance().removeEventListener(this.update, this);
-
-            this.alertPanel.visible = true;
-
-            this.alertPanel.message.text = "You score is:" + this.bestScore;
-
-            this.alertPanel.bt.label = "Restart";
-
-            this.btClickFun = this.restart;
-
-            this.bg.touchEnabled = false;
-
-            this.itemBt.reset();
+            return;
         }
-        else{
 
-            if(this.humanDisplay.x + this.gameContainer.x < 0){
+        if(this.humanDisplay.x + this.gameContainer.x < 0){
 
-                this.hint.visible = true;
+            this.hint.visible = true;
 
-                this.hint.y = this.humanDisplay.y + this.gameContainer.y;    
-            }
-            else if(this.hint.visible){
+            this.hint.y = this.humanDisplay.y + this.gameContainer.y;    
+        }
+        else if(this.hint.visible){
+            
+            this.hint.visible = false;
+        }
+
+        Human.human.updateDisplaysPosition(dt);
+
+        Enemy.update(dt);
+
+        Line.update();
+
+        Coin.update(_dt);
+
+        Item.update(_dt);
+
+        Ladder.update();
+
+        if(this.maxLevel > 0){
+
+            Terminal.update();
+        }
+
+        if(Enemy.enemies.length < Main.config.gameConfig.maxEnemyNum && Math.random() < Main.config.gameConfig.enemyPropProbability * dt * 0.001){
+
+            let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.gameConfig.factor / Main.config.gameConfig.unitHeight);
+
+            let targetLevel:number = nowLevel + Main.config.gameConfig.propHeightFix;
+
+            if(this.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < this.maxLevel){
                 
-                this.hint.visible = false;
+                let x:number = (targetLevel + 0.5) * Main.config.gameConfig.unitWidth;
+
+                let y:number = (targetLevel + 1.5) * Main.config.gameConfig.unitHeight;
+
+                Enemy.create(this.world, Main.config.gameConfig.humanLength, Main.config.gameConfig.humanRadius, this.humanContainer, this.humanMat, x, y);
             }
+        }
 
-            this.human.updateDisplaysPosition(dt);
+        if(Line.lineArr.length < Main.config.gameConfig.maxLineNum && Math.random() < Main.config.gameConfig.linePropProbability * dt * 0.001){
 
-            Enemy.update(dt);
+            let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.gameConfig.factor / Main.config.gameConfig.unitHeight);
 
-            Line.update();
+            let targetLevel:number = nowLevel + Main.config.gameConfig.propHeightFix;
 
-            Coin.update(_dt);
+            if(this.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < this.maxLevel){
 
-            Item.update(_dt);
+                let y:number = (targetLevel + 0.5) * Main.config.gameConfig.unitHeight;
 
-            if(this.maxLevel > 0){
-
-                Terminal.update();
+                Line.create(y, this.otherContainer);
             }
+        }
 
-            if(Enemy.enemies.length < Main.config.gameConfig.maxEnemyNum && Math.random() < Main.config.gameConfig.enemyPropProbability * dt * 0.001){
+        if(Coin.coins.length < Main.config.gameConfig.maxCoinNum && Math.random() < Main.config.gameConfig.coinPropProbability * dt * 0.001){
 
-                let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.gameConfig.factor / Main.config.gameConfig.unitHeight);
+            let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.gameConfig.factor / Main.config.gameConfig.unitHeight);
 
-                let targetLevel:number = nowLevel + Main.config.gameConfig.propHeightFix;
+            let targetLevel:number = nowLevel + Main.config.gameConfig.propHeightFix;
 
-                if(this.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < this.maxLevel){
-                    
-                    let x:number = (targetLevel + 0.5) * Main.config.gameConfig.unitWidth;
+            if(this.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < this.maxLevel){
 
-                    let y:number = (targetLevel + 1.5) * Main.config.gameConfig.unitHeight;
+                let x:number = targetLevel * Main.config.gameConfig.unitWidth + Main.config.gameConfig.triangleWidth * 2 + Math.random() * (Main.config.gameConfig.unitWidth - Main.config.gameConfig.triangleWidth * 2 - Main.config.gameConfig.coinRadius);
 
-                    Enemy.create(this.world, Main.config.gameConfig.humanLength, Main.config.gameConfig.humanRadius, this.humanContainer, this.humanMat, x, y);
-                }
+                Coin.create(this.humanContainer, Main.config.gameConfig.coinXSpeed, Main.config.gameConfig.coinJumpHeight, x);
             }
+        }
 
-            if(Line.lineArr.length < Main.config.gameConfig.maxLineNum && Math.random() < Main.config.gameConfig.linePropProbability * dt * 0.001){
+        if(Item.items.length < Main.config.gameConfig.maxItemNum && Math.random() < Main.config.gameConfig.itemPropProbability * dt * 0.001){
 
-                let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.gameConfig.factor / Main.config.gameConfig.unitHeight);
+            let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.gameConfig.factor / Main.config.gameConfig.unitHeight);
 
-                let targetLevel:number = nowLevel + Main.config.gameConfig.propHeightFix;
+            let targetLevel:number = nowLevel + Main.config.gameConfig.propHeightFix;
 
-                if(this.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < this.maxLevel){
+            if(this.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < this.maxLevel){
 
-                    let y:number = (targetLevel + 0.5) * Main.config.gameConfig.unitHeight;
+                let x:number = targetLevel * Main.config.gameConfig.unitWidth + Main.config.gameConfig.triangleWidth * 2 + Math.random() * (Main.config.gameConfig.unitWidth - Main.config.gameConfig.triangleWidth * 2 - Main.config.gameConfig.itemRadius);
 
-                    Line.create(y, this.otherContainer);
-                }
-            }
-
-            if(Coin.coins.length < Main.config.gameConfig.maxCoinNum && Math.random() < Main.config.gameConfig.coinPropProbability * dt * 0.001){
-
-                let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.gameConfig.factor / Main.config.gameConfig.unitHeight);
-
-                let targetLevel:number = nowLevel + Main.config.gameConfig.propHeightFix;
-
-                if(this.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < this.maxLevel){
-
-                    let x:number = targetLevel * Main.config.gameConfig.unitWidth + Main.config.gameConfig.triangleWidth * 2 + Math.random() * (Main.config.gameConfig.unitWidth - Main.config.gameConfig.triangleWidth * 2 - Main.config.gameConfig.coinRadius);
-
-                    Coin.create(this.humanContainer, Main.config.gameConfig.coinXSpeed, Main.config.gameConfig.coinJumpHeight, x);
-                }
-            }
-
-            if(Item.items.length < Main.config.gameConfig.maxItemNum && Math.random() < Main.config.gameConfig.itemPropProbability * dt * 0.001){
-
-                let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.gameConfig.factor / Main.config.gameConfig.unitHeight);
-
-                let targetLevel:number = nowLevel + Main.config.gameConfig.propHeightFix;
-
-                if(this.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < this.maxLevel){
-
-                    let x:number = targetLevel * Main.config.gameConfig.unitWidth + Main.config.gameConfig.triangleWidth * 2 + Math.random() * (Main.config.gameConfig.unitWidth - Main.config.gameConfig.triangleWidth * 2 - Main.config.gameConfig.itemRadius);
-
-                    Item.create(this.humanContainer, Main.config.gameConfig.itemXSpeed, Main.config.gameConfig.itemJumpHeight, x);
-                }
+                Item.create(this.humanContainer, Main.config.gameConfig.itemXSpeed, Main.config.gameConfig.itemJumpHeight, x);
             }
         }
     }
 
+    private setScore(_score:number):void{
+
+        if(_score > this.bestScore){
+
+            this.bestScore = _score;
+
+            this.mainPanel.score.text = this.bestScore.toString();
+        }
+    }
+
+    private win():void{
+
+        SuperTicker.getInstance().removeEventListener(this.update, this);
+
+        this.alertPanel.visible = true;
+
+        this.alertPanel.message.text = "You win!";
+
+        this.alertPanel.bt.label = "Restart";
+
+        this.btClickFun = this.gameOver;
+
+        this.itemBt.reset();
+    }
+
+    private lose():void{
+
+        this.hint.visible = false;
+
+        SuperTicker.getInstance().removeEventListener(this.update, this);
+
+        this.alertPanel.visible = true;
+
+        this.alertPanel.message.text = "You score is:" + this.bestScore;
+
+        this.alertPanel.bt.label = "Restart";
+
+        this.btClickFun = this.gameOver;
+
+        this.itemBt.reset();
+    }
+
     private reset():void{
-
-        this.conBody.setPosition(0, 0);
-
-        this.conBody.updateDisplaysPosition();
 
         this.gameContainer.x = 0;
         
         this.gameContainer.y = 0;
 
-        this.nowHeight = 0;
-
         this.firstJump = false;
 
         this.firstCameraFollowTime = 0;
+
+        Ladder.reset();
 
         Enemy.reset();
 
@@ -752,22 +630,20 @@ class Game extends egret.DisplayObjectContainer {
 
         this.mainPanel.money.text = "$" + this.nowMoney;
 
-        this.human.reset();
+        Human.human.reset();
 
-        this.human.setPosition(Main.config.gameConfig.humanStartPos[0], Main.config.gameConfig.humanStartPos[1]);
+        Human.human.setPosition(Main.config.gameConfig.humanStartPos[0], Main.config.gameConfig.humanStartPos[1]);
 
-        this.human.updateDisplaysPosition(0);
+        Human.human.updateDisplaysPosition(0);
 
         this.gameContainer.x = -this.humanDisplay.x + this.stage.stageWidth * 0.5;
 
         this.gameContainer.y = -this.humanDisplay.y + this.stage.stageHeight * 0.5;
 
         this.firstCameraPosX = this.gameContainer.x;
-
-        this.bg.touchEnabled = true;
     }
 
-    private addOneBox(e: egret.TouchEvent): void {
+    private touchBg(e: egret.TouchEvent): void {
 
         if(!this.firstJump){
 
@@ -775,27 +651,27 @@ class Game extends egret.DisplayObjectContainer {
 
             SuperTicker.getInstance().addEventListener(this.update, this);
 
-            this.human.jump(Main.config.gameConfig.firstJumpAngle, Main.config.gameConfig.firstJumpForce, Main.config.gameConfig.firstJumpPoint);
+            Human.human.jump(Main.config.gameConfig.firstJumpAngle, Main.config.gameConfig.firstJumpForce, Main.config.gameConfig.firstJumpPoint);
 
         }else{
 
-            let result:HumanJumpResult = this.human.checkCanJump();
+            let result:HumanJumpResult = Human.human.checkCanJump();
 
             if(result == HumanJumpResult.LADDER || result == HumanJumpResult.HUMAN){
 
-                this.human.jump(Main.config.gameConfig.jumpAngle, Main.config.gameConfig.jumpForce, Main.config.gameConfig.jumpPoint);
+                Human.human.jump(Main.config.gameConfig.jumpAngle, Main.config.gameConfig.jumpForce, Main.config.gameConfig.jumpPoint);
             }
             else if(result == HumanJumpResult.GLINE){
 
                 this.moneyChange(Main.config.gameConfig.greenLineMoneyChange);
 
-                this.human.jump(Main.config.gameConfig.lineJumpAngle, Main.config.gameConfig.lineJumpForce, Main.config.gameConfig.lineJumpPoint);
+                Human.human.jump(Main.config.gameConfig.lineJumpAngle, Main.config.gameConfig.lineJumpForce, Main.config.gameConfig.lineJumpPoint);
             }
             else if(result == HumanJumpResult.RLINE){
 
                 this.moneyChange(Main.config.gameConfig.redLineMoneyChange);
 
-                this.human.jump(Main.config.gameConfig.lineJumpAngle, Main.config.gameConfig.lineJumpForce, Main.config.gameConfig.lineJumpPoint);
+                Human.human.jump(Main.config.gameConfig.lineJumpAngle, Main.config.gameConfig.lineJumpForce, Main.config.gameConfig.lineJumpPoint);
             }
             else{
 

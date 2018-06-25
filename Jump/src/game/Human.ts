@@ -11,8 +11,6 @@ class Human extends MoveBodyObj{
 
     public static main:Game;
 
-    public static conBody:BodyObj;
-
     public static human:Human;
 
     private static humanNormalShape:p2.Capsule;
@@ -107,7 +105,7 @@ class Human extends MoveBodyObj{
                 }
             }
             
-            if(this.overlaps(Human.conBody)){
+            if(this.overlaps(Ladder.ladder)){
 
                 return HumanJumpResult.LADDER;
             }
