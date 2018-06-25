@@ -1,8 +1,8 @@
-class AlertPanel extends eui.Component implements  eui.UIComponent {
+class GameAlertPanel extends eui.Component implements  eui.UIComponent {
 	public constructor() {
 		super();
 
-		this.skinName = "resource/eui_skins/AlertPanel.exml";
+		this.skinName = "resource/eui_skins/game/GameAlertPanel.exml";
 	}
 
 	protected partAdded(partName:string,instance:any):void

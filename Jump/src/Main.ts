@@ -6,6 +6,8 @@ class Main extends egret.DisplayObjectContainer {
 
     private game:Game;
 
+    private mainPanel:MainPanel;
+
     public constructor() {
         super();
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
@@ -78,15 +80,53 @@ class Main extends egret.DisplayObjectContainer {
             WeixinData.init();
         }
 
+        this.initGame();
+
+        this.initMainPanel();
+    }
+
+    private initMainPanel():void{
+
+        this.mainPanel = new MainPanel();
+
+        this.addChild(this.mainPanel);
+
+        this.mainPanel.challengeBt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.challengeBtClick, this);
+
+        this.mainPanel.endlessBt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.endlessBtClick, this);
+    }
+
+    private initGame():void{
+
         this.game = new Game();
 
         this.addChild(this.game);
 
-        this.game.start(15, this.gameOver.bind(this));
+        this.game.visible = false;
+    }
+
+    private challengeBtClick(e:egret.TouchEvent):void{
+
+        this.game.visible = true;
+
+        this.game.start(20, this.gameOver.bind(this));
+
+        this.mainPanel.visible = false;
+    }
+
+    private endlessBtClick(e:egret.TouchEvent):void{
+
+        this.game.visible = true;
+
+        this.game.start(0, this.gameOver.bind(this));
+
+        this.mainPanel.visible = false;
     }
 
     private gameOver(_score:number, _money:number):void{
 
-        this.removeChild(this.game);
+        this.game.visible = false;
+
+        this.mainPanel.visible = true;
     }
 }

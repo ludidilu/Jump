@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="MainPanelSkin" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
+	<w:Config id="164376e109a" ></w:Config>
+	<e:Button id="challengeBt" label="Challenge" x="220" y="360" width="200"/>
+	<e:Button id="endlessBt" label="Endless" x="220" y="480" width="200"/>
+</e:Skin>

@@ -50,9 +50,9 @@ class Game extends egret.DisplayObjectContainer {
 
     private firstCameraPosX:number;
 
-    private mainPanel:MainPanel;
+    private mainPanel:GameMainPanel;
 
-    private alertPanel:AlertPanel;
+    private alertPanel:GameAlertPanel;
 
     private hint:egret.Shape;
 
@@ -232,7 +232,7 @@ class Game extends egret.DisplayObjectContainer {
 
     private createUi():void{
 
-        this.mainPanel = new MainPanel();
+        this.mainPanel = new GameMainPanel();
 
         this.mainPanel.touchEnabled = false;
 
@@ -240,7 +240,7 @@ class Game extends egret.DisplayObjectContainer {
 
         this.mainPanel.score.text = this.bestScore.toString();
 
-        this.alertPanel = new AlertPanel();
+        this.alertPanel = new GameAlertPanel();
 
         this.alertPanel.touchEnabled = false;
 

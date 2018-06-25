@@ -13,5 +13,10 @@
         "path": "..\\resource\\eui_skins\\AlertPanel.ts",
         "class": "AlertPanel",
         "parentPath": ""
+    },
+    "164376e109a": {
+        "path": "..\\resource\\eui_skins\\main\\MainPanel.ts",
+        "class": "MainPanel",
+        "parentPath": ""
     }
 }

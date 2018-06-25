@@ -49,7 +49,7 @@ class Reward extends egret.DisplayObjectContainer{
 
             let dist:number = MathTool.checkCircleContactWithLine(x0, y0, x1, y1, x2, y2);
 
-            if(dist < this.radius + Main.config.gameConfig.humanRadius){
+            if(dist < this.radius + Main.config.gameConfig.humanRadius * Human.human.sizeFix){
 
                 return true;
             }

@@ -1,8 +1,8 @@
-class MainPanel extends eui.Component implements  eui.UIComponent {
+class GameMainPanel extends eui.Component implements  eui.UIComponent {
 	public constructor() {
 		super();
 
-		this.skinName = "resource/eui_skins/MainPanel.exml";
+		this.skinName = "resource/eui_skins/game/GameMainPanel.exml";
 	}
 
 	protected partAdded(partName:string,instance:any):void
