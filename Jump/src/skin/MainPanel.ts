@@ -19,4 +19,12 @@ class MainPanel extends eui.Component implements  eui.UIComponent {
 	public challengeBt:eui.Button;
 
 	public endlessBt:eui.Button;
+
+	public scoreGroup:eui.Group;
+
+	public challengeScore:eui.Label;
+
+	public endlessScore:eui.Label;
+
+	public money:eui.Label;
 }

@@ -1,5 +1,11 @@
 class Main extends egret.DisplayObjectContainer {
 
+    public static readonly CHALLENGE_SCORE:string = "challengeScore";
+
+    public static readonly ENDLESS_SCORE:string = "endlessScore";
+
+    public static readonly MONEY:string = "money";
+
     public static config:Config;
 
     public static isWeixin:boolean;
@@ -17,7 +23,7 @@ class Main extends egret.DisplayObjectContainer {
 
         this.removeEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
 
-        console.log("version:" + 32200);
+        console.log("version:" + 32201);
 
         egret.registerImplementation("eui.IAssetAdapter", new AssetAdapter());
         egret.registerImplementation("eui.IThemeAdapter", new ThemeAdapter());
@@ -56,7 +62,7 @@ class Main extends egret.DisplayObjectContainer {
         Main.config = await RES.getResAsync("config_json");
     }
 
-    private start():void{
+    private async start():Promise<void>{
 
         this.stage.frameRate = Main.config.mainConfig.fps;
 
@@ -77,12 +83,34 @@ class Main extends egret.DisplayObjectContainer {
 
         if(Main.isWeixin){
 
-            WeixinData.init();
+            WeixinTalk.testContainer  = this;
+
+            await WeixinData.init();
         }
 
         this.initGame();
 
         this.initMainPanel();
+
+        this.refreshMainPanel();
+    }
+
+    private refreshMainPanel():void{
+
+        if(Main.isWeixin){
+
+            this.mainPanel.scoreGroup.visible = true;
+
+            this.mainPanel.challengeScore.text = KVDataTools.getValue(WeixinData.userInfo.KVDataList, Main.CHALLENGE_SCORE);
+
+            this.mainPanel.endlessScore.text = KVDataTools.getValue(WeixinData.userInfo.KVDataList, Main.ENDLESS_SCORE);
+
+            this.mainPanel.money.text = KVDataTools.getValue(WeixinData.userInfo.KVDataList, Main.MONEY);
+        }
+        else{
+
+            this.mainPanel.scoreGroup.visible = false;
+        }
     }
 
     private initMainPanel():void{
@@ -107,20 +135,176 @@ class Main extends egret.DisplayObjectContainer {
 
     private challengeBtClick(e:egret.TouchEvent):void{
 
-        this.game.visible = true;
+        let self:Main = this;
 
-        this.game.start(Main.config.stageConfig[1], this.gameOver.bind(this));
+        self.mainPanel.visible = false;
 
-        this.mainPanel.visible = false;
+        self.game.visible = true;
+
+        if(Main.isWeixin){
+
+            let scoreStr:string = KVDataTools.getValue(WeixinData.userInfo.KVDataList, Main.CHALLENGE_SCORE);
+
+            let score:number;
+
+            if(scoreStr){
+
+                score = Number(scoreStr);
+            }
+            else{
+
+                score = 0;
+            }
+
+            let moneyStr:string = KVDataTools.getValue(WeixinData.userInfo.KVDataList, Main.MONEY);
+
+            let money:number;
+
+            if(moneyStr){
+
+                money = Number(moneyStr);
+            }
+            else{
+
+                money = 0;
+            }
+
+            let stageIndex:number;
+
+            if(!score){
+
+                score = 0;
+
+                stageIndex = 1;
+            }
+            else if(score < Main.config.stageConfig.length - 1){
+
+                stageIndex = score + 1;
+            }
+            else{
+
+                stageIndex = Main.config.stageConfig.length - 1;
+            }
+
+            let stageConfig:StageConfig = Main.config.stageConfig[stageIndex]
+
+            let cb:(_score:number, _money:number)=>void = function(_score:number, _money:number):void{
+
+                console.log("challenge game over score:" + _score + "  money:" + _money);
+
+                self.game.visible = false;
+
+                let kv:KVData[] = [];
+
+                if(_score == stageConfig.maxLevel && stageIndex > score){
+
+                    kv.push({key:Main.CHALLENGE_SCORE, value: stageIndex.toString()})
+                }
+
+                if(_money > 0){
+
+                    kv.push({key:Main.MONEY, value:(money + _money).toString()});
+                }
+
+                if(kv.length > 0){
+
+                    self.setUserData(kv);
+                }
+                else{
+
+                    self.mainPanel.visible = true;
+                }
+            };
+
+            self.game.start(stageConfig, cb);
+        }
+        else{
+
+            let stageConfig:StageConfig = Main.config.stageConfig[1];
+
+            self.game.start(stageConfig, this.gameOver.bind(this));
+        }
     }
 
     private endlessBtClick(e:egret.TouchEvent):void{
 
-        this.game.visible = true;
+        let self:Main = this;
 
-        this.game.start(Main.config.stageConfig[0], this.gameOver.bind(this));
+        self.mainPanel.visible = false;
 
-        this.mainPanel.visible = false;
+        self.game.visible = true;
+
+        if(Main.isWeixin){
+
+            let scoreStr:string = KVDataTools.getValue(WeixinData.userInfo.KVDataList, Main.ENDLESS_SCORE);
+
+            let score:number;
+
+            if(scoreStr){
+
+                score = Number(scoreStr);
+            }
+            else{
+
+                score = 0;
+            }
+
+            let moneyStr:string = KVDataTools.getValue(WeixinData.userInfo.KVDataList, Main.MONEY);
+
+            let money:number;
+
+            if(moneyStr){
+
+                money = Number(moneyStr);
+            }
+            else{
+
+                money = 0;
+            }
+
+            let cb:(_score:number, _money:number)=>void = function(_score:number, _money:number):void{
+
+                console.log("endless game over score:" + _score + "  money:" + _money);
+
+                self.game.visible = false;
+
+                let kv:KVData[] = [];
+
+                if(_score > score){
+
+                    kv.push({key:Main.ENDLESS_SCORE, value:_score.toString()});
+                }
+
+                if(_money > 0){
+
+                    kv.push({key:Main.MONEY, value:(money + _money).toString()});
+                }
+
+                if(kv.length > 0){
+
+                    self.setUserData(kv);
+                }
+                else{
+
+                    self.mainPanel.visible = true;
+                }
+            };
+
+            self.game.start(Main.config.stageConfig[0], cb);
+        }
+        else{
+
+            self.game.start(Main.config.stageConfig[0], this.gameOver.bind(this));
+        }
+    }
+    
+    private async setUserData(_kv:KVData[]):Promise<void>{
+
+        await WeixinData.setUserData(_kv);
+
+        this.refreshMainPanel();
+
+        this.mainPanel.visible = true;
     }
 
     private gameOver(_score:number, _money:number):void{

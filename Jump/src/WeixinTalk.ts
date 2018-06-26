@@ -1,5 +1,7 @@
 class WeixinTalk{
 
+    public static testContainer:egret.DisplayObjectContainer;
+
     private static openDataContext:OpenDataContext;
 
     private static bitmap:egret.Bitmap;

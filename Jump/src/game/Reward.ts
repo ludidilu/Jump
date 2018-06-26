@@ -23,8 +23,6 @@ class Reward extends egret.DisplayObjectContainer{
         Reward.sin = -Math.sin(angle);
 
         Reward.cos = Math.cos(angle);
-
-        console.log("sin:" + Reward.sin + " cos:" + Reward.cos);
     }
 
     public isHitHuman(_checkDistance:number):boolean{

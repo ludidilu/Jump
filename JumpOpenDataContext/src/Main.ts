@@ -103,6 +103,8 @@ class Main extends egret.DisplayObjectContainer {
 
         let str:string = JSON.stringify(obj);
 
+        console.log("openDataContext callback data:" + str);
+
         this.container = StringTool.stringToObj(str, this.stage.stageWidth);
 
         this.addChild(this.container);

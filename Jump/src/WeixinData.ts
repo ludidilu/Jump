@@ -3,6 +3,43 @@ class playerGameData extends userInfo{
     public KVDataList:KVData[];
 }
 
+class KVDataTools{
+
+    public static getValue(_kv:KVData[], _key:string):string{
+
+        for(let i:number = 0, m:number = _kv.length ; i < m ; i++){
+
+            let kv:KVData = _kv[i];
+
+            if(kv.key == _key){
+
+                return kv.value;
+            }
+        }
+
+        return null;
+    }
+
+    public static setValue(_kv:KVData[], _key:string, _value:string):void{
+
+        for(let i:number = 0, m:number = _kv.length ; i < m ; i++){
+
+            let kv:KVData = _kv[i];
+
+            if(kv.key == _key){
+
+                kv.value = _value;
+
+                return;
+            }
+        }
+
+        let kv:KVData = {key: _key, value: _value};
+
+        _kv.push(kv);
+    }
+}
+
 class WeixinData{
 
     public static userInfo:playerGameData;
@@ -25,13 +62,13 @@ class WeixinData{
 
         WeixinData.getPic(WeixinData.userInfo.avatarUrl);
 
-        str = await WeixinTalk.Talk({command:"getUserCloudStorage", data:["score"]});
+        str = await WeixinTalk.Talk({command:"getUserCloudStorage", data:[Main.ENDLESS_SCORE, Main.CHALLENGE_SCORE, Main.MONEY]});
 
         let data2:{KVDataList:KVData[]} = JSON.parse(str);
 
         WeixinData.userInfo.KVDataList = data2.KVDataList;
 
-        str = await WeixinTalk.Talk({command:"getFriendCloudStorage", data:["score"]});
+        str = await WeixinTalk.Talk({command:"getFriendCloudStorage", data:[Main.ENDLESS_SCORE, Main.CHALLENGE_SCORE, Main.MONEY]});
 
         console.log("main getFriendCloudStorageSuccess:" + str);
 
@@ -55,6 +92,39 @@ class WeixinData{
 
             WeixinData.getPic(v.avatarUrl);
         }
+    }
+
+    public static async setUserData(_data:KVData[]):Promise<void>{
+
+        let cb:(resolve:(_data:any)=>void, reject:(_data:any)=>void)=>void = function(resolve:(_data:any)=>void, reject:(_data:any)=>void):void{
+
+            let success:(_obj:any)=>void = function(_obj:any):void{
+
+                console.log("setUserData success:" + _obj);
+
+                for(let i:number = 0, m:number = _data.length ; i < m ; i++){
+
+                    let kv:KVData = _data[i];
+
+                    KVDataTools.setValue(WeixinData.userInfo.KVDataList, kv.key, kv.value);
+                }
+
+                resolve(_obj);
+            };
+
+            let fail:(_obj:any)=>void = function(_obj:any):void{
+
+                reject(_obj);
+            };
+
+            let complete:(_obj:any)=>void = function(_obj:any):void{
+
+            };
+
+            wx.setUserCloudStorage({KVDataList: _data, success: success, fail: fail, complete: complete});
+        };
+
+        return new Promise(cb);
     }
 
     public static getPic(_str:string, _cb?:(_tex:egret.Texture)=>void):void{
