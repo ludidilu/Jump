@@ -1,22 +1,25 @@
 {
-    "163d866eb13": {
-        "path": "..\\resource\\eui_skins\\mainPanel.ts",
-        "class": "mainPanel",
-        "parentPath": ""
-    },
-    "163d89cf95b": {
-        "path": "..\\resource\\eui_skins\\MainPanel.ts",
-        "class": "MainPanel",
-        "parentPath": ""
-    },
-    "163d9496570": {
-        "path": "..\\resource\\eui_skins\\AlertPanel.ts",
-        "class": "AlertPanel",
-        "parentPath": ""
-    },
-    "164376e109a": {
-        "path": "..\\resource\\eui_skins\\main\\MainPanel.ts",
-        "class": "MainPanel",
-        "parentPath": ""
-    }
+  "163d866eb13": {
+    "path": "..\\resource\\eui_skins\\mainPanel.ts",
+    "class": "mainPanel",
+    "parentPath": ""
+  },
+  "163d89cf95b": {
+    "path": "..\\resource\\eui_skins\\MainPanel.ts",
+    "class": "MainPanel",
+    "parentPath": ""
+  },
+  "163d9496570": {
+    "path": "..\\resource\\eui_skins\\AlertPanel.ts",
+    "class": "AlertPanel",
+    "parentPath": ""
+  },
+  "164376e109a": {
+    "path": "..\\resource\\eui_skins\\main\\MainPanel.ts",
+    "class": "MainPanel",
+    "parentPath": ""
+  },
+  "global": {
+    "globalAutoLayerMarkEnable": true
+  }
 }

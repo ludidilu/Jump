@@ -14,6 +14,10 @@ class Main extends egret.DisplayObjectContainer {
 
     private mainPanel:MainPanel;
 
+    private rankPanel:RankPanel;
+
+    private rankArr:eui.ArrayCollection = new eui.ArrayCollection();
+
     public constructor() {
         super();
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
@@ -93,6 +97,8 @@ class Main extends egret.DisplayObjectContainer {
         this.initMainPanel();
 
         this.refreshMainPanel();
+
+        this.initRankPanel();
     }
 
     private refreshMainPanel():void{
@@ -122,6 +128,49 @@ class Main extends egret.DisplayObjectContainer {
         this.mainPanel.challengeBt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.challengeBtClick, this);
 
         this.mainPanel.endlessBt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.endlessBtClick, this);
+
+        if(Main.isWeixin){
+
+            this.mainPanel.rankBt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.rankBtClick, this);
+        }
+        else{
+
+            this.mainPanel.rankBt.visible = false;
+        }
+    }
+
+    private rankBtClick():void{
+
+        this.rankPanel.visible = true;
+    }
+
+    private initRankPanel():void{
+
+        this.rankPanel = new RankPanel();
+
+        this.addChild(this.rankPanel);
+
+        // this.rankPanel.scroller.viewport = this.rankPanel.list;
+
+        this.rankPanel.list.itemRenderer = RankCell;
+
+        this.rankPanel.list.itemRendererSkinName = "RankCellSkin";
+
+        this.rankPanel.list.dataProvider = this.rankArr;
+
+        if(!Main.isWeixin){
+
+            this.rankPanel.visible = false;
+        }
+        else{
+
+            for(let i:number = 0, m:number = WeixinData.friendData.length; i < m ; i++){
+
+                this.rankArr.addItem(WeixinData.friendData[i]);
+            }
+        }
+
+        this.rankPanel.visible = false;
     }
 
     private initGame():void{

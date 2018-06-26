@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="RankCellSkin" width="600" height="80" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
+	<w:Config id="1643ad28952" ></w:Config>
+	<e:Rect left="0" right="0" top="0" bottom="0" fillAlpha="0"/>
+	<e:Rect width="600" height="70" x="0" y="5" fillColor="0xe0bcbc"/>
+	<e:Label id="nameLabel" text="Label" x="80" verticalCenter="0" height="60" textAlign="center" verticalAlign="middle" width="200" textColor="0x000000" bold="true"/>
+	<e:Image id="img" width="60" height="60" x="10" verticalCenter="0"/>
+	<e:Label id="challengeLabel" text="100000" x="300" height="60" textAlign="center" verticalAlign="middle" width="150" textColor="0x000000" bold="true" y="10"/>
+	<e:Label id="endlessLabel" text="10000" x="450" verticalCenter="0" height="60" textAlign="center" verticalAlign="middle" width="150" textColor="0x000000" bold="true"/>
+</e:Skin>
