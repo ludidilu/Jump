@@ -107,11 +107,32 @@ class Main extends egret.DisplayObjectContainer {
 
             this.mainPanel.scoreGroup.visible = true;
 
-            this.mainPanel.challengeScore.text = KVDataTools.getValue(WeixinData.userInfo.KVDataList, Main.CHALLENGE_SCORE);
+            let str:string = KVDataTools.getValue(WeixinData.userInfo.KVDataList, Main.CHALLENGE_SCORE);
 
-            this.mainPanel.endlessScore.text = KVDataTools.getValue(WeixinData.userInfo.KVDataList, Main.ENDLESS_SCORE);
+            if(!str){
 
-            this.mainPanel.money.text = KVDataTools.getValue(WeixinData.userInfo.KVDataList, Main.MONEY);
+                str = "0"
+            }
+            
+            this.mainPanel.challengeScore.text = str;
+
+            str = KVDataTools.getValue(WeixinData.userInfo.KVDataList, Main.ENDLESS_SCORE);
+
+            if(!str){
+
+                str = "0"
+            }
+
+            this.mainPanel.endlessScore.text = str;
+
+            str = KVDataTools.getValue(WeixinData.userInfo.KVDataList, Main.MONEY);
+
+            if(!str){
+
+                str = "0"
+            }
+
+            this.mainPanel.money.text = str;
         }
         else{
 
