@@ -74,7 +74,7 @@ class WeixinData{
 
         let data3:{data:userGameData[]} = JSON.parse(str);
 
-        for(let i:number = data3.data.length - 1 ; i > -1 ; i++){
+        for(let i:number = data3.data.length - 1 ; i > -1 ; i--){
 
             let userGameData:userGameData = data3.data[i];
 

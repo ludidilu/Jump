@@ -9,11 +9,11 @@
 	"autoGenerateExmlsList": true,
 	"exmls": [
 		"resource/eui_skins/ButtonSkin.exml",
-		"resource/eui_skins/game/GameAlertPanel.exml",
-		"resource/eui_skins/game/GameMainPanel.exml",
 		"resource/eui_skins/main/MainPanel.exml",
 		"resource/eui_skins/main/RankCell.exml",
-		"resource/eui_skins/main/RankPanel.exml"
+		"resource/eui_skins/main/RankPanel.exml",
+		"resource/eui_skins/game/GameAlertPanel.exml",
+		"resource/eui_skins/game/GameMainPanel.exml"
 	],
 	"path": "resource/default.thm.json"
 }
