@@ -7,6 +7,38 @@
 
     "stageConfig":[
 
+        第一个表示无尽的配置
+        {
+            "maxLevel": 20,终点高度，填写0表示无尽
+
+            "heightAddSpeed": 0.625,摄像机上升速度
+
+            "coinPropProbability": 0.3,金币出现概率
+
+            "maxCoinNum": 3,金币上限
+
+            "coinXSpeed": -1,金币x轴移动速度
+
+            "coinJumpHeight": 2.4,金币弹跳高度
+
+            "itemPropProbability": 0.3,物品出现概率
+
+            "maxItemNum": 3,最大物品数量
+
+            "itemXSpeed": -1,物品x轴移动速度
+
+            "itemJumpHeight": 2.4,物品弹跳高度
+
+            "enemyPropProbability":  0.2,敌人出现概率
+
+            "maxEnemyNum":  2,最大敌人是数量
+
+            "linePropProbability": 0.2,线出现的概率
+
+            "maxLineNum": 1,线的数量上限
+        },
+
+        之后每一个都是挑战的一关
         {
             "maxLevel": 20,终点高度，填写0表示无尽
 
