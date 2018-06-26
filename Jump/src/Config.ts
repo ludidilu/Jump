@@ -3,11 +3,44 @@ class Config{
     public gameConfig:GameConfig;
 
     public mainConfig:MainConfig;
+
+    public stageConfig:StageConfig[];
 }
 
 class MainConfig{
 
     public fps:number = 60;
+}
+
+class StageConfig{
+
+    public maxLevel:number = 0;
+
+    public heightAddSpeed:number = 0.625;
+
+    public coinPropProbability:number = 0.3;
+
+    public maxCoinNum:number = 3;
+
+    public coinXSpeed:number = -1;
+
+    public coinJumpHeight:number = 2.4;
+
+    public itemPropProbability:number = 0.3;
+
+    public maxItemNum:number = 3;
+
+    public itemXSpeed:number = -1;
+
+    public itemJumpHeight:number = 2.4;
+
+    public enemyPropProbability:number = 0.2;
+
+    public maxEnemyNum:number = 2;
+
+    public linePropProbability:number = 0.2;
+
+    public maxLineNum:number = 1;
 }
 
 class GameConfig{
@@ -19,8 +52,6 @@ class GameConfig{
     public finalLadderXFix:number = 2;
 
     public terminalWidth:number = 5;
-
-    public heightAddSpeed:number = 0.625;
 
     public physicalTimeFix:number = 1.3;
 
@@ -68,13 +99,9 @@ class GameConfig{
 
     public enemyJumpProbability:number = 1;
 
-    public enemyPropProbability:number = 0.2;
-
     public propHeightFix:number = 10;
 
     public finalPropHeightFix:number = 5;
-
-    public maxEnemyNum:number = 2;
 
     public cameraFollowSpeedFix:number = 0.02;
 
@@ -98,19 +125,7 @@ class GameConfig{
 
     public lineJumpPoint:number[] = [0,0];
 
-    public linePropProbability:number = 0.2;
-
-    public maxLineNum:number = 1;
-
-    public coinPropProbability:number = 0.3;
-
-    public maxCoinNum:number = 3;
-
     public coinRadius:number = 0.3;
-
-    public coinXSpeed:number = -1;
-
-    public coinJumpHeight:number = 2.4;
 
     public coinMoveToHumanSpeed:number = 8;
 
@@ -126,15 +141,7 @@ class GameConfig{
 
     public solverIterations:number = 1;
 
-    public itemPropProbability:number = 0.3;
-
-    public maxItemNum:number = 3;
-
     public itemRadius:number = 0.5;
-
-    public itemXSpeed:number = -1;
-
-    public itemJumpHeight:number = 2.4;
 
     public humanBigSize:number = 2;
 

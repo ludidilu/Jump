@@ -1,7 +1,5 @@
 class Ladder extends BodyObj{
 
-    public static main:Game;
-
     private static gameContainer:egret.DisplayObjectContainer;
 
     public static ladder:Ladder;
@@ -113,15 +111,15 @@ class Ladder extends BodyObj{
 
     public static update():void{
 
-        if(this.main.maxLevel == 0 || this.nowHeight < this.main.maxLevel - Main.config.gameConfig.unitNum){
+        if(Game.stageConfig.maxLevel == 0 || this.nowHeight < Game.stageConfig.maxLevel - Main.config.gameConfig.unitNum){
 
             if(this.gameContainer.y > this.changeHeightValue){
 
                 let addNum:number = Math.floor((this.gameContainer.y - this.changeHeightValue) / (Main.config.gameConfig.changeUnitNum * Main.config.gameConfig.unitHeight * Main.config.gameConfig.factor)) + 1;
 
-                if(this.main.maxLevel > 0 && this.nowHeight + addNum > this.main.maxLevel - Main.config.gameConfig.unitNum){
+                if(Game.stageConfig.maxLevel > 0 && this.nowHeight + addNum > Game.stageConfig.maxLevel - Main.config.gameConfig.unitNum){
 
-                    addNum = this.main.maxLevel - Main.config.gameConfig.unitNum - this.nowHeight;
+                    addNum = Game.stageConfig.maxLevel - Main.config.gameConfig.unitNum - this.nowHeight;
                 }
 
                 this.setNowHeight(this.nowHeight + addNum);

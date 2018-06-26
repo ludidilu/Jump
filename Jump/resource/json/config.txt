@@ -5,11 +5,42 @@
         "fps": 60,帧率
     },
 
+    "stageConfig":[
+
+        {
+            "maxLevel": 20,终点高度，填写0表示无尽
+
+            "heightAddSpeed": 0.625,摄像机上升速度
+
+            "coinPropProbability": 0.3,金币出现概率
+
+            "maxCoinNum": 3,金币上限
+
+            "coinXSpeed": -1,金币x轴移动速度
+
+            "coinJumpHeight": 2.4,金币弹跳高度
+
+            "itemPropProbability": 0.3,物品出现概率
+
+            "maxItemNum": 3,最大物品数量
+
+            "itemXSpeed": -1,物品x轴移动速度
+
+            "itemJumpHeight": 2.4,物品弹跳高度
+
+            "enemyPropProbability":  0.2,敌人出现概率
+
+            "maxEnemyNum":  2,最大敌人是数量
+
+            "linePropProbability": 0.2,线出现的概率
+
+            "maxLineNum": 1,线的数量上限
+        }
+    ],
+
     "gameConfig":{
 
         "ladderWidthFix": 10,最高一层楼梯水平宽度
-
-        "heightAddSpeed": 0.625,摄像机上升速度
 
         "physicalTimeFix": 1.3,物理引擎时间系数(废弃的参数，如果修改会关联到所有的力，所以先不要去改动他了)
 
@@ -57,11 +88,7 @@
 
         "enemyJumpProbability":  1,敌人跳跃概率
 
-        "enemyPropProbability":  0.2,敌人出现概率
-
         "propHeightFix":  10,敌人、金币、线出现位置修正
-
-        "maxEnemyNum":  2,最大敌人是数量
 
         "cameraFollowSpeedFix":  0.02,摄像机跟随系数
 
@@ -85,19 +112,7 @@
 
         "lineJumpPoint": [0,0],触线跳跃力受力点
 
-        "linePropProbability": 0.2,线出现的概率
-
-        "maxLineNum": 1,线的数量上限
-
-        "coinPropProbability": 0.3,金币出现概率
-
-        "maxCoinNum": 3,金币上限
-
         "coinRadius": 0.15,金币半径
-
-        "coinXSpeed": -1,金币x轴移动速度
-
-        "coinJumpHeight": 2.4,金币弹跳高度
 
         "coinMoveToHumanSpeed": 8,金币追逐玩家的速度
 
@@ -113,15 +128,7 @@
 
         "solverIterations": 1,最大求解次数
 
-        "itemPropProbability": 0.3,物品出现概率
-
-        "maxItemNum": 3,最大物品数量
-
         "itemRadius":  0.5,物品半径
-
-        "itemXSpeed": -1,物品x轴移动速度
-
-        "itemJumpHeight": 2.4,物品弹跳高度
 
         "humanBigSize": 2,人物放大系数
 

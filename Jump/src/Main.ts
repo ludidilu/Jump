@@ -109,7 +109,7 @@ class Main extends egret.DisplayObjectContainer {
 
         this.game.visible = true;
 
-        this.game.start(20, this.gameOver.bind(this));
+        this.game.start(Main.config.stageConfig[1], this.gameOver.bind(this));
 
         this.mainPanel.visible = false;
     }
@@ -118,7 +118,7 @@ class Main extends egret.DisplayObjectContainer {
 
         this.game.visible = true;
 
-        this.game.start(0, this.gameOver.bind(this));
+        this.game.start(Main.config.stageConfig[0], this.gameOver.bind(this));
 
         this.mainPanel.visible = false;
     }

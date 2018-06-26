@@ -29,6 +29,9 @@ class Terminal extends egret.Shape{
 
     public static reset():void{
 
-        this.terminal.parent.removeChild(this.terminal);
+        if(this.terminal && this.terminal.parent){
+
+            this.terminal.parent.removeChild(this.terminal);
+        }
     }
 }

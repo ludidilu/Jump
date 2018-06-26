@@ -5,6 +5,69 @@
         "fps": 60
     },
 
+    "stageConfig":[
+
+        {
+            "maxLevel": 0,
+
+            "heightAddSpeed": 0.625,
+
+            "coinPropProbability": 5,
+
+            "maxCoinNum": 25,
+
+            "coinXSpeed": -1,
+
+            "coinJumpHeight": 2.4,
+
+            "itemPropProbability": 3,
+
+            "maxItemNum": 15,
+
+            "itemXSpeed": -1,
+
+            "itemJumpHeight": 2.4,
+
+            "enemyPropProbability": 0.2,
+
+            "maxEnemyNum":  2,
+
+            "linePropProbability": 0.2,
+
+            "maxLineNum": 1
+        },
+
+        {
+            "maxLevel": 20,
+
+            "heightAddSpeed": 0.625,
+
+            "coinPropProbability": 5,
+
+            "maxCoinNum": 25,
+
+            "coinXSpeed": -1,
+
+            "coinJumpHeight": 2.4,
+
+            "itemPropProbability": 3,
+
+            "maxItemNum": 15,
+
+            "itemXSpeed": -1,
+
+            "itemJumpHeight": 2.4,
+
+            "enemyPropProbability": 0.2,
+
+            "maxEnemyNum":  2,
+
+            "linePropProbability": 0.2,
+
+            "maxLineNum": 1
+        }
+    ],
+
     "gameConfig":{
 
         "ladderWidthFix": 10,
@@ -14,8 +77,6 @@
         "finalLadderXFix": 3,
 
         "terminalWidth": 10,
-
-        "heightAddSpeed": 0.625,
 
         "physicalTimeFix": 1.3,
 
@@ -63,13 +124,9 @@
 
         "enemyJumpProbability":  1,
 
-        "enemyPropProbability":  0.2,
-
         "propHeightFix":  8,
 
         "finalPropHeightFix": 3,
-
-        "maxEnemyNum":  2,
 
         "cameraFollowSpeedFix":  0.05,
 
@@ -93,19 +150,7 @@
 
         "lineJumpPoint": [0,0],
 
-        "linePropProbability": 0.2,
-
-        "maxLineNum": 1,
-
-        "coinPropProbability": 5,
-
-        "maxCoinNum": 25,
-
         "coinRadius": 0.15,
-
-        "coinXSpeed": -1,
-
-        "coinJumpHeight": 2.4,
 
         "coinMoveToHumanSpeed": 8,
 
@@ -121,15 +166,7 @@
 
         "solverIterations": 10,
 
-        "itemPropProbability": 3,
-
-        "maxItemNum": 15,
-
         "itemRadius":  0.3,
-
-        "itemXSpeed": -1,
-
-        "itemJumpHeight": 2.4,
 
         "humanBigSize": 2,
 

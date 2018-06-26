@@ -1,14 +1,12 @@
 class Game extends egret.DisplayObjectContainer {
 
-    public static Config:GameConfig;
+    public static stageConfig:StageConfig;
 
     public static HUMAN_GROUP:number = Math.pow(2, 0);
 
     public static LADDER_GROUP:number = Math.pow(2, 1);
 
     public static ENEMY_GROUP:number = Math.pow(2, 2);
-
-    public maxLevel:number;
 
     private world:p2.World;
 
@@ -106,8 +104,6 @@ class Game extends egret.DisplayObjectContainer {
 
         Human.main = this;
 
-        Ladder.main = this;
-
         if(Main.isWeixin){
 
             wx.onHide(this.pause.bind(this));
@@ -122,17 +118,17 @@ class Game extends egret.DisplayObjectContainer {
         }
     }
 
-    public start(_maxLevel:number, _overCallBack:(_level:number, _money:number)=>void):void{
+    public start(_stageConfig:StageConfig, _overCallBack:(_level:number, _money:number)=>void):void{
 
         this.reset();
 
-        this.maxLevel = _maxLevel;
+        Game.stageConfig = _stageConfig;
 
         this.overCallBack = _overCallBack;
 
-        if(this.maxLevel > 0){
+        if(Game.stageConfig.maxLevel > 0){
 
-            Terminal.create(this.otherContainer, this.maxLevel);
+            Terminal.create(this.otherContainer, Game.stageConfig.maxLevel);
         }
     }
 
@@ -400,7 +396,7 @@ class Game extends egret.DisplayObjectContainer {
 
         let dt = _dt * this.worldDtFix * Main.config.gameConfig.worldTimeFix;
 
-        this.gameContainer.y += Main.config.gameConfig.heightAddSpeed * Main.config.gameConfig.factor * dt * 0.001;
+        this.gameContainer.y += Game.stageConfig.heightAddSpeed * Main.config.gameConfig.factor * dt * 0.001;
 
         let targetY:number = Human.human.position[1] * Main.config.gameConfig.factor - this.stage.stageHeight * 0.5;
 
@@ -428,13 +424,13 @@ class Game extends egret.DisplayObjectContainer {
 
         let xLevel:number = Math.floor(xPos);
 
-        if(this.maxLevel > 0 && xLevel + 1 >= this.maxLevel){
+        if(Game.stageConfig.maxLevel > 0 && xLevel + 1 >= Game.stageConfig.maxLevel){
 
-            let xPosFix:number = (xPos - this.maxLevel + 1) * Main.config.gameConfig.unitWidth;
+            let xPosFix:number = (xPos - Game.stageConfig.maxLevel + 1) * Main.config.gameConfig.unitWidth;
 
             if(xPosFix > Main.config.gameConfig.finalLadderXFix){
 
-                this.setScore(this.maxLevel);
+                this.setScore(Game.stageConfig.maxLevel);
 
                 this.win();
 
@@ -442,7 +438,7 @@ class Game extends egret.DisplayObjectContainer {
             }
             else{
 
-                this.setScore(this.maxLevel - 1);
+                this.setScore(Game.stageConfig.maxLevel - 1);
             }
         }
         else{
@@ -491,18 +487,18 @@ class Game extends egret.DisplayObjectContainer {
 
         Ladder.update();
 
-        if(this.maxLevel > 0){
+        if(Game.stageConfig.maxLevel > 0){
 
             Terminal.update();
         }
 
-        if(Enemy.enemies.length < Main.config.gameConfig.maxEnemyNum && Math.random() < Main.config.gameConfig.enemyPropProbability * dt * 0.001){
+        if(Enemy.enemies.length < Game.stageConfig.maxEnemyNum && Math.random() < Game.stageConfig.enemyPropProbability * dt * 0.001){
 
             let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.gameConfig.factor / Main.config.gameConfig.unitHeight);
 
             let targetLevel:number = nowLevel + Main.config.gameConfig.propHeightFix;
 
-            if(this.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < this.maxLevel){
+            if(Game.stageConfig.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < Game.stageConfig.maxLevel){
                 
                 let x:number = (targetLevel + 0.5) * Main.config.gameConfig.unitWidth;
 
@@ -512,13 +508,13 @@ class Game extends egret.DisplayObjectContainer {
             }
         }
 
-        if(Line.lineArr.length < Main.config.gameConfig.maxLineNum && Math.random() < Main.config.gameConfig.linePropProbability * dt * 0.001){
+        if(Line.lineArr.length < Game.stageConfig.maxLineNum && Math.random() < Game.stageConfig.linePropProbability * dt * 0.001){
 
             let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.gameConfig.factor / Main.config.gameConfig.unitHeight);
 
             let targetLevel:number = nowLevel + Main.config.gameConfig.propHeightFix;
 
-            if(this.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < this.maxLevel){
+            if(Game.stageConfig.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < Game.stageConfig.maxLevel){
 
                 let y:number = (targetLevel + 0.5) * Main.config.gameConfig.unitHeight;
 
@@ -526,31 +522,31 @@ class Game extends egret.DisplayObjectContainer {
             }
         }
 
-        if(Coin.coins.length < Main.config.gameConfig.maxCoinNum && Math.random() < Main.config.gameConfig.coinPropProbability * dt * 0.001){
+        if(Coin.coins.length < Game.stageConfig.maxCoinNum && Math.random() < Game.stageConfig.coinPropProbability * dt * 0.001){
 
             let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.gameConfig.factor / Main.config.gameConfig.unitHeight);
 
             let targetLevel:number = nowLevel + Main.config.gameConfig.propHeightFix;
 
-            if(this.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < this.maxLevel){
+            if(Game.stageConfig.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < Game.stageConfig.maxLevel){
 
                 let x:number = targetLevel * Main.config.gameConfig.unitWidth + Main.config.gameConfig.triangleWidth * 2 + Math.random() * (Main.config.gameConfig.unitWidth - Main.config.gameConfig.triangleWidth * 2 - Main.config.gameConfig.coinRadius);
 
-                Coin.create(this.humanContainer, Main.config.gameConfig.coinXSpeed, Main.config.gameConfig.coinJumpHeight, x);
+                Coin.create(this.humanContainer, Game.stageConfig.coinXSpeed, Game.stageConfig.coinJumpHeight, x);
             }
         }
 
-        if(Item.items.length < Main.config.gameConfig.maxItemNum && Math.random() < Main.config.gameConfig.itemPropProbability * dt * 0.001){
+        if(Item.items.length < Game.stageConfig.maxItemNum && Math.random() < Game.stageConfig.itemPropProbability * dt * 0.001){
 
             let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.gameConfig.factor / Main.config.gameConfig.unitHeight);
 
             let targetLevel:number = nowLevel + Main.config.gameConfig.propHeightFix;
 
-            if(this.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < this.maxLevel){
+            if(Game.stageConfig.maxLevel == 0 || targetLevel + Main.config.gameConfig.finalPropHeightFix < Game.stageConfig.maxLevel){
 
                 let x:number = targetLevel * Main.config.gameConfig.unitWidth + Main.config.gameConfig.triangleWidth * 2 + Math.random() * (Main.config.gameConfig.unitWidth - Main.config.gameConfig.triangleWidth * 2 - Main.config.gameConfig.itemRadius);
 
-                Item.create(this.humanContainer, Main.config.gameConfig.itemXSpeed, Main.config.gameConfig.itemJumpHeight, x);
+                Item.create(this.humanContainer, Game.stageConfig.itemXSpeed, Game.stageConfig.itemJumpHeight, x);
             }
         }
     }
@@ -617,10 +613,7 @@ class Game extends egret.DisplayObjectContainer {
 
         Item.reset();
 
-        if(this.maxLevel > 0){
-
-            Terminal.reset();
-        }
+        Terminal.reset();
 
         this.bestScore = 0;
 
