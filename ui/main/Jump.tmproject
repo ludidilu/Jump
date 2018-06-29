@@ -1,0 +1,38 @@
+{
+    "options": {
+        "useExtension": 0,
+        "layoutGap": 1,
+        "extend": 0,
+        "layoutMath": "2",
+        "sizeMode": "2n"
+    },
+    "files": [
+        "../../../../夜市大逃亡切图/主界面/wujin_up.png",
+        "../../../../夜市大逃亡切图/主界面/wujin_down.png",
+        "../../../../夜市大逃亡切图/主界面/yu.png",
+        "../../../../夜市大逃亡切图/主界面/rou.png",
+        "../../../../夜市大逃亡切图/主界面/tufu.png",
+        "../../../../夜市大逃亡切图/主界面/paihang_down.png",
+        "../../../../夜市大逃亡切图/主界面/paihang_bg.png",
+        "../../../../夜市大逃亡切图/主界面/paihang_up.png",
+        "../../../../夜市大逃亡切图/主界面/genhuanjuese_bg.png",
+        "../../../../夜市大逃亡切图/主界面/diyijiekou_bg.png",
+        "../../../../夜市大逃亡切图/主界面/guozi.png",
+        "../../../../夜市大逃亡切图/主界面/guagou.png",
+        "../../../../夜市大逃亡切图/主界面/guanqiamoshi_up.png",
+        "../../../../夜市大逃亡切图/主界面/guanqiamoshi_down.png",
+        "../../../../夜市大逃亡切图/主界面/genhuanjuese_up.png",
+        "../../../../夜市大逃亡切图/主界面/genhuanjuese_down.png",
+        "../../../../夜市大逃亡切图/主界面/fenxiang_down.png",
+        "../../../../夜市大逃亡切图/主界面/fenxiang_bg.png",
+        "../../../../夜市大逃亡切图/主界面/fenxiang_up.png",
+        "../../../../夜市大逃亡切图/主界面/arrow_left_up.png",
+        "../../../../夜市大逃亡切图/主界面/arrow_left_down.png",
+        "../../../../夜市大逃亡切图/主界面/diyijiekou.png",
+        "../../../../夜市大逃亡切图/主界面/arrow_right_down.png",
+        "../../../../夜市大逃亡切图/主界面/arrow_right_up.png",
+        "../../../../夜市大逃亡切图/主界面/logo.png"
+    ],
+    "version": 5,
+    "projectName": "Jump"
+}

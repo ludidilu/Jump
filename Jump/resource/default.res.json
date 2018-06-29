@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "button_down_png,button_up_png,description_json,config_json,yu_png,main_json",
+			"keys": "button_down_png,button_up_png,description_json,config_json,yu_png,main_json,bg_png,counter_png",
 			"name": "preload"
 		}
 	],
@@ -36,6 +36,16 @@
 			"type": "sheet",
 			"url": "spriteSheet/main.json",
 			"subkeys": "logo,arrow_right_up,arrow_right_down,diyijiekou,arrow_left_down,arrow_left_up,fenxiang_up,fenxiang_bg,fenxiang_down,genhuanjuese_down,genhuanjuese_up,guanqiamoshi_down,guanqiamoshi_up,guagou,guozi,diyijiekou_bg,genhuanjuese_bg,paihang_up,paihang_bg,paihang_down,tufu,rou,yu,wujin_down,wujin_up"
+		},
+		{
+			"name": "bg_png",
+			"type": "image",
+			"url": "assets/bg.png"
+		},
+		{
+			"name": "counter_png",
+			"type": "image",
+			"url": "assets/counter.png"
 		}
 	]
 }
