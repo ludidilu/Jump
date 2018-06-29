@@ -14,6 +14,13 @@ class MainPanel extends eui.Component implements  eui.UIComponent {
 	protected childrenCreated():void
 	{
 		super.childrenCreated();
+
+		this.rightBt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.click, this);
+	}
+
+	private click(e:egret.TouchEvent):void{
+
+		console.log("click right");
 	}
 	
 	public challengeBt:eui.Button;
@@ -29,4 +36,6 @@ class MainPanel extends eui.Component implements  eui.UIComponent {
 	public endlessScore:eui.Label;
 
 	public money:eui.Label;
+
+	public rightBt:eui.Button;
 }

@@ -69,3 +69,4 @@ Assets/Plugins/*
 .vs/*
 /bin-debug
 /bin-release
+/.wing

@@ -10,6 +10,7 @@
 		<e:Label id="money" x="200" y="60" width="200" verticalAlign="middle" textAlign="center" scaleX="1" scaleY="1" text="aa"/>
 	</e:Group>
 	<e:Button id="challengeBt" label="Challenge" y="360" width="200" horizontalCenter="0"/>
+	<e:Button id="rightBt" label="Button" x="203.5" y="650" skinName="RightButtonSkin"/>
 	<e:Button id="endlessBt" label="Endless" y="480" width="200" horizontalCenter="0"/>
 	<e:Button id="rankBt" label="Rank" y="600" width="200" horizontalCenter="0"/>
 </e:Skin>

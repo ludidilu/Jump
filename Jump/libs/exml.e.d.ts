@@ -10,3 +10,5 @@ declare class RankCellSkin extends eui.Skin{
 }
 declare class RankPanelSkin extends eui.Skin{
 }
+declare class RightButtonSkin extends eui.Skin{
+}
