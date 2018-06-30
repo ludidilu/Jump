@@ -35,7 +35,7 @@
 			"name": "main_json",
 			"type": "sheet",
 			"url": "spriteSheet/main.json",
-			"subkeys": "logo,arrow_right_up,arrow_right_down,diyijiekou,arrow_left_down,arrow_left_up,fenxiang_up,fenxiang_bg,fenxiang_down,genhuanjuese_down,genhuanjuese_up,guanqiamoshi_down,guanqiamoshi_up,guagou,guozi,diyijiekou_bg,genhuanjuese_bg,paihang_up,paihang_bg,paihang_down,tufu,rou,yu,wujin_down,wujin_up"
+			"subkeys": "logo,arrow_right_up,arrow_right_down,diyijiekou,arrow_left_down,arrow_left_up,fenxiang_up,fenxiang_bg,fenxiang_down,genhuanjuese_down,genhuanjuese_up,guanqiamoshi_down,guanqiamoshi_up,guagou,guozi,diyijiekou_bg,genhuanjuese_bg,paihang_up,paihang_bg,paihang_down,tufu,rou,yu,wujin_down,wujin_up,ji"
 		},
 		{
 			"name": "bg_png",

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<e:Skin class="GenhuanjueseButtonSkin" states="up,down,disabled" minHeight="50" minWidth="100" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" width.up="115" height.up="280" width="115" height="280">
+
+	<e:Image width="90" height="265" x="13" y="7" source="main_json.genhuanjuese_bg"/>
+    <e:Image width="61" height="222" alpha.disabled="0.5"
+            
+             anchorOffsetX.up="-27" anchorOffsetY.up="-29" x.up="0" anchorOffsetX.down="0" anchorOffsetY.down="0" source.up="main_json.genhuanjuese_up" source.down="main_json.genhuanjuese_down" source.disabled="main_json.genhuanjuese_up" source="main_json.genhuanjuese_up" width.down="115" height.down="280" anchorOffsetX="-27" anchorOffsetY="-29"/>
+
+    
+
+	<w:Config id="1644bec9e8d" ></w:Config>
+</e:Skin>

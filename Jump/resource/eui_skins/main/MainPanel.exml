@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<e:Skin class="MainPanelSkin" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
+<e:Skin class="MainPanelSkin" width="1200" height="1920" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:ns1="*" >
 	<w:Config id="164376e109a" ></w:Config>
+	<e:Image source="bg_png" left="0" right="0" top="0" bottom="0"/>
+	<e:Image width="1041" height="852" x="79.5" y="700" anchorOffsetX="0" anchorOffsetY="0" source="main_json.tufu"/>
+	<e:Image width="1200" height="1893" anchorOffsetX="0" anchorOffsetY="0" source="counter_png" fillMode="scale" left="0" bottom="0"/>
+	<e:Image width="37" height="167" x="960" y="415" anchorOffsetX="0" anchorOffsetY="0" source="main_json.guagou"/>
+	<e:Image width="1188" height="334" x="6" y="90" anchorOffsetX="0" anchorOffsetY="0" source="main_json.logo"/>
+	<e:Image width="594" height="277" x="303" y="1640" anchorOffsetX="0" anchorOffsetY="0" source="main_json.diyijiekou_bg"/>
+	<e:Image width="494" height="140" x="353" y="1700" anchorOffsetX="0" anchorOffsetY="0" source="main_json.diyijiekou"/>
+	<e:Image width="421" height="230" x="65" y="1330" anchorOffsetX="0" anchorOffsetY="0" source="main_json.guozi"/>
+	<e:Image width="421" height="230" x="710" y="1330" anchorOffsetX="0" anchorOffsetY="0" source="main_json.guozi"/>
+	<e:Button label="Button" x="125" y="1445" skinName="GuanqiaButtonSkin"/>
+	<e:Button label="Button" x="770" y="1445" skinName="WujinButtonSkin"/>
 	<e:Group id="scoreGroup" width="640" height="1136" x="0" y="0">
 		<e:Label text="Challenge:" x="0" y="0" width="200" verticalAlign="middle" textAlign="center" scaleX="1" scaleY="1"/>
 		<e:Label text="Endless:" x="0" y="30" width="200" verticalAlign="middle" textAlign="center" scaleX="1" scaleY="1"/>
@@ -8,9 +19,19 @@
 		<e:Label id="challengeScore" x="200" y="0" width="200" verticalAlign="middle" textAlign="center" scaleX="1" scaleY="1" text="aa"/>
 		<e:Label id="endlessScore" x="200" y="30" width="200" verticalAlign="middle" textAlign="center" scaleX="1" scaleY="1" text="aa"/>
 		<e:Label id="money" x="200" y="60" width="200" verticalAlign="middle" textAlign="center" scaleX="1" scaleY="1" text="aa"/>
+		
 	</e:Group>
 	<e:Button id="challengeBt" label="Challenge" y="360" width="200" horizontalCenter="0"/>
-	<e:Button id="rightBt" label="Button" x="203.5" y="650" skinName="RightButtonSkin"/>
+
 	<e:Button id="endlessBt" label="Endless" y="480" width="200" horizontalCenter="0"/>
 	<e:Button id="rankBt" label="Rank" y="600" width="200" horizontalCenter="0"/>
+	<e:Button id="rightBt" label="Button" skinName="RightButtonSkin" x="937" y="1656"/>
+	<e:Button id="leftBt" label="Button" skinName="LeftButtonSkin" x="20" y="1666"/>
+	<e:Button label="Button" x="140" y="764" skinName="PaihangButtonSkin"/>
+	<e:Image width="37" height="167" x="240" y="415" anchorOffsetX="0" anchorOffsetY="0" source="main_json.guagou"/>
+	<e:Button label="Button" x="716" y="740" skinName="GenhuanjueseButtonSkin" width="61"/>
+	<e:Button label="Button" x="912" y="720" skinName="FenxiangButtonSkin"/>
+
+	<e:Image width="171" height="287" x="968" y="936" source="main_json.rou" anchorOffsetX="0" anchorOffsetY="0"/>
+	<e:Image width="207" height="457" x="396.5" y="804.5" source="main_json.ji" anchorOffsetX="0" anchorOffsetY="0"/>
 </e:Skin>

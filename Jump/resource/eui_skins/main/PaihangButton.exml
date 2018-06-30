@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<e:Skin class="PaihangButtonSkin" states="up,down,disabled" minHeight="50" minWidth="100" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" width.up="120" height.up="265" width="120" height="265">
+	<e:Image width="90" height="265" x="15" y="0" source="main_json.paihang_bg"/>
+    <e:Image width="64" height="165" alpha.disabled="0.5"
+            
+             anchorOffsetX.up="-28" anchorOffsetY.up="-27" x.up="0" anchorOffsetX.down="0" anchorOffsetY.down="0" source.up="main_json.paihang_up" source.down="main_json.paihang_down" source.disabled="main_json.paihang_up" source="main_json.paihang_up" width.down="120" height.down="220" anchorOffsetX="-28" anchorOffsetY="-27" y.up="25" y.down="25" y="25"/>
+
+    
+
+	<w:Config id="1644bec9e8d" ></w:Config>
+</e:Skin>

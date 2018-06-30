@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<e:Skin class="FenxiangButtonSkin" states="up,down,disabled" minHeight="50" minWidth="100" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" width.up="108" height.up="169" width="108" height="169">
+	<e:Image width="93" height="157" x="7" y="5" source="main_json.fenxiang_bg" anchorOffsetX="0" anchorOffsetY="0"/>
+    <e:Image width="54" height="114" alpha.disabled="0.5"
+            
+             anchorOffsetX.up="-27" anchorOffsetY.up="-27" x.up="0" anchorOffsetX.down="0" anchorOffsetY.down="0" source.up="main_json.fenxiang_up" source.down="main_json.fenxiang_down" source.disabled="main_json.fenxiang_up" source="main_json.fenxiang_up" width.down="108" height.down="169" anchorOffsetX="-27" anchorOffsetY="-27"/>
+
+    
+
+	<w:Config id="1644bec9e8d" ></w:Config>
+</e:Skin>
