@@ -4,7 +4,7 @@
 	<e:Image source="bg_png" left="0" right="0" top="0" bottom="0"/>
 	<e:Image width="1041" height="852" x="79.5" y="700" anchorOffsetX="0" anchorOffsetY="0" source="main_json.tufu"/>
 	<e:Image width="1200" height="1893" anchorOffsetX="0" anchorOffsetY="0" source="counter_png" fillMode="scale" left="0" bottom="0"/>
-	<e:Image width="37" height="167" x="960" y="415" anchorOffsetX="0" anchorOffsetY="0" source="main_json.guagou"/>
+	<e:Image id="guagou_rou" width="37" height="167" x="960" y="415" anchorOffsetX="0" anchorOffsetY="0" source="main_json.guagou"/>
 	<e:Image width="1188" height="334" x="6" y="90" anchorOffsetX="0" anchorOffsetY="0" source="main_json.logo"/>
 	<e:Image width="594" height="277" x="303" y="1640" anchorOffsetX="0" anchorOffsetY="0" source="main_json.diyijiekou_bg"/>
 	<e:Image width="494" height="140" x="353" y="1700" anchorOffsetX="0" anchorOffsetY="0" source="main_json.diyijiekou"/>
@@ -12,12 +12,12 @@
 	<e:Image width="421" height="230" x="710" y="1330" anchorOffsetX="0" anchorOffsetY="0" source="main_json.guozi"/>
 	<e:Button id="challengeBt" label="Button" x="125" y="1445" skinName="GuanqiaButtonSkin"/>
 	<e:Button id="endlessBt" label="Button" x="770" y="1445" skinName="WujinButtonSkin"/>
-	<e:Image width="37" height="167" x="240" y="415" anchorOffsetX="0" anchorOffsetY="0" source="main_json.guagou"/>
-	<e:Image width="207" height="457" x="140" y="500" source="main_json.ji" anchorOffsetX="0" anchorOffsetY="0"/>
-	<e:Button label="Button" x="200" y="650" skinName="GenhuanjueseButtonSkin" width="61"/>
-	<e:Image width="171" height="287" x="900" y="500" source="main_json.rou" anchorOffsetX="0" anchorOffsetY="0"/>
-	<e:Image width="224" height="371" x="490" y="1200" source="main_json.yu"/>
-	<e:Button label="Button" x="550" y="1130" skinName="FenxiangButtonSkin"/>
+	<e:Image id="guagou_ji" width="37" height="167" x="240" y="415" anchorOffsetX="0" anchorOffsetY="0" source="main_json.guagou"/>
+	<e:Image id="ji" width="207" height="457" x="140" y="500" source="main_json.ji" anchorOffsetX="0" anchorOffsetY="0"/>
+	<e:Button id="genhuanjuese" label="Button" x="200" y="650" skinName="GenhuanjueseButtonSkin" width="61"/>
+	<e:Image id="rou" width="171" height="287" x="900" y="500" source="main_json.rou" anchorOffsetX="0" anchorOffsetY="0"/>
+	<e:Image id="yu" width="224" height="371" x="490" y="1200" source="main_json.yu"/>
+	<e:Button id="fengxiangBt" label="Button" x="550" y="1130" skinName="FenxiangButtonSkin"/>
 	<e:Group id="scoreGroup" width="640" height="1136" x="0" y="0">
 		<e:Label text="Challenge:" x="0" y="0" width="200" verticalAlign="middle" textAlign="center" scaleX="1" scaleY="1"/>
 		<e:Label text="Endless:" x="0" y="30" width="200" verticalAlign="middle" textAlign="center" scaleX="1" scaleY="1"/>
