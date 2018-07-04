@@ -1,3 +1,16 @@
+class Faaa implements RES.PromiseTaskReporter{
+
+    public onProgress(current: number, total: number):void{
+
+        console.log("current:" + current + "  total:" + total);
+    }
+
+    public onCancel():void{
+
+        console.log("cancel");
+    }
+}
+
 class Main extends egret.DisplayObjectContainer {
 
     public static readonly CHALLENGE_SCORE:string = "challengeScore";
@@ -25,7 +38,7 @@ class Main extends egret.DisplayObjectContainer {
 
     private onAddToStage(event: egret.Event):void {
 
-        Connection.init();
+        // Connection.init();
 
         this.removeEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
 
@@ -44,9 +57,20 @@ class Main extends egret.DisplayObjectContainer {
     private async loadResources():Promise<void>{
 
         await RES.loadConfig("resource/default.res.json", "resource/");
+
+        console.log("aa");
+
         await this.loadTheme();
-        await RES.loadGroup("preload");
+
+        console.log("bb");
+
+        await RES.loadGroup("preload", 0, new Faaa()).catch(this.promiseCatch.bind(this));
+
+        console.log("cc");
+
         await this.loadConfig();
+
+        console.log("dd");
 
         this.start();
     }
@@ -89,9 +113,7 @@ class Main extends egret.DisplayObjectContainer {
 
         if(Main.isWeixin){
 
-            WeixinTalk.testContainer  = this;
-
-            await WeixinData.init();
+            await WeixinData.init().catch(this.promiseCatch);
         }
 
         this.initGame();
@@ -101,6 +123,11 @@ class Main extends egret.DisplayObjectContainer {
         this.refreshMainPanel();
 
         this.initRankPanel();
+    }
+
+    private promiseCatch(reason):void{
+
+        console.log("reason:" + reason);
     }
 
     private refreshMainPanel():void{
@@ -155,14 +182,23 @@ class Main extends egret.DisplayObjectContainer {
         if(Main.isWeixin){
 
             this.mainPanel.rankBt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.rankBtClick, this);
+
+            this.mainPanel.fenxiangBt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.fenxiangBtClick, this);
         }
         else{
 
             this.mainPanel.rankBt.visible = false;
+
+            this.mainPanel.fenxiangBt.visible = false;
         }
     }
 
-    private rankBtClick():void{
+    private fenxiangBtClick(e:egret.TouchEvent):void{
+
+        wx.shareAppMessage({query:"a=1,b=2"});
+    }
+
+    private rankBtClick(e:egret.TouchEvent):void{
 
         this.rankPanel.visible = true;
     }

@@ -38,4 +38,6 @@ class MainPanel extends eui.Component implements  eui.UIComponent {
 	public money:eui.Label;
 
 	public rightBt:eui.Button;
+
+	public fenxiangBt:eui.Button;
 }

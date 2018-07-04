@@ -17,7 +17,7 @@
 	<e:Button id="genhuanjuese" label="Button" x="200" y="650" skinName="GenhuanjueseButtonSkin" width="61"/>
 	<e:Image id="rou" width="171" height="287" x="900" y="500" source="main_json.rou" anchorOffsetX="0" anchorOffsetY="0"/>
 	<e:Image id="yu" width="224" height="371" x="490" y="1200" source="main_json.yu"/>
-	<e:Button id="fengxiangBt" label="Button" x="550" y="1130" skinName="FenxiangButtonSkin"/>
+	<e:Button id="fenxiangBt" label="Button" x="550" y="1130" skinName="FenxiangButtonSkin"/>
 	<e:Group id="scoreGroup" width="640" height="1136" x="0" y="0">
 		<e:Label text="Challenge:" x="0" y="0" width="200" verticalAlign="middle" textAlign="center" scaleX="1" scaleY="1"/>
 		<e:Label text="Endless:" x="0" y="30" width="200" verticalAlign="middle" textAlign="center" scaleX="1" scaleY="1"/>
