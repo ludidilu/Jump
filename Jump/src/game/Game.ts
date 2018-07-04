@@ -320,7 +320,8 @@ class Game extends egret.DisplayObjectContainer {
 
         //创建world
         this.world = new p2.World({gravity:Main.config.gameConfig.gravity});
-        this.world.sleepMode = p2.World.BODY_SLEEPING;
+        this.world.emitImpactEvent = false;
+        this.world.sleepMode = p2.World.NO_SLEEPING;
 
         (<p2.GSSolver>this.world.solver).iterations = Main.config.gameConfig.solverIterations;
 

@@ -15,12 +15,12 @@
 		"resource/eui_skins/main/GenhuanjueseButton.exml",
 		"resource/eui_skins/main/GuanqiaButton.exml",
 		"resource/eui_skins/main/LeftButton.exml",
-		"resource/eui_skins/main/MainPanel.exml",
-		"resource/eui_skins/main/PaihangButton.exml",
-		"resource/eui_skins/main/RankCell.exml",
-		"resource/eui_skins/main/RankPanel.exml",
+		"resource/eui_skins/main/WujinButton.exml",
 		"resource/eui_skins/main/RightButton.exml",
-		"resource/eui_skins/main/WujinButton.exml"
+		"resource/eui_skins/main/PaihangButton.exml",
+		"resource/eui_skins/main/MainPanel.exml",
+		"resource/eui_skins/main/RankCell.exml",
+		"resource/eui_skins/main/RankPanel.exml"
 	],
 	"path": "resource/default.thm.json"
 }

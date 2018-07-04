@@ -110,9 +110,9 @@
 
         "restitution": 0,弹力系数
 
-        "humanDumpling": 0.1,人的空气阻力
+        "humanDamping": 0.1,人的空气阻力
 
-        "humanAngularDampling": 0.1,人的角空气阻力
+        "humanAngularDamping": 0.1,人的角空气阻力
 
         "humanSleepXFix":  0.5,人的移动修正
 

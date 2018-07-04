@@ -31,7 +31,7 @@ class Enemy extends Human{
 
         if(Enemy.pool.length == 0){
 
-            enemy = new Enemy({ mass: 1, damping :Main.config.gameConfig.humanDampling, angularDampling:Main.config.gameConfig.humanAngularDampling});
+            enemy = new Enemy({ mass: 1, damping :Main.config.gameConfig.humanDamping, angularDamping:Main.config.gameConfig.humanAngularDamping});
 
             enemy.bodyType = BodyObjType.ENEMY;
 

@@ -272,7 +272,7 @@ class Human extends MoveBodyObj{
 
     public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _x:number, _y:number):Human{
         
-        this.human = new Human({mass:1, damping:Main.config.gameConfig.humanDampling, angularDampling:Main.config.gameConfig.humanAngularDampling, gravityScale:Main.config.gameConfig.humanGravityScale});
+        this.human = new Human({mass:1, damping:Main.config.gameConfig.humanDamping, angularDamping:Main.config.gameConfig.humanAngularDamping, gravityScale:Main.config.gameConfig.humanGravityScale});
 
         this.human.bodyType = BodyObjType.HUMAN;
 

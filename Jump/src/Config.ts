@@ -89,9 +89,9 @@ class GameConfig{
 
     public restitution:number = 0;
 
-    public humanDampling:number = 0.1;
+    public humanDamping:number = 0.1;
 
-    public humanAngularDampling:number = 0.1;
+    public humanAngularDamping:number = 0.1;
 
     public humanGravityScale:number = 1;
 

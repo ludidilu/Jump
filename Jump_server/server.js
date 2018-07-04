@@ -12,8 +12,14 @@ let lagList = [];
 
 let isLagRunning = false;
 
+let p2 = require("./lib.js")();
+
+let world = new p2.World();
 
 
+
+
+//world.human.getArea();
 
 let io = require('socket.io')();
 
