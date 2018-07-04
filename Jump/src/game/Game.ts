@@ -253,28 +253,7 @@ class Game extends egret.DisplayObjectContainer {
 
         console.log("share!!!");
 
-        // wx.shareAppMessage({success:this.shareSuccess.bind(this), fail:this.shareFail.bind(this), complete:this.shareComplete.bind(this)});
-
-        // this.pause();
-
-        // SuperTicker.getInstance().resume();
-
-        let nowLevel:number = Math.floor(this.gameContainer.y / Main.config.gameConfig.factor / Main.config.gameConfig.unitHeight);
-
-        let targetLevel:number = nowLevel + Main.config.gameConfig.propHeightFix;
-
-        let x:number = (targetLevel + 0.5) * Main.config.gameConfig.unitWidth;
-
-        Human.human.reset();
-
-        if(Math.random() < 0.5){
-
-            Coin.create(this.humanContainer, -1 + Math.random() - 0.5, 2, x);
-        }
-        else{
-
-            Item.create(this.humanContainer, -1 + Math.random() - 0.5, 2, x);
-        }
+        wx.shareAppMessage({query:"a=1,b=2"});
     }
 
     private shareSuccess(v):void{

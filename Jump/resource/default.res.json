@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "button_down_png,button_up_png,description_json,config_json,yu_png,main_json,bg_png,counter_png",
+			"keys": "button_down_png,button_up_png,description_json,config_json,yu_png,main_json,bg_png,counter_png,gameEui_json",
 			"name": "preload"
 		}
 	],
@@ -46,6 +46,11 @@
 			"name": "counter_png",
 			"type": "image",
 			"url": "assets/counter.png"
+		},
+		{
+			"name": "gameEui_json",
+			"type": "json",
+			"url": "gameEui.json"
 		}
 	]
 }

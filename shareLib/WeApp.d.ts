@@ -42,5 +42,5 @@ declare class wx{
     public static getFriendCloudStorage(object: {keyList:string[],success:(res:{data:userGameData[]})=>void,fail:(res:any)=>void,complete:(res:any)=>void}): void;
     public static getGroupCloudStorage(object: {shareTicket:string,success:(res:{data:userGameData[]})=>void,fail:(res:any)=>void,complete:(res:any)=>void}):void;
 
-    public static shareAppMessage(object:{title?:string, imageUrl?:string, query?:string, success?:(res:any)=>void, fail?:(res:any)=>void,complete?:(res:any)=>void}):void;
+    public static shareAppMessage(object:{title?:string, imageUrl?:string, query?:string}):void;
 }

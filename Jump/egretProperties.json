@@ -33,6 +33,10 @@
 		{
 			"name": "physics",
 			"path": "../physicslibsrc"
+		},
+		{
+			"name": "socket.io",
+			"path": "../socket.io"
 		}
 	]
 }
