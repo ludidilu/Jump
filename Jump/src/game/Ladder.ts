@@ -1,54 +1,6 @@
 class Ladder extends BodyObj{
 
-    // private static gameContainer:egret.DisplayObjectContainer;
-
-    private static ladderWithDisplayObjectPool:Ladder[] = [];
-
-    private static ladderWithoutDisplayObjectPool:Ladder[] = [];
-
-    private static ladderArr:Ladder[] = [];
-
-    public static getLadder(_world:p2.World, _mapContainer:egret.DisplayObjectContainer, _mat:p2.Material, _collisionGroup:number):Ladder{
-
-        let ladder:Ladder;
-
-        if(_mapContainer){
-
-            if(this.ladderWithDisplayObjectPool.length > 0){
-
-                ladder = this.ladderWithDisplayObjectPool.pop();
-
-                for(let i:number = 0, m:number = ladder.shapes.length ; i < m ; i++){
-
-                    ladder.shapes[i].collisionGroup = _collisionGroup;
-                }
-            }
-            else{
-
-                ladder = this.create(_world, _mapContainer, _mat, _collisionGroup);
-            }
-        }
-        else{
-
-            if(this.ladderWithoutDisplayObjectPool.length > 0){
-
-                ladder = this.ladderWithoutDisplayObjectPool.pop();
-
-                for(let i:number = 0, m:number = ladder.shapes.length ; i < m ; i++){
-
-                    ladder.shapes[i].collisionGroup = _collisionGroup;
-                }
-            }
-            else{
-
-                ladder = this.create(_world, _mapContainer, _mat, _collisionGroup);
-            }
-        }
-
-        return ladder;
-    }
-
-    public static create(_world:p2.World, _mapContainer:egret.DisplayObjectContainer, _mat:p2.Material, _collisionGroup:number):Ladder{
+    public static create(_mapContainer:egret.DisplayObjectContainer, _mat:p2.Material, _collisionGroup:number):Ladder{
 
         let verticesOrigin:number[][] = [[Main.config.gameConfig.unitWidth, Main.config.gameConfig.unitHeight], [Main.config.gameConfig.triangleWidth, Main.config.gameConfig.unitHeight],[0, Main.config.gameConfig.unitHeight - Main.config.gameConfig.triangleHeight],[0,0]];
 
@@ -139,8 +91,6 @@ class Ladder extends BodyObj{
             ladder.displays = [];
         }
         
-        _world.addBody(ladder);
-
         let minX:number = Number.MAX_VALUE;
         let minY:number = Number.MAX_VALUE;
 
@@ -216,19 +166,6 @@ class Ladder extends BodyObj{
     public remove():void{
 
         this.world.removeBody(this);
-
-        if(this.displays.length > 0){
-
-            let display:egret.DisplayObject = this.displays[0];
-
-            display.parent.removeChild(display);
-
-            Ladder.ladderWithDisplayObjectPool.push(this);
-        }
-        else{
-
-            Ladder.ladderWithoutDisplayObjectPool.push(this);
-        }
     }
 
     public reset():void{

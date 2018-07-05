@@ -46,6 +46,8 @@ class Enemy extends Human{
             _world.addBody(enemy);
         }
 
+        _world.addBody(enemy.ladder);
+
         enemy.setPosition(_x, _y);
         
         enemy.updateDisplaysPosition(0);
@@ -60,6 +62,8 @@ class Enemy extends Human{
         super.reset();
 
         this.world.removeBody(this);
+
+        this.ladder.remove();
 
         let display:egret.DisplayObject = this.displays[0];
 

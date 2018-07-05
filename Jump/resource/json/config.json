@@ -84,7 +84,7 @@
 
         "worldTimeFix": 1,
 
-        "factor":  40,
+        "factor":  160,
 
         "unitHeight":  2.4,
 
@@ -94,7 +94,7 @@
 
         "triangleHeight":  0.4,
 
-        "unitNum":  8,
+        "unitNum":  6,
 
         "ladderChangeUnitNum":  1,
 

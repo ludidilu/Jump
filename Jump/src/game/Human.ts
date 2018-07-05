@@ -35,7 +35,7 @@ class Human extends MoveBodyObj{
 
     public sizeFix:number = 1;
 
-    private ladder:Ladder;
+    protected ladder:Ladder;
 
     public containerX:number;
 
@@ -427,6 +427,8 @@ class Human extends MoveBodyObj{
 
         this.initHuman(this.human, _world, _length, _radius, 0xffff00, _ladderWithDisplayObject);
 
+        _world.addBody(this.human.ladder);
+
         this.human.setPosition(_x, _y);
         
         this.human.updateDisplaysPosition(0);
@@ -502,7 +504,7 @@ class Human extends MoveBodyObj{
 
         _human.uid = this.getHumanUid();
 
-        _human.ladder = Ladder.getLadder(_world, _ladderWithDisplayObject ? Human.main.mapContainer : null, Human.main.ladderMat, Math.pow(2, _human.uid));
+        _human.ladder = Ladder.create(_ladderWithDisplayObject ? Human.main.mapContainer : null, Human.main.ladderMat, Math.pow(2, _human.uid));
     }
 
     public reset():void{
