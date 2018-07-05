@@ -1,31 +1,82 @@
 class Ladder extends BodyObj{
 
-    private static gameContainer:egret.DisplayObjectContainer;
+    // private static gameContainer:egret.DisplayObjectContainer;
 
-    public static ladder:Ladder;
+    private static ladderWithDisplayObjectPool:Ladder[] = [];
 
-    private static nowHeight:number;
+    private static ladderWithoutDisplayObjectPool:Ladder[] = [];
 
-    private static changeHeightValue:number;
+    private static ladderArr:Ladder[] = [];
 
-    public static create(_world:p2.World, _gameContainer:egret.DisplayObjectContainer, _mapContainer:egret.DisplayObjectContainer, _mat:p2.Material):void{
+    private nowHeight:number;
 
-        this.gameContainer = _gameContainer;
+    private changeHeightValue:number;
+
+    public static getLadder(_world:p2.World, _mapContainer:egret.DisplayObjectContainer, _mat:p2.Material, _collisionGroup:number):Ladder{
+
+        let ladder:Ladder;
+
+        if(_mapContainer){
+
+            if(this.ladderWithDisplayObjectPool.length > 0){
+
+                ladder = this.ladderWithDisplayObjectPool.pop();
+
+                for(let i:number = 0, m:number = ladder.shapes.length ; i < m ; i++){
+
+                    ladder.shapes[i].collisionGroup = _collisionGroup;
+                }
+            }
+            else{
+
+                ladder = this.create(_world, _mapContainer, _mat, _collisionGroup);
+            }
+        }
+        else{
+
+            if(this.ladderWithoutDisplayObjectPool.length > 0){
+
+                ladder = this.ladderWithoutDisplayObjectPool.pop();
+
+                for(let i:number = 0, m:number = ladder.shapes.length ; i < m ; i++){
+
+                    ladder.shapes[i].collisionGroup = _collisionGroup;
+                }
+            }
+            else{
+
+                ladder = this.create(_world, _mapContainer, _mat, _collisionGroup);
+            }
+        }
+
+        return ladder;
+    }
+
+    public static create(_world:p2.World, _mapContainer:egret.DisplayObjectContainer, _mat:p2.Material, _collisionGroup:number):Ladder{
 
         let verticesOrigin:number[][] = [[Main.config.gameConfig.unitWidth, Main.config.gameConfig.unitHeight], [Main.config.gameConfig.triangleWidth, Main.config.gameConfig.unitHeight],[0, Main.config.gameConfig.unitHeight - Main.config.gameConfig.triangleHeight],[0,0]];
 
-        let conDisplay:egret.Shape = new egret.Shape();
+        let conDisplay:egret.Shape;
 
-        conDisplay.graphics.beginFill(0xff0000);
+        let factorFix:number;
 
-        let factorFix:number = 0.2;
+        let factor:number;
 
-        let factor:number = Main.config.gameConfig.factor * factorFix;
+        if(_mapContainer){
 
-        conDisplay.graphics.moveTo((Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix) * factor, 0);
+            conDisplay = new egret.Shape();
 
-        conDisplay.graphics.lineTo((Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix) * factor, Main.config.gameConfig.unitHeight * Main.config.gameConfig.unitNum * -factor);
+            conDisplay.graphics.beginFill(0xff0000);
 
+            factorFix = 0.2;
+
+            factor = Main.config.gameConfig.factor * factorFix;
+
+            conDisplay.graphics.moveTo((Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix) * factor, 0);
+
+            conDisplay.graphics.lineTo((Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix) * factor, Main.config.gameConfig.unitHeight * Main.config.gameConfig.unitNum * -factor);
+        }
+        
         let vertices:number[][] = [];
 
         vertices.push([Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix, -Main.config.gameConfig.ladderHeightFix]);
@@ -44,49 +95,66 @@ class Ladder extends BodyObj{
 
                     arr2 = [arr[0] + m * Main.config.gameConfig.unitWidth,arr[1] + m * Main.config.gameConfig.unitHeight - Main.config.gameConfig.ladderHeightFix];
 
-                    conDisplay.graphics.lineTo((arr[0] + m * Main.config.gameConfig.unitWidth) * factor, (arr[1] + m * Main.config.gameConfig.unitHeight - Main.config.gameConfig.ladderHeightFix) * -factor);
+                    if(_mapContainer){
+
+                        conDisplay.graphics.lineTo((arr[0] + m * Main.config.gameConfig.unitWidth) * factor, (arr[1] + m * Main.config.gameConfig.unitHeight - Main.config.gameConfig.ladderHeightFix) * -factor);
+                    }
                 }
                 else{
 
                     arr2 = [arr[0] + m * Main.config.gameConfig.unitWidth,arr[1] + m * Main.config.gameConfig.unitHeight];
 
-                    conDisplay.graphics.lineTo((arr[0] + m * Main.config.gameConfig.unitWidth) * factor, (arr[1] + m * Main.config.gameConfig.unitHeight) * -factor);
+                    if(_mapContainer){
+
+                        conDisplay.graphics.lineTo((arr[0] + m * Main.config.gameConfig.unitWidth) * factor, (arr[1] + m * Main.config.gameConfig.unitHeight) * -factor);
+                    }
                 }
 
                 vertices.push(arr2);
             }
         }
 
-        conDisplay.graphics.lineTo((Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix) * factor, -Main.config.gameConfig.ladderHeightFix * factor);
+        let ladder:Ladder = new Ladder();
 
-        conDisplay.graphics.endFill();
+        ladder.bodyType = BodyObjType.LADDER;
 
-        let container:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();
+        ladder.fromPolygon(vertices);
 
-        container.addChild(conDisplay);
+        if(_mapContainer){
+
+            conDisplay.graphics.lineTo((Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix) * factor, -Main.config.gameConfig.ladderHeightFix * factor);
+
+            conDisplay.graphics.endFill();
+
+            let container:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();
+
+            container.addChild(conDisplay);
+            
+            conDisplay.scaleX = 1 / factorFix;
+
+            conDisplay.scaleY = 1 / factorFix;
+
+            _mapContainer.addChild(container);
+
+            ladder.displays = [container];
+        }
+        else{
+
+            ladder.displays = [];
+        }
         
-        conDisplay.scaleX = 1 / factorFix;
-
-        conDisplay.scaleY = 1 / factorFix;
-
-        _mapContainer.addChild(container);
-
-        this.ladder = new Ladder();
-        this.ladder.bodyType = BodyObjType.LADDER;
-        this.ladder.fromPolygon(vertices);
-        this.ladder.displays = [container];
-        _world.addBody(this.ladder);
+        _world.addBody(ladder);
 
         let minX:number = Number.MAX_VALUE;
         let minY:number = Number.MAX_VALUE;
 
-        for(let i:number = 0, n:number = this.ladder.shapes.length; i < n ; i++){
+        for(let i:number = 0, n:number = ladder.shapes.length; i < n ; i++){
 
-            let shape:p2.Convex = <p2.Convex>this.ladder.shapes[i];
+            let shape:p2.Convex = <p2.Convex>ladder.shapes[i];
 
             shape.material = _mat;
 
-            shape.collisionGroup = Game.LADDER_GROUP;
+            shape.collisionGroup = _collisionGroup;
 
             shape.collisionMask = Game.HUMAN_GROUP | Game.ENEMY_GROUP;
 
@@ -110,23 +178,25 @@ class Ladder extends BodyObj{
             }
         }
 
-        for(let i:number = 0, n:number = this.ladder.shapes.length; i < n ; i++){
+        for(let i:number = 0, n:number = ladder.shapes.length; i < n ; i++){
 
-            let shape:p2.Shape = this.ladder.shapes[i];
+            let shape:p2.Shape = ladder.shapes[i];
 
             shape.position[0] -= minX;
 
             shape.position[1] = shape.position[1] - minY - Main.config.gameConfig.ladderHeightFix;
         }
+
+        return ladder;
     }
 
-    public static update():void{
+    public update(_y:number):void{
 
         if(Game.stageConfig.maxLevel == 0 || this.nowHeight < Game.stageConfig.maxLevel - Main.config.gameConfig.unitNum){
 
-            if(this.gameContainer.y > this.changeHeightValue){
+            if(_y > this.changeHeightValue){
 
-                let addNum:number = Math.floor((this.gameContainer.y - this.changeHeightValue) / (Main.config.gameConfig.ladderChangeUnitNum * Main.config.gameConfig.unitHeight * Main.config.gameConfig.factor)) + 1;
+                let addNum:number = Math.floor((_y - this.changeHeightValue) / (Main.config.gameConfig.ladderChangeUnitNum * Main.config.gameConfig.unitHeight * Main.config.gameConfig.factor)) + 1;
 
                 if(Game.stageConfig.maxLevel > 0 && this.nowHeight + addNum > Game.stageConfig.maxLevel - Main.config.gameConfig.unitNum){
 
@@ -135,30 +205,54 @@ class Ladder extends BodyObj{
 
                 this.setNowHeight(this.nowHeight + addNum);
 
-                let ladderX:number = this.ladder.position[0] + (Main.config.gameConfig.unitWidth * Main.config.gameConfig.ladderChangeUnitNum * addNum);
+                let ladderX:number = this.position[0] + (Main.config.gameConfig.unitWidth * Main.config.gameConfig.ladderChangeUnitNum * addNum);
 
-                let ladderY:number = this.ladder.position[1] + (Main.config.gameConfig.unitHeight * Main.config.gameConfig.ladderChangeUnitNum * addNum);
+                let ladderY:number = this.position[1] + (Main.config.gameConfig.unitHeight * Main.config.gameConfig.ladderChangeUnitNum * addNum);
 
-                this.ladder.setPosition(ladderX, ladderY);
+                this.setPosition(ladderX, ladderY);
 
-                this.ladder.updateDisplaysPosition();
+                if(this.displays.length > 0){
+
+                    this.updateDisplaysPosition();
+                }
             }
         }
     }
 
-    private static setNowHeight(_v:number):void{
+    public remove():void{
+
+        this.world.removeBody(this);
+
+        if(this.displays.length > 0){
+
+            let display:egret.DisplayObject = this.displays[0];
+
+            display.parent.removeChild(display);
+
+            Ladder.ladderWithDisplayObjectPool.push(this);
+        }
+        else{
+
+            Ladder.ladderWithoutDisplayObjectPool.push(this);
+        }
+    }
+
+    private setNowHeight(_v:number):void{
 
         this.nowHeight = _v;
 
         this.changeHeightValue = (this.nowHeight + 1 + Main.config.gameConfig.ladderChangeUnitFix) * Main.config.gameConfig.ladderChangeUnitNum * Main.config.gameConfig.unitHeight * Main.config.gameConfig.factor;
     }
 
-    public static reset():void{
+    public reset():void{
 
-        this.ladder.setPosition(0, 0);
-
-        this.ladder.updateDisplaysPosition();
+        this.setPosition(0, 0);
 
         this.setNowHeight(0);
+
+        if(this.displays.length > 0){
+
+            this.updateDisplaysPosition();
+        }
     }
 }
