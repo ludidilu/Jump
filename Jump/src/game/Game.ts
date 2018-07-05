@@ -4,9 +4,7 @@ class Game extends egret.DisplayObjectContainer {
 
     public static HUMAN_GROUP:number = Math.pow(2, 0);
 
-    public static LADDER_GROUP:number = Math.pow(2, 1);
-
-    public static ENEMY_GROUP:number = Math.pow(2, 2);
+    public static STAGE_WIDTH:number = 1200;
 
     public static STAGE_HEIGHT:number = 1920;
 
@@ -18,9 +16,9 @@ class Game extends egret.DisplayObjectContainer {
 
     public isCoinDouble:boolean = false;
 
-    private ladderMat:p2.Material;
+    public ladderMat:p2.Material;
 
-    private humanMat:p2.Material;
+    public humanMat:p2.Material;
 
     private humanDisplay:egret.DisplayObject;
 
@@ -30,13 +28,13 @@ class Game extends egret.DisplayObjectContainer {
 
     private bgContainer:egret.DisplayObjectContainer;
 
-    private gameContainer:egret.DisplayObjectContainer;
+    public gameContainer:egret.DisplayObjectContainer;
 
-    private mapContainer:egret.DisplayObjectContainer;
+    public mapContainer:egret.DisplayObjectContainer;
 
     private otherContainer:egret.DisplayObjectContainer;
 
-    private humanContainer:egret.DisplayObjectContainer;
+    public humanContainer:egret.DisplayObjectContainer;
 
     private iconContainer:egret.DisplayObjectContainer;
 
@@ -45,10 +43,6 @@ class Game extends egret.DisplayObjectContainer {
     private itemBtContainer:egret.DisplayObjectContainer;
 
     private uiContainer:egret.DisplayObjectContainer;
-
-    private firstCameraFollowTime:number;
-
-    private firstCameraPosX:number;
 
     private mainPanel:GameMainPanel;
 
@@ -82,6 +76,8 @@ class Game extends egret.DisplayObjectContainer {
 
     private init():void{
 
+        Human.main = this;
+
         this.createContainers();
 
         this.createBg();
@@ -92,8 +88,6 @@ class Game extends egret.DisplayObjectContainer {
 
         this.createWorldAndPlane();
 
-        this.createLadder();
-
         this.createHuman();
 
         this.createHint();
@@ -103,8 +97,6 @@ class Game extends egret.DisplayObjectContainer {
         Coin.init(this);
 
         Item.init(this.itemBt.show.bind(this.itemBt));
-
-        Human.main = this;
 
         if(Main.isWeixin){
 
@@ -309,11 +301,6 @@ class Game extends egret.DisplayObjectContainer {
         SuperTicker.getInstance().addEventListener(this.update, this);
     }
 
-    private createLadder():void{
-
-        Ladder.create(this.world, this.gameContainer, this.mapContainer, this.ladderMat);
-    }
-
     private createWorldAndPlane():void{
 
         this.ladderMat = new p2.Material(1);
@@ -348,7 +335,7 @@ class Game extends egret.DisplayObjectContainer {
 
     private createHuman():void{
 
-        let human:Human = Human.create(this.world, Main.config.gameConfig.humanLength, Main.config.gameConfig.humanRadius, this.humanContainer, this.humanMat, Main.config.gameConfig.humanStartPos[0], Main.config.gameConfig.humanStartPos[1]);
+        let human:Human = Human.create(this.world, Main.config.gameConfig.humanLength, Main.config.gameConfig.humanRadius, Main.config.gameConfig.humanStartPos[0], Main.config.gameConfig.humanStartPos[1], true);
 
         this.humanDisplay = human.displays[0];
     }
@@ -368,12 +355,12 @@ class Game extends egret.DisplayObjectContainer {
 
     private update(_dt:number):void{
 
-        if(this.data2.arr.indexOf(Game.tick) != -1){
+        // if(this.data2.arr.indexOf(Game.tick) != -1){
 
-            this.touchBg(null);
-        }
+        //     this.touchBg(null);
+        // }
 
-        Game.tick++;
+        // Game.tick++;
 
         _dt = 16;
 
@@ -400,79 +387,11 @@ class Game extends egret.DisplayObjectContainer {
 
         let dt = _dt * this.worldDtFix * Main.config.gameConfig.worldTimeFix;
 
-        this.gameContainer.y += Game.stageConfig.heightAddSpeed * Main.config.gameConfig.factor * dt * 0.001;
+        Human.human.updateContainerPosition(dt);
 
-        let targetY:number = Human.human.position[1] * Main.config.gameConfig.factor - Game.STAGE_HEIGHT * 0.5;
+        this.gameContainer.x = Human.human.containerX;
 
-        if(targetY > this.gameContainer.y){
-
-            this.gameContainer.y = this.gameContainer.y + (targetY - this.gameContainer.y) * Main.config.gameConfig.cameraFollowSpeedFix;
-        }
-
-        let targetX:number = -this.gameContainer.y * Main.config.gameConfig.unitWidth / Main.config.gameConfig.unitHeight;
-
-        this.firstCameraFollowTime += dt;
-
-        if(this.firstCameraFollowTime < Main.config.gameConfig.firstCameraFollowTime){
-
-            let nowX:number = this.stage.stageWidth * 0.5 - this.humanDisplay.x;
-
-            this.gameContainer.x = nowX + (targetX - nowX) * this.firstCameraFollowTime / Main.config.gameConfig.firstCameraFollowTime;
-
-        }else{
-
-            this.gameContainer.x = targetX;
-        }
-        
-        let xPos:number = Human.human.position[0] / Main.config.gameConfig.unitWidth;
-
-        let xLevel:number = Math.floor(xPos);
-
-        if(Game.stageConfig.maxLevel > 0 && xLevel + 1 >= Game.stageConfig.maxLevel){
-
-            let xPosFix:number = (xPos - Game.stageConfig.maxLevel + 1) * Main.config.gameConfig.unitWidth;
-
-            if(xPosFix > Main.config.gameConfig.finalLadderXFix){
-
-                this.setScore(Game.stageConfig.maxLevel);
-
-                console.log("data:" + JSON.stringify(Game.data));
-
-                console.log("a:" + Game.strstr);
-
-                this.win();
-
-                return;
-            }
-            else{
-
-                this.setScore(Game.stageConfig.maxLevel - 1);
-            }
-        }
-        else{
-
-            let xPosFix:number = (xPos - xLevel) * Main.config.gameConfig.unitWidth;
-
-            if(xPosFix > Main.config.gameConfig.ladderXFix){
-
-                this.setScore(xLevel + 1);
-            }
-            else{
-
-                this.setScore(xLevel);
-            }
-        }
-
-        let p:egret.Point = this.gameContainer.localToGlobal(this.humanDisplay.x, this.humanDisplay.y);
-
-        if(p.y > Game.STAGE_HEIGHT + (Main.config.gameConfig.humanLength * 0.5 + Main.config.gameConfig.humanRadius) * Human.human.sizeFix * Main.config.gameConfig.factor){
-
-            this.lose();
-
-            console.log("a:" + Game.strstr);
-
-            return;
-        }
+        this.gameContainer.y = Human.human.containerY;
 
         if(this.humanDisplay.x + this.gameContainer.x < 0){
 
@@ -487,6 +406,8 @@ class Game extends egret.DisplayObjectContainer {
 
         Human.human.updateDisplaysPosition(dt);
 
+        Human.human.updateLadder();
+
         Enemy.update(dt);
 
         Line.update();
@@ -494,8 +415,6 @@ class Game extends egret.DisplayObjectContainer {
         Coin.update(_dt);
 
         Item.update(_dt);
-
-        Ladder.update();
 
         if(Game.stageConfig.maxLevel > 0){
 
@@ -514,7 +433,7 @@ class Game extends egret.DisplayObjectContainer {
 
                 let y:number = (targetLevel + 1.5) * Main.config.gameConfig.unitHeight;
 
-                Enemy.create(this.world, Main.config.gameConfig.humanLength, Main.config.gameConfig.humanRadius, this.humanContainer, this.humanMat, x, y);
+                Enemy.create(this.world, Main.config.gameConfig.humanLength, Main.config.gameConfig.humanRadius, x, y);
             }
         }
 
@@ -561,7 +480,7 @@ class Game extends egret.DisplayObjectContainer {
         }
     }
 
-    private setScore(_score:number):void{
+    public setScore(_score:number):void{
 
         if(_score > this.bestScore){
 
@@ -571,7 +490,7 @@ class Game extends egret.DisplayObjectContainer {
         }
     }
 
-    private win():void{
+    public win():void{
 
         SuperTicker.getInstance().removeEventListener(this.update, this);
 
@@ -586,7 +505,7 @@ class Game extends egret.DisplayObjectContainer {
         this.itemBt.reset();
     }
 
-    private lose():void{
+    public lose():void{
 
         this.hint.visible = false;
 
@@ -611,10 +530,6 @@ class Game extends egret.DisplayObjectContainer {
 
         this.firstJump = false;
 
-        this.firstCameraFollowTime = 0;
-
-        Ladder.reset();
-
         Enemy.reset();
 
         Line.reset();
@@ -633,17 +548,15 @@ class Game extends egret.DisplayObjectContainer {
 
         this.mainPanel.money.text = "$" + this.nowMoney;
 
-        Human.human.reset();
-
         Human.human.setPosition(Main.config.gameConfig.humanStartPos[0], Main.config.gameConfig.humanStartPos[1]);
+
+        Human.human.reset();
 
         Human.human.updateDisplaysPosition(0);
 
-        this.gameContainer.x = -this.humanDisplay.x + this.stage.stageWidth * 0.5;
+        this.gameContainer.x = Human.human.containerX;
 
-        this.gameContainer.y = -this.humanDisplay.y + Game.STAGE_HEIGHT * 0.5;
-
-        this.firstCameraPosX = this.gameContainer.x;
+        this.gameContainer.y = Human.human.containerY;
     }
 
     private touchBg(e: egret.TouchEvent): void {

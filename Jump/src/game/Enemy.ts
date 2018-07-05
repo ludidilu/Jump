@@ -25,7 +25,7 @@ class Enemy extends Human{
         }
     }
 
-    public static create(_world:p2.World, _length:number, _radius:number, _container:egret.DisplayObjectContainer, _mat:p2.Material, _x:number, _y:number):Enemy{
+    public static create(_world:p2.World, _length:number, _radius:number, _x:number, _y:number):Enemy{
 
         let enemy:Enemy;
 
@@ -35,13 +35,13 @@ class Enemy extends Human{
 
             enemy.bodyType = BodyObjType.ENEMY;
 
-            Human.initHuman( enemy, _world, _length, _radius, _container, _mat, 0x0000ff);
+            Human.initHuman( enemy, _world, _length, _radius, 0x0000ff, false);
         }
         else{
 
             enemy = Enemy.pool.pop();
 
-            _container.addChild(enemy.displays[0]);
+            Human.main.humanContainer.addChild(enemy.displays[0]);
 
             _world.addBody(enemy);
         }
@@ -85,6 +85,10 @@ class Enemy extends Human{
                 enemy.reset();
 
                 this.enemies.splice(i,1);
+            }
+            else{
+
+                enemy.updateLadder();
             }
         }
     }

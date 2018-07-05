@@ -12,7 +12,7 @@
 
             "heightAddSpeed": 0.625,
 
-            "coinPropProbability": 5,
+            "coinPropProbability": 0,
 
             "maxCoinNum": 25,
 
@@ -20,7 +20,7 @@
 
             "coinJumpHeight": 2.4,
 
-            "itemPropProbability": 3,
+            "itemPropProbability": 0,
 
             "maxItemNum": 15,
 
@@ -28,11 +28,11 @@
 
             "itemJumpHeight": 2.4,
 
-            "enemyPropProbability": 0.2,
+            "enemyPropProbability": 1000,
 
-            "maxEnemyNum":  2,
+            "maxEnemyNum":  5,
 
-            "linePropProbability": 0.2,
+            "linePropProbability": 0,
 
             "maxLineNum": 1
         },
@@ -42,7 +42,7 @@
 
             "heightAddSpeed": 0.625,
 
-            "coinPropProbability": 5,
+            "coinPropProbability": 0,
 
             "maxCoinNum": 25,
 
@@ -50,7 +50,7 @@
 
             "coinJumpHeight": 2.4,
 
-            "itemPropProbability": 3,
+            "itemPropProbability": 0,
 
             "maxItemNum": 15,
 
@@ -58,11 +58,11 @@
 
             "itemJumpHeight": 2.4,
 
-            "enemyPropProbability": 0.2,
+            "enemyPropProbability": 1000,
 
-            "maxEnemyNum":  2,
+            "maxEnemyNum":  5,
 
-            "linePropProbability": 0.2,
+            "linePropProbability": 0,
 
             "maxLineNum": 1
         }
@@ -84,7 +84,7 @@
 
         "worldTimeFix": 1,
 
-        "factor":  160,
+        "factor":  40,
 
         "unitHeight":  2.4,
 
@@ -94,7 +94,7 @@
 
         "triangleHeight":  0.4,
 
-        "unitNum":  12,
+        "unitNum":  8,
 
         "ladderChangeUnitNum":  1,
 
@@ -126,7 +126,7 @@
 
         "humanSleepXFix":  0.5,
 
-        "enemyJumpProbability":  1,
+        "enemyJumpProbability":  1000,
 
         "propHeightFix":  8,
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<e:Skin class="RankPanelSkin" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
+<e:Skin class="RankPanelSkin" width="1200" height="1920" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
 	<w:Config id="1643acef1e3" ></w:Config>
 	<e:Rect id="bg" left="0" top="0" right="0" bottom="0" fillAlpha="0.3"/>
-	<e:Group horizontalCenter="0" height="680" y="200">
+	<e:Group width="600" height="680" y="400" horizontalCenter="0">
 		<e:Rect width="600" height="680" y="0" horizontalCenter="0" x="0" scaleX="1" scaleY="1"/>
 		<e:Rect width="600" height="70" y="5" horizontalCenter="0" fillColor="0xe0c5c5" x="20" scaleX="1" scaleY="1"/>
 		<e:Label text="Challenge" x="300" y="10" height="60" width="150" textAlign="center" verticalAlign="middle" bold="true" textColor="0x000000" size="30" scaleX="1" scaleY="1"/>

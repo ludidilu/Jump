@@ -2,6 +2,8 @@ class MoveBodyObj extends BodyObj{
 
     public radius:number;
 
+    public uid:number;
+
     public updateDisplaysPosition(_dt?:number):void{
 
         let shape:p2.Shape = this.shapes[0];
@@ -18,15 +20,15 @@ class MoveBodyObj extends BodyObj{
 
         if(this.position[1] - this.radius - Main.config.gameConfig.collisionCheckFix < minY){
 
-            shape.collisionMask = shape.collisionMask | Game.LADDER_GROUP;
+            shape.collisionMask = shape.collisionMask | Math.pow(2, this.uid);
         }
         else if(this.position[1] - this.radius - Main.config.gameConfig.collisionCheckFix < maxY && this.position[0] + this.radius + Main.config.gameConfig.collisionCheckFix > maxX){
 
-            shape.collisionMask = shape.collisionMask | Game.LADDER_GROUP;
+            shape.collisionMask = shape.collisionMask | Math.pow(2, this.uid);
         }
         else{
 
-            shape.collisionMask = shape.collisionMask & ~Game.LADDER_GROUP;
+            shape.collisionMask = shape.collisionMask & ~Math.pow(2, this.uid);
         }
 
         super.updateDisplaysPosition();
