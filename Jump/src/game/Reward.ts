@@ -173,6 +173,6 @@ class Reward extends egret.DisplayObjectContainer{
 
         this.x = this.worldX * Main.config.gameConfig.factor;
 
-        this.y = this.stage.stageHeight - this.worldY * Main.config.gameConfig.factor;
+        this.y = Game.STAGE_HEIGHT - this.worldY * Main.config.gameConfig.factor;
     }
 }

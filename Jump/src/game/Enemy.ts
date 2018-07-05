@@ -80,7 +80,7 @@ class Enemy extends Human{
 
             let p:egret.Point = enemyDisplay.parent.parent.localToGlobal(enemyDisplay.x, enemyDisplay.y);
 
-            if(p.y > enemyDisplay.stage.stageHeight){
+            if(p.y > Game.STAGE_HEIGHT){
 
                 enemy.reset();
 

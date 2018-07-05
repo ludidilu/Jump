@@ -20,7 +20,7 @@ class BodyObj extends p2.Body{
         let display: egret.DisplayObject = this.displays[0];
 
         display.x = this.interpolatedPosition[0] * Main.config.gameConfig.factor;
-        display.y = display.stage.stageHeight - this.interpolatedPosition[1] * Main.config.gameConfig.factor;
+        display.y = Game.STAGE_HEIGHT - this.interpolatedPosition[1] * Main.config.gameConfig.factor;
         display.rotation = 360 - (this.interpolatedAngle + this.shapes[0].angle) * 180 / Math.PI;
     }
 

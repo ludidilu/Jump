@@ -110,7 +110,7 @@ class Item extends Reward{
             }
             else{
 
-                if(item.parent.parent.y + item.y - item.radius * Main.config.gameConfig.factor > item.stage.stageHeight){
+                if(item.parent.parent.y + item.y - item.radius * Main.config.gameConfig.factor > Game.STAGE_HEIGHT){
 
                     item.reset();
 

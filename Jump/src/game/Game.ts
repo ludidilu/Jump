@@ -8,6 +8,8 @@ class Game extends egret.DisplayObjectContainer {
 
     public static ENEMY_GROUP:number = Math.pow(2, 2);
 
+    public static STAGE_HEIGHT:number = 1920;
+
     private world:p2.World;
 
     private worldDt:number;
@@ -351,7 +353,29 @@ class Game extends egret.DisplayObjectContainer {
         this.humanDisplay = human.displays[0];
     }
 
+    public static data:{arr:number[]} = {arr:[]};
+
+    public static tick:number = 0;
+
+    public static strstr:string[] = [];
+
+    public static log(str:string):void{
+
+        this.strstr.push(str);
+    }
+
+    private data2:{arr:number[]} = {"arr":[0,127,193,346,416,450,582,623,746,881,918,1048,1090,1287,1323,1472,1624,1698,1746,1886,1930,2053,2177,2218]};
+
     private update(_dt:number):void{
+
+        if(this.data2.arr.indexOf(Game.tick) != -1){
+
+            this.touchBg(null);
+        }
+
+        Game.tick++;
+
+        _dt = 16;
 
         if (_dt < 10) {
             return;
@@ -378,7 +402,7 @@ class Game extends egret.DisplayObjectContainer {
 
         this.gameContainer.y += Game.stageConfig.heightAddSpeed * Main.config.gameConfig.factor * dt * 0.001;
 
-        let targetY:number = Human.human.position[1] * Main.config.gameConfig.factor - this.stage.stageHeight * 0.5;
+        let targetY:number = Human.human.position[1] * Main.config.gameConfig.factor - Game.STAGE_HEIGHT * 0.5;
 
         if(targetY > this.gameContainer.y){
 
@@ -412,6 +436,10 @@ class Game extends egret.DisplayObjectContainer {
 
                 this.setScore(Game.stageConfig.maxLevel);
 
+                console.log("data:" + JSON.stringify(Game.data));
+
+                console.log("a:" + Game.strstr);
+
                 this.win();
 
                 return;
@@ -437,9 +465,11 @@ class Game extends egret.DisplayObjectContainer {
 
         let p:egret.Point = this.gameContainer.localToGlobal(this.humanDisplay.x, this.humanDisplay.y);
 
-        if(p.y > this.stage.stageHeight + (Main.config.gameConfig.humanLength * 0.5 + Main.config.gameConfig.humanRadius) * Human.human.sizeFix * Main.config.gameConfig.factor){
+        if(p.y > Game.STAGE_HEIGHT + (Main.config.gameConfig.humanLength * 0.5 + Main.config.gameConfig.humanRadius) * Human.human.sizeFix * Main.config.gameConfig.factor){
 
             this.lose();
+
+            console.log("a:" + Game.strstr);
 
             return;
         }
@@ -611,7 +641,7 @@ class Game extends egret.DisplayObjectContainer {
 
         this.gameContainer.x = -this.humanDisplay.x + this.stage.stageWidth * 0.5;
 
-        this.gameContainer.y = -this.humanDisplay.y + this.stage.stageHeight * 0.5;
+        this.gameContainer.y = -this.humanDisplay.y + Game.STAGE_HEIGHT * 0.5;
 
         this.firstCameraPosX = this.gameContainer.x;
     }

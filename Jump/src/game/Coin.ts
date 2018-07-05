@@ -149,7 +149,7 @@ class Coin extends Reward{
             }
             else{
 
-                if(coin.parent.parent.y + coin.y - coin.radius * Main.config.gameConfig.factor > coin.stage.stageHeight){
+                if(coin.parent.parent.y + coin.y - coin.radius * Main.config.gameConfig.factor > Game.STAGE_HEIGHT){
 
                     coin.reset();
 

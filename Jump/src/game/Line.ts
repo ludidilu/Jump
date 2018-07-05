@@ -59,7 +59,7 @@ class Line extends egret.Shape{
 
         _container.addChild(line);
         
-        line.y = _container.stage.stageHeight - _worldY * Main.config.gameConfig.factor - Main.config.gameConfig.lineWidth * 0.5 * Main.config.gameConfig.factor;
+        line.y = Game.STAGE_HEIGHT - _worldY * Main.config.gameConfig.factor - Main.config.gameConfig.lineWidth * 0.5 * Main.config.gameConfig.factor;
 
         line.x = -_container.parent.x;
 
@@ -72,7 +72,7 @@ class Line extends egret.Shape{
 
             let line:Line = this.lineArr[i];
 
-            if(line.parent.parent.y + line.y - Main.config.gameConfig.lineWidth * 0.5 * Main.config.gameConfig.factor > line.stage.stageHeight){
+            if(line.parent.parent.y + line.y - Main.config.gameConfig.lineWidth * 0.5 * Main.config.gameConfig.factor > Game.STAGE_HEIGHT){
 
                 line.parent.removeChild(line);
 

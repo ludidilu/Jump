@@ -189,13 +189,13 @@ class Human extends MoveBodyObj{
 
         // if(this.bodyType == BodyObjType.HUMAN){
 
-            // Game.log("player jump:" + Game.tick);
+        //     // Game.log("player jump:" + Game.tick);
 
-            // Game.data.arr.push(Game.tick);
+        //     Game.data.arr.push(Game.tick);
         // }
         // else{
 
-            // Game.log("enemy jump:" + Game.tick);
+        //     // Game.log("enemy jump:" + Game.tick);
         // }
 
         //---起跳时整体向上抬升
