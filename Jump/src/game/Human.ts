@@ -35,7 +35,55 @@ class Human extends MoveBodyObj{
 
     public static footPoint:number[] = [0, 0];
 
+    public static fixNumber(_v:number):number{
+
+        let str:string = _v.toFixed(4);
+
+        let v:number = parseFloat(str);
+
+        return v;
+    }
+
     public updateDisplaysPosition(_dt:number):void{
+
+        this.velocity[0] = Human.fixNumber(this.velocity[0]);
+
+        this.velocity[1] = Human.fixNumber(this.velocity[1]);
+
+        this.force[0] = Human.fixNumber(this.force[0]);
+
+        this.force[1] = Human.fixNumber(this.force[1]);
+
+        this.angularForce = Human.fixNumber(this.angularForce);
+
+        this.angularVelocity = Human.fixNumber(this.angularVelocity);
+
+        this.previousAngle = Human.fixNumber(this.previousAngle);
+
+        this.previousPosition[0] = Human.fixNumber(this.previousPosition[0]);
+
+        this.previousPosition[1] = Human.fixNumber(this.previousPosition[1]);
+
+        this.vlambda[0] = Human.fixNumber(this.vlambda[0]);
+
+        this.vlambda[1] = Human.fixNumber(this.vlambda[1]);
+
+        this.wlambda = Human.fixNumber(this.wlambda);
+
+        this.position[0] = Human.fixNumber(this.position[0]);
+
+        this.position[1] = Human.fixNumber(this.position[1]);
+
+        this.angle = Human.fixNumber(this.angle);
+
+        // if(this.bodyType == BodyObjType.HUMAN){
+
+        //     Game.log("human pos  x:" + this.position[0] + "  y:" +this.position[1] + "   angle:" + this.angle);
+        // }
+        // else if(this.bodyType == BodyObjType.ENEMY){
+
+        //     Game.log("enemy pos  x:" + this.position[0] + "  y:" +this.position[1] + "   angle:" + this.angle);
+        // }
 
         if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Main.config.gameConfig.humanSleepXFix) * _dt * 0.001){
 
@@ -138,6 +186,17 @@ class Human extends MoveBodyObj{
     }
 
     public jump(_jumpAngle:number, _jumpForce:number[], _jumpPoint:number[]):void{
+
+        // if(this.bodyType == BodyObjType.HUMAN){
+
+            // Game.log("player jump:" + Game.tick);
+
+            // Game.data.arr.push(Game.tick);
+        // }
+        // else{
+
+            // Game.log("enemy jump:" + Game.tick);
+        // }
 
         //---起跳时整体向上抬升
         let lastHeight:number = Math.abs(Math.sin(this.angle));
