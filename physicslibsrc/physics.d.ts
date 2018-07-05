@@ -760,7 +760,7 @@ declare module p2 {
          * @property wlambda
          * @type {Array}
          */
-        wlambda: number[];
+        wlambda: number;
 
         /**
          * The number of iterations that should be used when searching for the time of impact during CCD. A larger number will assure that there's a small penetration on CCD collision, but a small number will give more performance.

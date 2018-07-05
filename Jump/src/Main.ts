@@ -58,19 +58,11 @@ class Main extends egret.DisplayObjectContainer {
 
         await RES.loadConfig("resource/default.res.json", "resource/");
 
-        console.log("aa");
-
         await this.loadTheme();
 
-        console.log("bb");
-
-        await RES.loadGroup("preload", 0, new Faaa()).catch(this.promiseCatch.bind(this));
-
-        console.log("cc");
+        await RES.loadGroup("preload");
 
         await this.loadConfig();
-
-        console.log("dd");
 
         this.start();
     }

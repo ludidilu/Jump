@@ -773,7 +773,7 @@ else {
             else
                 for (var c = 0, d = b.length; c !== d; ++c)
                     a.push(b[c]); }, d.splice = function (a, b, c) { c = c || 1; for (var d = b, e = a.length - c; e > d; d++)
-                a[d] = a[d + c]; a.length = e; }, "undefined" != typeof P2_ARRAY_TYPE ? d.ARRAY_TYPE = P2_ARRAY_TYPE : "undefined" != typeof Float32Array ? d.ARRAY_TYPE = Float32Array : d.ARRAY_TYPE = Array, d.extend = function (a, b) { for (var c in b)
+                a[d] = a[d + c]; a.length = e; }, "undefined" != typeof P2_ARRAY_TYPE ? d.ARRAY_TYPE = P2_ARRAY_TYPE : d.ARRAY_TYPE = Array, d.extend = function (a, b) { for (var c in b)
                 a[c] = b[c]; }, d.defaults = function (a, b) { a = a || {}; for (var c in b)
                 c in a || (a[c] = b[c]); return a; }; }, {}], 58: [function (a, b, c) { function d() { this.equations = [], this.bodies = []; } var e = a("../objects/Body"); b.exports = d, d.prototype.reset = function () { this.equations.length = this.bodies.length = 0; }; var f = []; d.prototype.getBodies = function (a) { var b = a || [], c = this.equations; f.length = 0; for (var d = 0; d !== c.length; d++) {
                 var e = c[d];
