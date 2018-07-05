@@ -47,6 +47,8 @@ class GameConfig{
 
     public ladderWidthFix:number = 10;
 
+    public ladderHeightFix:number = 10;
+
     public ladderXFix:number = 1;
 
     public finalLadderXFix:number = 2;
@@ -69,7 +71,9 @@ class GameConfig{
 
     public unitNum:number = 20;
 
-    public changeUnitNum:number = 5;
+    public ladderChangeUnitNum:number = 1;
+
+    public ladderChangeUnitFix:number = 2;
 
     public humanLength:number = 0.7;
 

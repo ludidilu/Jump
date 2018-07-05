@@ -28,7 +28,7 @@ class Ladder extends BodyObj{
 
         let vertices:number[][] = [];
 
-        vertices.push([Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix, 0]);
+        vertices.push([Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix, -Main.config.gameConfig.ladderHeightFix]);
 
         vertices.push([Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix, Main.config.gameConfig.unitHeight * Main.config.gameConfig.unitNum]);
 
@@ -38,15 +38,26 @@ class Ladder extends BodyObj{
 
                 let arr:number[] = verticesOrigin[i];
 
-                let arr2:number[]= [arr[0] + m * Main.config.gameConfig.unitWidth,arr[1] + m * Main.config.gameConfig.unitHeight];
+                let arr2:number[];
+
+                if(m == 0 && i == n - 1){
+
+                    arr2 = [arr[0] + m * Main.config.gameConfig.unitWidth,arr[1] + m * Main.config.gameConfig.unitHeight - Main.config.gameConfig.ladderHeightFix];
+
+                    conDisplay.graphics.lineTo((arr[0] + m * Main.config.gameConfig.unitWidth) * factor, (arr[1] + m * Main.config.gameConfig.unitHeight - Main.config.gameConfig.ladderHeightFix) * -factor);
+                }
+                else{
+
+                    arr2 = [arr[0] + m * Main.config.gameConfig.unitWidth,arr[1] + m * Main.config.gameConfig.unitHeight];
+
+                    conDisplay.graphics.lineTo((arr[0] + m * Main.config.gameConfig.unitWidth) * factor, (arr[1] + m * Main.config.gameConfig.unitHeight) * -factor);
+                }
 
                 vertices.push(arr2);
-
-                conDisplay.graphics.lineTo((arr[0] + m * Main.config.gameConfig.unitWidth) * factor, (arr[1] + m * Main.config.gameConfig.unitHeight) * -factor);
             }
         }
 
-        conDisplay.graphics.lineTo((Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix) * factor, 0);
+        conDisplay.graphics.lineTo((Main.config.gameConfig.unitWidth * Main.config.gameConfig.unitNum + Main.config.gameConfig.ladderWidthFix) * factor, -Main.config.gameConfig.ladderHeightFix * factor);
 
         conDisplay.graphics.endFill();
 
@@ -105,7 +116,7 @@ class Ladder extends BodyObj{
 
             shape.position[0] -= minX;
 
-            shape.position[1] -= minY;
+            shape.position[1] = shape.position[1] - minY - Main.config.gameConfig.ladderHeightFix;
         }
     }
 
@@ -115,7 +126,7 @@ class Ladder extends BodyObj{
 
             if(this.gameContainer.y > this.changeHeightValue){
 
-                let addNum:number = Math.floor((this.gameContainer.y - this.changeHeightValue) / (Main.config.gameConfig.changeUnitNum * Main.config.gameConfig.unitHeight * Main.config.gameConfig.factor)) + 1;
+                let addNum:number = Math.floor((this.gameContainer.y - this.changeHeightValue) / (Main.config.gameConfig.ladderChangeUnitNum * Main.config.gameConfig.unitHeight * Main.config.gameConfig.factor)) + 1;
 
                 if(Game.stageConfig.maxLevel > 0 && this.nowHeight + addNum > Game.stageConfig.maxLevel - Main.config.gameConfig.unitNum){
 
@@ -124,9 +135,9 @@ class Ladder extends BodyObj{
 
                 this.setNowHeight(this.nowHeight + addNum);
 
-                let ladderX:number = this.ladder.position[0] + (Main.config.gameConfig.unitWidth * Main.config.gameConfig.changeUnitNum * addNum);
+                let ladderX:number = this.ladder.position[0] + (Main.config.gameConfig.unitWidth * Main.config.gameConfig.ladderChangeUnitNum * addNum);
 
-                let ladderY:number = this.ladder.position[1] + (Main.config.gameConfig.unitHeight * Main.config.gameConfig.changeUnitNum * addNum);
+                let ladderY:number = this.ladder.position[1] + (Main.config.gameConfig.unitHeight * Main.config.gameConfig.ladderChangeUnitNum * addNum);
 
                 this.ladder.setPosition(ladderX, ladderY);
 
@@ -139,7 +150,7 @@ class Ladder extends BodyObj{
 
         this.nowHeight = _v;
 
-        this.changeHeightValue = (this.nowHeight + 1) * Main.config.gameConfig.changeUnitNum * Main.config.gameConfig.unitHeight * Main.config.gameConfig.factor;
+        this.changeHeightValue = (this.nowHeight + 1 + Main.config.gameConfig.ladderChangeUnitFix) * Main.config.gameConfig.ladderChangeUnitNum * Main.config.gameConfig.unitHeight * Main.config.gameConfig.factor;
     }
 
     public static reset():void{

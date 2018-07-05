@@ -72,6 +72,8 @@
 
         "ladderWidthFix": 10,
 
+        "ladderHeightFix": 10,
+
         "ladderXFix": 1,
 
         "finalLadderXFix": 3,
@@ -94,7 +96,9 @@
 
         "unitNum":  12,
 
-        "changeUnitNum":  1,
+        "ladderChangeUnitNum":  1,
+
+        "ladderChangeUnitFix": 2,
 
         "humanLength":  0.7,
 
