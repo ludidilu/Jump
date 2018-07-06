@@ -20,8 +20,6 @@ class Game extends egret.DisplayObjectContainer {
 
     public humanMat:p2.Material;
 
-    private humanDisplay:egret.DisplayObject;
-
     private bg:egret.Shape;
 
     private itemBt:ItemBt;
@@ -55,8 +53,6 @@ class Game extends egret.DisplayObjectContainer {
     private nowMoney:number = 0;
 
     private btClickFun:()=>void;
-
-    private firstJump:boolean = false;
 
     private overCallBack:(_level:number, _money:number)=>void;
 
@@ -335,9 +331,7 @@ class Game extends egret.DisplayObjectContainer {
 
     private createHuman():void{
 
-        let human:Human = Human.create(this.world, Main.config.gameConfig.humanLength, Main.config.gameConfig.humanRadius, Main.config.gameConfig.humanStartPos[0], Main.config.gameConfig.humanStartPos[1], true);
-
-        this.humanDisplay = human.displays[0];
+        Human.create(this.world, Main.config.gameConfig.humanLength, Main.config.gameConfig.humanRadius, Main.config.gameConfig.humanStartPos[0], Main.config.gameConfig.humanStartPos[1]);
     }
 
     public static data:{arr:number[]} = {arr:[]};
@@ -351,13 +345,13 @@ class Game extends egret.DisplayObjectContainer {
         this.strstr.push(str);
     }
 
-    private data2:{arr:number[]} = {"arr":[0,127,193,346,416,450,582,623,746,881,918,1048,1090,1287,1323,1472,1624,1698,1746,1886,1930,2053,2177,2218]};
+    private data2:{arr:number[]} = {"arr":[0,180,220,360,515,566,943,1087,1127,1269,1313,1438,1483,1624,1668,1788,1995]};
 
     private update(_dt:number):void{
 
         // if(this.data2.arr.indexOf(Game.tick) != -1){
 
-        //     this.touchBg(null);
+        //     this.touchBg2(Human.humanArr[0]);
         // }
 
         // Game.tick++;
@@ -387,28 +381,28 @@ class Game extends egret.DisplayObjectContainer {
 
         let dt = _dt * this.worldDtFix * Main.config.gameConfig.worldTimeFix;
 
-        Human.human.updateContainerPosition(dt);
+        let humanDisplay:egret.DisplayObject = Human.human.displays[0];
 
-        this.gameContainer.x = Human.human.containerX;
-
-        this.gameContainer.y = Human.human.containerY;
-
-        if(this.humanDisplay.x + this.gameContainer.x < 0){
+        if(humanDisplay.x + this.gameContainer.x < 0){
 
             this.hint.visible = true;
 
-            this.hint.y = this.humanDisplay.y + this.gameContainer.y;    
+            this.hint.y = humanDisplay.y + this.gameContainer.y;    
         }
         else if(this.hint.visible){
             
             this.hint.visible = false;
         }
+        
+        Human.human.update(dt);
 
-        Human.human.updateDisplaysPosition(dt);
+        this.gameContainer.x = Human.human.containerX;
 
-        Human.human.updateLadder();
+        this.gameContainer.y = Human.human.containerY;
 
         Enemy.update(dt);
+
+        Human.update(dt);
 
         Line.update();
 
@@ -524,11 +518,7 @@ class Game extends egret.DisplayObjectContainer {
 
     private reset():void{
 
-        this.gameContainer.x = 0;
-        
-        this.gameContainer.y = 0;
-
-        this.firstJump = false;
+        Human.reset();
 
         Enemy.reset();
 
@@ -548,11 +538,7 @@ class Game extends egret.DisplayObjectContainer {
 
         this.mainPanel.money.text = "$" + this.nowMoney;
 
-        Human.human.setPosition(Main.config.gameConfig.humanStartPos[0], Main.config.gameConfig.humanStartPos[1]);
-
         Human.human.reset();
-
-        Human.human.updateDisplaysPosition(0);
 
         this.gameContainer.x = Human.human.containerX;
 
@@ -561,9 +547,9 @@ class Game extends egret.DisplayObjectContainer {
 
     private touchBg(e: egret.TouchEvent): void {
 
-        if(!this.firstJump){
+        if(!Human.human.firstJump){
 
-            this.firstJump = true;
+            Human.human.firstJump = true;
 
             SuperTicker.getInstance().addEventListener(this.update, this);
 
@@ -588,6 +574,43 @@ class Game extends egret.DisplayObjectContainer {
                 this.moneyChange(Main.config.gameConfig.redLineMoneyChange);
 
                 Human.human.jump(Main.config.gameConfig.lineJumpAngle, Main.config.gameConfig.lineJumpForce, Main.config.gameConfig.lineJumpPoint);
+            }
+            else{
+
+                // console.log("no jump!");
+            }
+        }
+    }
+
+    private touchBg2(_human:Human): void {
+
+        if(!_human.firstJump){
+
+            _human.firstJump = true;
+
+            // SuperTicker.getInstance().addEventListener(this.update, this);
+
+            _human.jump(Main.config.gameConfig.firstJumpAngle, Main.config.gameConfig.firstJumpForce, Main.config.gameConfig.firstJumpPoint);
+
+        }else{
+
+            let result:HumanJumpResult = _human.checkCanJump();
+
+            if(result == HumanJumpResult.LADDER || result == HumanJumpResult.HUMAN){
+
+                _human.jump(Main.config.gameConfig.jumpAngle, Main.config.gameConfig.jumpForce, Main.config.gameConfig.jumpPoint);
+            }
+            else if(result == HumanJumpResult.GLINE){
+
+                this.moneyChange(Main.config.gameConfig.greenLineMoneyChange);
+
+                _human.jump(Main.config.gameConfig.lineJumpAngle, Main.config.gameConfig.lineJumpForce, Main.config.gameConfig.lineJumpPoint);
+            }
+            else if(result == HumanJumpResult.RLINE){
+
+                this.moneyChange(Main.config.gameConfig.redLineMoneyChange);
+
+                _human.jump(Main.config.gameConfig.lineJumpAngle, Main.config.gameConfig.lineJumpForce, Main.config.gameConfig.lineJumpPoint);
             }
             else{
 

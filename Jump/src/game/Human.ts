@@ -37,6 +37,8 @@ class Human extends MoveBodyObj{
 
     public isMain:boolean;
 
+    public firstJump:boolean = false;
+
     public updateContainerPosition(_dt:number):void{
 
         this.containerY += Game.stageConfig.heightAddSpeed * Main.config.gameConfig.factor * _dt * 0.001;
@@ -291,6 +293,8 @@ class Human extends MoveBodyObj{
 
     public reset():void{
 
+        this.firstJump = false;
+
         this.setPosition(Main.config.gameConfig.humanStartPos[0], Main.config.gameConfig.humanStartPos[1]);
 
         super.reset();
@@ -322,6 +326,16 @@ class Human extends MoveBodyObj{
             let human:Human = this.humanArr[i];
 
             human.update(_dt);
+        }
+    }
+
+    public static reset():void{
+
+        for(let i:number = this.humanArr.length - 1 ; i > -1 ; i--){
+
+            let human:Human = this.humanArr[i];
+
+            human.reset();
         }
     }
 }
