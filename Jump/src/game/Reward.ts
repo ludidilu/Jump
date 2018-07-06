@@ -33,13 +33,13 @@ class Reward extends egret.DisplayObjectContainer{
 
         if(dx * dx + dy * dy < _checkDistance){
 
-            let x0:number = Human.headPoint[0];
+            let x0:number = Human.human.headPoint[0];
 
-            let y0:number = Human.headPoint[1];
+            let y0:number = Human.human.headPoint[1];
 
-            let x1:number = Human.footPoint[0];
+            let x1:number = Human.human.footPoint[0];
 
-            let y1:number = Human.footPoint[1];
+            let y1:number = Human.human.footPoint[1];
 
             let x2:number = this.worldX;
 

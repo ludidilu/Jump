@@ -146,7 +146,7 @@ class Ladder extends BodyObj{
 
             index = 0;
         }
-        else if(index > Game.stageConfig.maxLevel - Main.config.gameConfig.unitNum){
+        else if(Game.stageConfig.maxLevel > 0 && index > Game.stageConfig.maxLevel - Main.config.gameConfig.unitNum){
 
             index = Game.stageConfig.maxLevel - Main.config.gameConfig.unitNum;
         }
@@ -161,11 +161,6 @@ class Ladder extends BodyObj{
 
             this.updateDisplaysPosition();
         }
-    }
-
-    public remove():void{
-
-        this.world.removeBody(this);
     }
 
     public reset():void{

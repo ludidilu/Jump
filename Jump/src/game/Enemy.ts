@@ -1,4 +1,4 @@
-class Enemy extends Human{
+class Enemy extends MoveBodyObj{
 
     private static pool:Enemy[] = [];
 
@@ -6,9 +6,9 @@ class Enemy extends Human{
 
     private bitmap:egret.Bitmap;
 
-    public updateDisplaysPosition(_dt:number):void{
+    public update(_dt:number):void{
 
-        super.updateDisplaysPosition(_dt);
+        super.update(_dt);
 
         if(Math.random() < Main.config.gameConfig.enemyJumpProbability * _dt * 0.001){
 
@@ -35,22 +35,20 @@ class Enemy extends Human{
 
             enemy.bodyType = BodyObjType.ENEMY;
 
-            Human.initHuman( enemy, _world, _length, _radius, 0x0000ff, false);
+            Human.initHuman(enemy, _length, _radius, 0x0000ff, false);
         }
         else{
 
             enemy = Enemy.pool.pop();
 
             Human.main.humanContainer.addChild(enemy.displays[0]);
-
-            _world.addBody(enemy);
         }
 
-        _world.addBody(enemy.ladder);
+        enemy.add(_world);
 
         enemy.setPosition(_x, _y);
         
-        enemy.updateDisplaysPosition(0);
+        enemy.updateDisplaysPosition();
 
         this.enemies.push(enemy);
 
@@ -61,9 +59,7 @@ class Enemy extends Human{
 
         super.reset();
 
-        this.world.removeBody(this);
-
-        this.ladder.remove();
+        this.remove();
 
         let display:egret.DisplayObject = this.displays[0];
 
@@ -78,7 +74,7 @@ class Enemy extends Human{
 
             let enemy:Enemy = this.enemies[i];
 
-            enemy.updateDisplaysPosition(_dt);
+            enemy.update(_dt);
 
             let enemyDisplay:egret.DisplayObject = enemy.displays[0];
 
@@ -89,10 +85,6 @@ class Enemy extends Human{
                 enemy.reset();
 
                 this.enemies.splice(i,1);
-            }
-            else{
-
-                enemy.updateLadder();
             }
         }
     }

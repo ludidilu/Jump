@@ -13,29 +13,21 @@ class Human extends MoveBodyObj{
 
     public static human:Human;
 
-    private static humanNormalShape:p2.Capsule;
+    public static humanArr:Human[] = [];
 
-    private static humanBigShape:p2.Capsule;
+    private static humanPool:Human[] = [];
 
-    private static tmpVec:number[] = [0,0];
+    public normalRadius:number;
 
-    private static tmpVec1:number[] = [0,0];
-    
-    private static normalRadius:number;
+    public bigRadius:number;
 
-    private static bigRadius:number;
+    public humanNormalShape:p2.Capsule;
 
-    public static headPoint:number[] = [0, 0];
+    public humanBigShape:p2.Capsule;
 
-    public static footPoint:number[] = [0, 0];
+    public headPoint:number[] = [0, 0];
 
-    private jumpDisableTime:number = 0;
-
-    private jumpForceFix:number = 1;
-
-    public sizeFix:number = 1;
-
-    protected ladder:Ladder;
+    public footPoint:number[] = [0, 0];
 
     public containerX:number;
 
@@ -43,20 +35,13 @@ class Human extends MoveBodyObj{
 
     private firstCameraFollowTime:number;
 
-    public static fixNumber(_v:number):number{
-
-        let str:string = _v.toFixed(4);
-
-        let v:number = parseFloat(str);
-
-        return v;
-    }
+    public isMain:boolean;
 
     public updateContainerPosition(_dt:number):void{
 
         this.containerY += Game.stageConfig.heightAddSpeed * Main.config.gameConfig.factor * _dt * 0.001;
 
-        let targetY:number = Human.human.position[1] * Main.config.gameConfig.factor - Game.STAGE_HEIGHT * 0.5;
+        let targetY:number = this.position[1] * Main.config.gameConfig.factor - Game.STAGE_HEIGHT * 0.5;
 
         if(targetY > this.containerY){
 
@@ -78,7 +63,7 @@ class Human extends MoveBodyObj{
             this.containerX = targetX;
         }
 
-        let xPos:number = Human.human.position[0] / Main.config.gameConfig.unitWidth;
+        let xPos:number = this.position[0] / Main.config.gameConfig.unitWidth;
 
         let xLevel:number = Math.floor(xPos);
 
@@ -88,22 +73,29 @@ class Human extends MoveBodyObj{
 
             if(xPosFix > Main.config.gameConfig.finalLadderXFix){
 
-                Human.main.setScore(Game.stageConfig.maxLevel);
+                if(this.isMain){
 
-                console.log("data:" + JSON.stringify(Game.data));
+                    Human.main.setScore(Game.stageConfig.maxLevel);
 
-                console.log("a:" + Game.strstr);
+                    console.log("data:" + JSON.stringify(Game.data));
 
-                Human.main.win();
+                    console.log("a:" + Game.strstr);
+
+                    Human.main.win();
+                }
+                else{
+
+                    this.reset();
+                }
 
                 return;
             }
-            else{
+            else if(this.isMain){
 
                 Human.main.setScore(Game.stageConfig.maxLevel - 1);
             }
         }
-        else{
+        else if(this.isMain){
 
             let xPosFix:number = (xPos - xLevel) * Main.config.gameConfig.unitWidth;
 
@@ -119,209 +111,38 @@ class Human extends MoveBodyObj{
 
         let p:egret.Point = Human.main.gameContainer.localToGlobal(this.displays[0].x, this.displays[0].y);
 
-        if(p.y > Game.STAGE_HEIGHT + (Main.config.gameConfig.humanLength * 0.5 + Main.config.gameConfig.humanRadius) * Human.human.sizeFix * Main.config.gameConfig.factor){
+        if(p.y > Game.STAGE_HEIGHT + (Main.config.gameConfig.humanLength * 0.5 + Main.config.gameConfig.humanRadius) * this.sizeFix * Main.config.gameConfig.factor){
 
-            Human.main.lose();
+            if(this.isMain){
 
-            console.log("a:" + Game.strstr);
+                Human.main.lose();
 
-            return;
-        }
-    }
-
-    public updateLadder():void{
-
-        this.ladder.update(this.position[0]);
-    }
-
-    public updateDisplaysPosition(_dt:number):void{
-
-        this.velocity[0] = Human.fixNumber(this.velocity[0]);
-
-        this.velocity[1] = Human.fixNumber(this.velocity[1]);
-
-        this.force[0] = Human.fixNumber(this.force[0]);
-
-        this.force[1] = Human.fixNumber(this.force[1]);
-
-        this.angularForce = Human.fixNumber(this.angularForce);
-
-        this.angularVelocity = Human.fixNumber(this.angularVelocity);
-
-        this.previousAngle = Human.fixNumber(this.previousAngle);
-
-        this.previousPosition[0] = Human.fixNumber(this.previousPosition[0]);
-
-        this.previousPosition[1] = Human.fixNumber(this.previousPosition[1]);
-
-        this.vlambda[0] = Human.fixNumber(this.vlambda[0]);
-
-        this.vlambda[1] = Human.fixNumber(this.vlambda[1]);
-
-        this.wlambda = Human.fixNumber(this.wlambda);
-
-        this.position[0] = Human.fixNumber(this.position[0]);
-
-        this.position[1] = Human.fixNumber(this.position[1]);
-
-        this.angle = Human.fixNumber(this.angle);
-
-        // if(this.bodyType == BodyObjType.HUMAN){
-
-        //     Game.log("human pos  x:" + this.position[0] + "  y:" +this.position[1] + "   angle:" + this.angle);
-        // }
-        // else if(this.bodyType == BodyObjType.ENEMY){
-
-        //     Game.log("enemy pos  x:" + this.position[0] + "  y:" +this.position[1] + "   angle:" + this.angle);
-        // }
-
-        if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Main.config.gameConfig.humanSleepXFix) * _dt * 0.001){
-
-            if(this.velocity[0] > 0){
-
-                this.setPosition(this.previousPosition[0] + Main.config.gameConfig.humanSleepXFix * _dt * 0.001, this.position[1]);
+                console.log("a:" + Game.strstr);
             }
             else{
 
-                this.setPosition(this.previousPosition[0] - Main.config.gameConfig.humanSleepXFix * _dt * 0.001, this.position[1]);
+                this.reset();
             }
-        }
-
-        Human.tmpVec[0] = Main.config.gameConfig.humanFixForce[0] * this.mass;
-
-        Human.tmpVec[1] = Main.config.gameConfig.humanFixForce[1] * this.mass;
-
-        p2.vec2.rotate(Human.tmpVec1, Main.config.gameConfig.humanFixForcePoint, this.angle);
-
-        this.applyForce(Human.tmpVec, Human.tmpVec1);
-
-        super.updateDisplaysPosition();
-
-        if(this.jumpDisableTime > _dt){
-
-            this.jumpDisableTime -= _dt;
-        }
-        else if(this.jumpDisableTime > 0){
-
-            this.jumpDisableTime = 0;
-        }
-
-        if(this.bodyType == BodyObjType.HUMAN){
-
-            let cos:number = Math.cos(this.angle) * Main.config.gameConfig.humanLength * 0.5;
-
-            let sin:number = Math.sin(this.angle) * Main.config.gameConfig.humanLength * 0.5;
-
-            Human.headPoint[0] = this.position[0] + cos;
-
-            Human.headPoint[1] = this.position[1] + sin;
-
-            Human.footPoint[0] = this.position[0] - cos;
-
-            Human.footPoint[1] = this.position[1] - sin;
         }
     }
 
-    public checkCanJump():HumanJumpResult{
+    public update(_dt:number):void{
 
-        if(this.jumpDisableTime == 0){
+        super.update();
 
-            for(let i:number = 0, m:number = Line.lineArr.length; i < m ; i++){
+        this.updateContainerPosition(_dt);
 
-                let line:Line = Line.lineArr[i];
+        let cos:number = Math.cos(this.angle) * Main.config.gameConfig.humanLength * 0.5;
 
-                if(Math.abs(this.position[1] - line.worldY) < (Main.config.gameConfig.humanLength * 0.5 * Math.abs(Math.sin(this.angle)) + Main.config.gameConfig.humanRadius) * this.sizeFix + Main.config.gameConfig.lineWidth * 0.5){
+        let sin:number = Math.sin(this.angle) * Main.config.gameConfig.humanLength * 0.5;
 
-                    if(line.isG){
+        this.headPoint[0] = this.position[0] + cos;
 
-                        return HumanJumpResult.GLINE;
-                    }
-                    else{
+        this.headPoint[1] = this.position[1] + sin;
 
-                        return HumanJumpResult.RLINE;
-                    }
-                }
-            }
-            
-            if(this.overlaps(this.ladder)){
+        this.footPoint[0] = this.position[0] - cos;
 
-                return HumanJumpResult.LADDER;
-            }
-
-            for(let i:number = 0, m:number = Enemy.enemies.length ; i < m ; i++){
-
-                let human:Human = Enemy.enemies[i];
-
-                if(human == this){
-
-                    continue;
-                }
-
-                if(this.overlaps(human) && this.position[1] > human.position[1]){
-
-                    return HumanJumpResult.HUMAN;
-                }
-            }
-
-            if(this.bodyType == BodyObjType.ENEMY){
-
-                if(this.overlaps(Human.human) && this.position[1] > Human.human.position[1]){
-
-                    return HumanJumpResult.HUMAN;
-                }
-            }
-        }
-
-        return HumanJumpResult.CANNOT;
-    }
-
-    public jump(_jumpAngle:number, _jumpForce:number[], _jumpPoint:number[]):void{
-
-        // if(this.bodyType == BodyObjType.HUMAN){
-
-        //     // Game.log("player jump:" + Game.tick);
-
-        //     Game.data.arr.push(Game.tick);
-        // }
-        // else{
-
-        //     // Game.log("enemy jump:" + Game.tick);
-        // }
-
-        //---起跳时整体向上抬升
-        let lastHeight:number = Math.abs(Math.sin(this.angle));
-
-        let nowHeight:number = Math.abs(Math.sin(_jumpAngle));
-
-        if(nowHeight > lastHeight){
-
-            this.setPosition(this.position[0], this.position[1] + (nowHeight - lastHeight) * Main.config.gameConfig.humanLength * 0.5 * this.sizeFix);
-        }
-        //---
-
-        this.setAngle(_jumpAngle);
-
-        this.jumpDisableTime = Main.config.gameConfig.jumpDisableTime;
-
-        this.angularVelocity = 0;
-
-        //---起跳时抹去反向速度
-        if((_jumpForce[0] > 0 && this.velocity[0] < 0) || (_jumpForce[0] < 0 && this.velocity[0] > 0)){
-
-            this.velocity[0] = 0;
-        }
-        
-        if((_jumpForce[1] > 0 && this.velocity[1] < 0) || (_jumpForce[1] < 0 && this.velocity[1] > 0)){
-
-            this.velocity[1] = 0;
-        }
-        //---
-
-        Human.tmpVec[0] = _jumpForce[0] * this.jumpForceFix;
-
-        Human.tmpVec[1] = _jumpForce[1] * this.jumpForceFix;
-
-        this.applyForce(Human.tmpVec, _jumpPoint);
+        this.footPoint[1] = this.position[1] - sin;
     }
 
     public setSizeFix(_fix:number):void{
@@ -345,9 +166,9 @@ class Human extends MoveBodyObj{
 
         if(_b){
 
-            this.removeShape(Human.humanNormalShape);
+            this.removeShape(this.humanNormalShape);
 
-            this.addShape(Human.humanBigShape);
+            this.addShape(this.humanBigShape);
 
             this.displays[0].scaleX = Main.config.gameConfig.humanBigSize;
 
@@ -359,13 +180,13 @@ class Human extends MoveBodyObj{
 
             this.setJumpForceFix(Main.config.gameConfig.humanBigJumpForceFix);
 
-            this.radius = Human.bigRadius;
+            this.radius = this.bigRadius;
         }
         else{
 
-            this.removeShape(Human.humanBigShape);
+            this.removeShape(this.humanBigShape);
 
-            this.addShape(Human.humanNormalShape);
+            this.addShape(this.humanNormalShape);
 
             this.displays[0].scaleX = 1;
 
@@ -377,7 +198,7 @@ class Human extends MoveBodyObj{
 
             this.setJumpForceFix(1 / Main.config.gameConfig.humanBigJumpForceFix);
 
-            this.radius = Human.normalRadius;
+            this.radius = this.normalRadius;
         }
     }
 
@@ -419,95 +240,62 @@ class Human extends MoveBodyObj{
         Human.main.isCoinDouble = _b;
     }
 
-    public static create(_world:p2.World, _length:number, _radius:number, _x:number, _y:number, _ladderWithDisplayObject:boolean):Human{
+    public static create(_world:p2.World, _length:number, _radius:number, _x:number, _y:number):Human{
         
         this.human = new Human({mass:1, damping:Main.config.gameConfig.humanDamping, angularDamping:Main.config.gameConfig.humanAngularDamping, gravityScale:Main.config.gameConfig.humanGravityScale});
 
         this.human.bodyType = BodyObjType.HUMAN;
 
-        this.initHuman(this.human, _world, _length, _radius, 0xffff00, _ladderWithDisplayObject);
+        this.human.isMain = true;
 
-        _world.addBody(this.human.ladder);
+        this.initHuman(this.human, _length, _radius, 0xffff00, true);
+
+        this.human.add(_world);
 
         this.human.setPosition(_x, _y);
         
-        this.human.updateDisplaysPosition(0);
+        this.human.updateDisplaysPosition();
 
         return this.human;
     }
 
-    private static humanUid:number = 0;
+    public static createOther(_world:p2.World, _length:number, _radius:number, _x:number, _y:number):Human{
 
-    private static getHumanUid():number{
+        let human:Human;
 
-        this.humanUid++;
+        if(this.humanPool.length > 0){
 
-        return this.humanUid;
-    }
+            human = this.humanPool.pop();
+        }
+        else{
 
-    protected static initHuman(_human:Human, _world:p2.World, _length:number, _radius:number, _color:number, _ladderWithDisplayObject:boolean):void{
+            human = new Human({mass:1, damping:Main.config.gameConfig.humanDamping, angularDamping:Main.config.gameConfig.humanAngularDamping, gravityScale:Main.config.gameConfig.humanGravityScale});
 
-        _human.allowSleep = false;
+            human.bodyType = BodyObjType.HUMAN;
 
-        _human.radius = _length * 0.5 + _radius;
+            human.isMain = false;
 
-        let boxShape: p2.Capsule = new p2.Capsule({length: _length, radius: _radius});
-
-        boxShape.material = Human.main.humanMat;
-
-        boxShape.collisionGroup = Game.HUMAN_GROUP;
-        
-        boxShape.collisionMask = Game.HUMAN_GROUP;
-
-        if(_human.bodyType == BodyObjType.HUMAN){
-
-            this.normalRadius = _human.radius;
-
-            this.bigRadius = this.normalRadius * Main.config.gameConfig.humanBigSize;
-
-            this.humanNormalShape = boxShape;
-
-            this.humanBigShape = new p2.Capsule({length: _length * Main.config.gameConfig.humanBigSize, radius: _radius * Main.config.gameConfig.humanBigSize});
-
-            this.humanBigShape.material = boxShape.material;
-
-            this.humanBigShape.collisionGroup = boxShape.collisionGroup;
-
-            this.humanBigShape.collisionMask = boxShape.collisionMask;
+            this.initHuman(human, _length, _radius, 0xffff00, false);
         }
 
-        _human.addShape(boxShape);
+        this.humanArr.push(human);
 
-        let width = (_length + _radius * 2) * Main.config.gameConfig.factor;
-        let height = _radius * 2 * Main.config.gameConfig.factor;
+        human.add(_world);
 
-        // let humanDisplay:egret.Shape = new egret.Shape();
-        // humanDisplay.graphics.beginFill(_color);
-        // humanDisplay.graphics.drawRect(0,0,width,height);
-        // humanDisplay.graphics.endFill();
+        human.setPosition(_x, _y);
+        
+        human.updateDisplaysPosition();
 
-        let tex:egret.Texture = RES.getRes("yu_png");
-
-        let humanDisplay:egret.Bitmap = new egret.Bitmap(tex);
-
-        humanDisplay.width = width;
-        humanDisplay.height = height;
-
-        humanDisplay.anchorOffsetX = width / 2;
-        humanDisplay.anchorOffsetY = height / 2;
-
-        _human.displays = [humanDisplay];
-
-        _world.addBody(_human);
-
-        Human.main.humanContainer.addChild(humanDisplay);
-
-        _human.uid = this.getHumanUid();
-
-        _human.ladder = Ladder.create(_ladderWithDisplayObject ? Human.main.mapContainer : null, Human.main.ladderMat, Math.pow(2, _human.uid));
+        return human;
     }
 
     public reset():void{
+
+        this.setPosition(Main.config.gameConfig.humanStartPos[0], Main.config.gameConfig.humanStartPos[1]);
+
+        super.reset();
+
+        this.updateDisplaysPosition();
 
         this.firstCameraFollowTime = 0;
 
@@ -515,6 +303,25 @@ class Human extends MoveBodyObj{
 
         this.containerY = -this.displays[0].y + Game.STAGE_HEIGHT * 0.5;
 
-        super.reset();
+        if(!this.isMain){
+
+            this.remove();
+
+            Human.humanArr.splice(Human.humanArr.indexOf(this), 1);
+
+            Human.main.humanContainer.removeChild(this.displays[0]);
+
+            Human.humanPool.push(this);
+        }
+    }
+
+    public static update(_dt:number):void{
+
+        for(let i:number = this.humanArr.length - 1 ; i > -1 ; i--){
+
+            let human:Human = this.humanArr[i];
+
+            human.update(_dt);
+        }
     }
 }

@@ -1,8 +1,7 @@
 enum BodyObjType{
     HUMAN,
     ENEMY,
-    LADDER,
-    REWARD
+    LADDER
 }
 
 class BodyObj extends p2.Body{
@@ -15,7 +14,7 @@ class BodyObj extends p2.Body{
 
     public bodyType:BodyObjType;
 
-    public updateDisplaysPosition(_dt?:number):void{
+    public updateDisplaysPosition():void{
 
         let display: egret.DisplayObject = this.displays[0];
 
@@ -23,15 +22,6 @@ class BodyObj extends p2.Body{
         display.y = Game.STAGE_HEIGHT - this.interpolatedPosition[1] * Main.config.gameConfig.factor;
         display.rotation = 360 - (this.interpolatedAngle + this.shapes[0].angle) * 180 / Math.PI;
     }
-
-    // public updateDisplaysPosition(_dt?:number):void{
-
-    //     let display: egret.DisplayObject = this.displays[0];
-
-    //     display.x = this.position[0] * Main.config.factor;
-    //     display.y = display.stage.stageHeight - this.position[1] * Main.config.factor;
-    //     display.rotation = 360 - (this.angle + this.shapes[0].angle) * 180 / Math.PI;
-    // }
 
     public setPosition(_x:number, _y:number):void{
 
@@ -68,5 +58,47 @@ class BodyObj extends p2.Body{
         this.angularVelocity = 0;
 
         this.setAngle(0);
+    }
+    
+    private static fixNumber(_v:number):number{
+
+        let str:string = _v.toFixed(4);
+
+        let v:number = parseFloat(str);
+
+        return v;
+    }
+
+    public fixFloat():void{
+
+        this.velocity[0] = BodyObj.fixNumber(this.velocity[0]);
+
+        this.velocity[1] = BodyObj.fixNumber(this.velocity[1]);
+
+        this.force[0] = BodyObj.fixNumber(this.force[0]);
+
+        this.force[1] = BodyObj.fixNumber(this.force[1]);
+
+        this.angularForce = BodyObj.fixNumber(this.angularForce);
+
+        this.angularVelocity = BodyObj.fixNumber(this.angularVelocity);
+
+        this.previousAngle = BodyObj.fixNumber(this.previousAngle);
+
+        this.previousPosition[0] = BodyObj.fixNumber(this.previousPosition[0]);
+
+        this.previousPosition[1] = BodyObj.fixNumber(this.previousPosition[1]);
+
+        this.vlambda[0] = BodyObj.fixNumber(this.vlambda[0]);
+
+        this.vlambda[1] = BodyObj.fixNumber(this.vlambda[1]);
+
+        this.wlambda = BodyObj.fixNumber(this.wlambda);
+
+        this.position[0] = BodyObj.fixNumber(this.position[0]);
+
+        this.position[1] = BodyObj.fixNumber(this.position[1]);
+
+        this.angle = BodyObj.fixNumber(this.angle);
     }
 }
