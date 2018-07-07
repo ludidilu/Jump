@@ -79,9 +79,9 @@ class Human extends MoveBodyObj{
 
                     Human.main.setScore(Game.stageConfig.maxLevel);
 
-                    console.log("data:" + JSON.stringify(Game.data));
+                    // console.log("data:" + JSON.stringify(Game.data));
 
-                    console.log("a:" + Game.strstr);
+                    // console.log("a:" + Game.strstr);
 
                     Human.main.win();
                 }
@@ -119,7 +119,7 @@ class Human extends MoveBodyObj{
 
                 Human.main.lose();
 
-                console.log("a:" + Game.strstr);
+                // console.log("a:" + Game.strstr);
             }
             else{
 
@@ -268,6 +268,8 @@ class Human extends MoveBodyObj{
         if(this.humanPool.length > 0){
 
             human = this.humanPool.pop();
+
+            this.main.humanContainer.addChild(human.displays[0]);
         }
         else{
 

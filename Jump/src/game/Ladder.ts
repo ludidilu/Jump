@@ -159,7 +159,7 @@ class Ladder extends BodyObj{
 
         if(this.displays.length > 0){
 
-            this.updateDisplaysPosition();
+            this.updateDisplaysPosition2(false);
         }
     }
 
@@ -169,7 +169,24 @@ class Ladder extends BodyObj{
 
         if(this.displays.length > 0){
 
-            this.updateDisplaysPosition();
+            this.updateDisplaysPosition2(true);
         }
+    }
+
+    private lastY:number;
+
+    private updateDisplaysPosition2(_force:boolean){
+
+        if(!_force){
+
+            if(this.position[1] < this.lastY){
+
+                return;
+            }
+        }
+
+        this.lastY = this.position[1];
+
+        super.updateDisplaysPosition();
     }
 }

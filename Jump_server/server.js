@@ -1,16 +1,16 @@
-let messageTag = ["join","create","getLag"];
+let messageTag = ["tag_join","tag_command","tag_getLag"];
 
 let player = [];
 
 let lagTest = false;
 
-let lagMin = 0;
+let lagMin = 50;
 
-let lagMax = 32;
+let lagMax = 100;
 
 let lagList = [];
 
-let isLagRunning = false;
+let isLagRunning = true;
 
 let io = require('socket.io')();
 
@@ -20,11 +20,19 @@ io.on('disconnect', disconnect);
 
 io.listen(1999);
 
-function connection(client){
-	
-	client.emit("connectOver", 1234);
+let uid = 1;
 
-	console.log("one user connection");
+let arr = [];
+
+function connection(client){
+
+	client.clientUid = uid;
+
+	sendData(client, "connectOver", uid);
+	
+	console.log("one user connection:" + uid);
+	
+	uid++;
 
 	for(let key in messageTag){
 
@@ -63,19 +71,68 @@ function getData(client, tag, data){
 	}
 }
 
+let command = {index:0, arr:[]};
+
+let index = 0;
+
 function getDataReal(client, tag, data){
 
-	if(tag == "join"){
-
+	if(tag == "tag_join"){
 		
-	}
-	else if(tag == "command"){
-
+		console.log("user join:" + client.clientUid);
 		
-	}
-	else if(tag == "getLag"){
+		client.join("room");
+		
+		arr.push(client.clientUid);
 
-		sendData(client, "getLag", data);
+		sendDataToRoom("room", "tag_refresh", {arr:arr});
+
+		if(arr.length == 1){
+
+			sendDataToRoom("room", "tag_start");
+
+			setInterval(update, 16);
+		}
+	}
+	else if(tag == "tag_command"){
+
+		console.log("user command:" + client.clientUid);
+
+		command.arr.push(client.clientUid);
+	}
+	else if(tag == "tag_getLag"){
+
+		sendData(client, "tag_getLag", data);
+	}
+}
+
+function update(){
+
+	command.index = index;
+
+	sendDataToRoom("room", "tag_command", command);
+
+	command.arr.length = 0;
+
+	index++;
+}
+
+function sendDataToRoom(room, tag, data){
+
+	if(!lagTest){
+
+		io.sockets.in(room).emit(tag, data);
+	}
+	else{
+		
+		let runTime = new Date().getTime() + lagMin + Math.random() * (lagMax - lagMin);
+
+		let dele = function(){
+
+			io.sockets.in(room).emit(tag, data);
+		}
+
+		addLagTest(dele, runTime);
 	}
 }
 

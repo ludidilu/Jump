@@ -20,7 +20,7 @@ class Game extends egret.DisplayObjectContainer {
 
     public humanMat:p2.Material;
 
-    private bg:egret.Shape;
+    public bg:egret.Shape;
 
     private itemBt:ItemBt;
 
@@ -73,6 +73,8 @@ class Game extends egret.DisplayObjectContainer {
     private init():void{
 
         Human.main = this;
+
+        GameOnline.main = this;
 
         this.createContainers();
 
@@ -345,7 +347,7 @@ class Game extends egret.DisplayObjectContainer {
 
     private data2:{arr:number[]} = {"arr":[0,180,220,360,515,566,943,1087,1127,1269,1313,1438,1483,1624,1668,1788,1995]};
 
-    private update(_dt:number):void{
+    public update(_dt:number):void{
 
         // if(this.data2.arr.indexOf(Game.tick) != -1){
 
@@ -353,8 +355,6 @@ class Game extends egret.DisplayObjectContainer {
         // }
 
         // Game.tick++;
-
-        _dt = 16;
 
         if (_dt < 10) {
             return;
@@ -543,7 +543,12 @@ class Game extends egret.DisplayObjectContainer {
         this.gameContainer.y = Human.human.containerY;
     }
 
-    private touchBg(e: egret.TouchEvent): void {
+    public touchBg(e: egret.TouchEvent): void {
+
+        this.Jump();
+    }
+
+    private Jump():void{
 
         if(!Human.human.firstJump){
 
@@ -580,11 +585,13 @@ class Game extends egret.DisplayObjectContainer {
         }
     }
 
-    private touchBg2(_human:Human): void {
+    public Jump2(_human:Human): void {
 
         if(!_human.firstJump){
 
             _human.firstJump = true;
+
+            _human.gravityScale = Main.config.gameConfig.humanGravityScale;
 
             // SuperTicker.getInstance().addEventListener(this.update, this);
 

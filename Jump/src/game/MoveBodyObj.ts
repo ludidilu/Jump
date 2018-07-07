@@ -47,9 +47,9 @@ class MoveBodyObj extends BodyObj{
 
         this.fixFloat();
 
-        let str:string = "uid:" + this.uid + "  pos:" + this.position[0] + "," + this.position[1];
+        // let str:string = "uid:" + this.uid + "  pos:" + this.position[0] + "," + this.position[1];
 
-        Game.log(str);
+        // Game.log(str);
 
         MoveBodyObj.tmpVec[0] = Main.config.gameConfig.humanFixForce[0] * this.mass;
 
