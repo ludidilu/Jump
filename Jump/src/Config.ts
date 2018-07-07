@@ -113,7 +113,7 @@ class GameConfig{
 
     public physicsEngineFps:number = 30;
 
-    public humanStartPos:number[] = [100,100];
+    public humanStartPos:number[][] = [[100,100]];
 
     public firstJumpAngle:number = Math.PI * 0.25 + 0.15;
 

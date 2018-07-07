@@ -12,15 +12,6 @@ let lagList = [];
 
 let isLagRunning = false;
 
-let p2 = require("./lib.js")();
-
-let world = new p2.World();
-
-
-
-
-//world.human.getArea();
-
 let io = require('socket.io')();
 
 io.on('connection', connection);
@@ -30,6 +21,8 @@ io.on('disconnect', disconnect);
 io.listen(1999);
 
 function connection(client){
+	
+	client.emit("connectOver", 1234);
 
 	console.log("one user connection");
 
@@ -76,7 +69,7 @@ function getDataReal(client, tag, data){
 
 		
 	}
-	else if(tag == "create"){
+	else if(tag == "command"){
 
 		
 	}

@@ -2,17 +2,25 @@ class Connection{
 
     private static socket:SocketIOClient.Socket;
 
-    public static init():void{
+    public static async init(){
 
-        Connection.socket = io.connect("1.1.1.118:1999");
+        let fun:(_resolve:(_uid:number)=>void)=>void = function(_resolve:(_uid:number)=>void):void{
 
-        Connection.socket.on("connect", this.connected.bind(this));
+            Connection.socket = io.connect("127.0.0.1:1999");
+            
+            Connection.socket.on("connectOver", _resolve);
+        }
 
-        
+        return new Promise<number>(fun);
     }
 
-    private static connected():void{
+    public static listen<T>(_tag:string, _cb:(_data:T)=>void):void{
 
-        console.log("connected!");
+        Connection.socket.on(_tag, _cb);
+    }
+
+    public static emit<T>(_tag:string, _data:T):void{
+
+        Connection.socket.emit(_tag, _data);
     }
 }

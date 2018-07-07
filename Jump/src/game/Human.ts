@@ -295,7 +295,7 @@ class Human extends MoveBodyObj{
 
         this.firstJump = false;
 
-        this.setPosition(Main.config.gameConfig.humanStartPos[0], Main.config.gameConfig.humanStartPos[1]);
+        this.setPosition(Main.config.gameConfig.humanStartPos[0][0], Main.config.gameConfig.humanStartPos[0][1]);
 
         super.reset();
 

@@ -38,7 +38,7 @@
         },
 
         {
-            "maxLevel": 20,
+            "maxLevel": 30,
 
             "heightAddSpeed": 0.625,
 
@@ -84,7 +84,7 @@
 
         "worldTimeFix": 1,
 
-        "factor":  160,
+        "factor": 80,
 
         "unitHeight":  2.4,
 
@@ -118,9 +118,9 @@
 
         "restitution": 0,
 
-        "humanDamping": 0.1,
+        "humanDamping": 0,
 
-        "humanAngularDamping": 0.1,
+        "humanAngularDamping": 0,
 
         "humanGravityScale": 1,
 
@@ -138,7 +138,7 @@
 
         "physicsEngineFps": 30,
 
-        "humanStartPos": [-4,9],
+        "humanStartPos": [[-4,9]],
 
         "firstJumpAngle": 0.7,
 

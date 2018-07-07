@@ -8,7 +8,7 @@ class Game extends egret.DisplayObjectContainer {
 
     public static STAGE_HEIGHT:number = 1920;
 
-    private world:p2.World;
+    public world:p2.World;
 
     private worldDt:number;
 
@@ -241,9 +241,7 @@ class Game extends egret.DisplayObjectContainer {
 
     private clickShareBt(e:egret.TouchEvent):void{
 
-        console.log("share!!!");
-
-        wx.shareAppMessage({query:"a=1,b=2"});
+        GameOnline.start();
     }
 
     private shareSuccess(v):void{
@@ -331,7 +329,7 @@ class Game extends egret.DisplayObjectContainer {
 
     private createHuman():void{
 
-        Human.create(this.world, Main.config.gameConfig.humanLength, Main.config.gameConfig.humanRadius, Main.config.gameConfig.humanStartPos[0], Main.config.gameConfig.humanStartPos[1]);
+        Human.create(this.world, Main.config.gameConfig.humanLength, Main.config.gameConfig.humanRadius, Main.config.gameConfig.humanStartPos[0][0], Main.config.gameConfig.humanStartPos[0][1]);
     }
 
     public static data:{arr:number[]} = {arr:[]};

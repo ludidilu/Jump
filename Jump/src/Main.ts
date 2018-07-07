@@ -38,8 +38,6 @@ class Main extends egret.DisplayObjectContainer {
 
     private onAddToStage(event: egret.Event):void {
 
-        // Connection.init();
-
         this.removeEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
 
         console.log("version:" + 32201);
