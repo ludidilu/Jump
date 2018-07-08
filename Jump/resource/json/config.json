@@ -118,9 +118,9 @@
 
         "restitution": 0,
 
-        "humanDamping": 0,
+        "humanDamping": 0.1,
 
-        "humanAngularDamping": 0,
+        "humanAngularDamping": 0.1,
 
         "humanGravityScale": 1,
 

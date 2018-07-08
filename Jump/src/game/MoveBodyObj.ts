@@ -18,7 +18,19 @@ class MoveBodyObj extends BodyObj{
 
     public sizeFix:number = 1;
 
-    public update(_dt?:number):void{
+    public update(_dt:number):void{
+
+        if(Math.abs(this.previousPosition[0] - this.position[0]) < Math.abs(Main.config.gameConfig.humanSleepXFix) * _dt * 0.001){
+
+            if(this.velocity[0] > 0){
+
+                this.setPosition(this.previousPosition[0] + Main.config.gameConfig.humanSleepXFix * _dt * 0.001, this.position[1]);
+            }
+            else{
+
+                this.setPosition(this.previousPosition[0] - Main.config.gameConfig.humanSleepXFix * _dt * 0.001, this.position[1]);
+            }
+        }
 
         let shape:p2.Shape = this.shapes[0];
 

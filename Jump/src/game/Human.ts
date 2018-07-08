@@ -135,7 +135,7 @@ class Human extends MoveBodyObj{
 
     public update(_dt:number):void{
 
-        super.update();
+        super.update(_dt);
 
         this.updateContainerPosition(_dt);
 
