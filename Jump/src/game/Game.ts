@@ -391,12 +391,15 @@ class Game extends egret.DisplayObjectContainer {
             
             this.hint.visible = false;
         }
-        
-        Human.human.update(dt);
 
-        this.gameContainer.x = Human.human.containerX;
+        if(Human.human.firstJump){
 
-        this.gameContainer.y = Human.human.containerY;
+            Human.human.update(dt);
+
+            this.gameContainer.x = Human.human.containerX;
+
+            this.gameContainer.y = Human.human.containerY;
+        }
 
         Enemy.update(dt);
 
