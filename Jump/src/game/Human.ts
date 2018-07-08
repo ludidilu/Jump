@@ -41,6 +41,11 @@ class Human extends MoveBodyObj{
 
     public updateContainerPosition(_dt:number):void{
 
+        if(!this.firstJump){
+
+            return;
+        }
+
         this.containerY += Game.stageConfig.heightAddSpeed * Main.config.gameConfig.factor * _dt * 0.001;
 
         let targetY:number = this.position[1] * Main.config.gameConfig.factor - Game.STAGE_HEIGHT * 0.5;
@@ -327,7 +332,10 @@ class Human extends MoveBodyObj{
 
             let human:Human = this.humanArr[i];
 
-            human.update(_dt);
+            if(human.firstJump){
+
+                human.update(_dt);
+            }
         }
     }
 
