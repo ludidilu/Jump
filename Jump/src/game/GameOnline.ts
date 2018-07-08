@@ -20,7 +20,9 @@ class GameOnline{
 
     private static TAG_COMMAND:string = "tag_command";
 
-    private static COMMAND_LAG:number = 5;
+    private static TAG_LAG:string = "tag_getLag";
+
+    private static COMMAND_LAG:number = 0;
 
     public static commandArr:Data_command[] = [];
 
@@ -47,6 +49,8 @@ class GameOnline{
         Connection.listen(this.TAG_COMMAND, this.getCommand.bind(this));
 
         Connection.listen(this.TAG_START, this.getStart.bind(this));
+
+        Connection.listen(this.TAG_LAG, this.getLag.bind(this));
 
         Connection.emit(this.TAG_JOIN, this.uid);
     }
@@ -109,13 +113,24 @@ class GameOnline{
         Connection.emit(this.TAG_COMMAND, this.uid);
     }
 
+    private static pingTime:number = 0;
+
     private static update(_dt:number):void{
+
+        this.pingTime += _dt;
+
+        if(this.pingTime > 1000){
+
+            Connection.emit(this.TAG_LAG, new Date().getTime());
+
+            this.pingTime -= 1000;
+        }
 
         this.index++;
 
         let index:number = this.index - this.COMMAND_LAG;
 
-        if(index == this.commandArr.length){
+        if(index >= this.commandArr.length){
 
             console.log("late:" + index);
 
@@ -147,5 +162,14 @@ class GameOnline{
 
             this.main.update(16);
         }
+    }
+
+    private static getLag(_v:number):void{
+
+        let nowTime:number = new Date().getTime();
+
+        let lag:number = nowTime - _v;
+
+        console.log("ping:" + lag);
     }
 }

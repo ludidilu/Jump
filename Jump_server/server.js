@@ -10,7 +10,7 @@ let lagMax = 100;
 
 let lagList = [];
 
-let isLagRunning = true;
+let isLagRunning = false;
 
 let io = require('socket.io')();
 
@@ -87,7 +87,7 @@ function getDataReal(client, tag, data){
 
 		sendDataToRoom("room", "tag_refresh", {arr:arr});
 
-		if(arr.length == 1){
+		if(arr.length == 2){
 
 			sendDataToRoom("room", "tag_start");
 
@@ -96,7 +96,7 @@ function getDataReal(client, tag, data){
 	}
 	else if(tag == "tag_command"){
 
-		console.log("user command:" + client.clientUid);
+		console.log("user command:" + client.clientUid + "  time:" + command.index);
 
 		command.arr.push(client.clientUid);
 	}
