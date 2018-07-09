@@ -38,8 +38,6 @@ class GameOnline{
 
         this.main.bg.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.main.touchBg, this.main);
 
-        this.main.bg.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBg, this);
-
         this.uid = await Connection.init();
 
         console.log("uid:" + this.uid);
@@ -102,6 +100,8 @@ class GameOnline{
     }
 
     private static getStart():void{
+
+        this.main.bg.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBg, this);
 
         SuperTicker.getInstance().addEventListener(this.update, this);
 

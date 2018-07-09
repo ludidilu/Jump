@@ -6,9 +6,9 @@ class Connection{
 
         let fun:(_resolve:(_uid:number)=>void)=>void = function(_resolve:(_uid:number)=>void):void{
 
-            // Connection.socket = io.connect("106.75.222.192:1999");
+            Connection.socket = io.connect("106.75.222.192:1999");
 
-            Connection.socket = io.connect("127.0.0.1:1999");
+            // Connection.socket = io.connect("127.0.0.1:1999");
             
             Connection.socket.on("connectOver", _resolve);
         }
