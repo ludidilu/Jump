@@ -52,7 +52,7 @@ class GameOnline{
 
         Connection.listen(this.TAG_LAG, this.getLag.bind(this));
 
-        Connection.emit(this.TAG_JOIN, this.uid);
+        Connection.emit(this.TAG_JOIN, 0);
     }
 
     private static getRefresh(_data:Data_refresh):void{

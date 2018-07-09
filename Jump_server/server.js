@@ -16,21 +16,51 @@ let io = require('socket.io')();
 
 io.on('connection', connection);
 
-io.on('disconnect', disconnect);
-
 io.listen(1999);
 
 let uid = 1;
 
-let arr = [];
+let roomId = 1;
+
+let playerDic = {};
+
+let roomDic = {};
+
+setInterval(update, 16);
+
 
 function connection(client){
 
 	client.clientUid = uid;
 
+	playerDic[uid] = client;
+
 	sendData(client, "connectOver", uid);
 	
 	console.log("one user connection:" + uid);
+
+	let disconnect = function(reason){
+
+		if(client.roomUid){
+			
+			let room = roomDic[client.roomUid];
+
+			room.player.splice(room.player.indexOf(client.clientUid), 1);
+
+			if(room.player.length == 0){
+
+				console.log("remove room:" + room.uid);
+
+				delete roomDic[room.uid];
+			}
+		}
+
+		console.log("remove player:" + client.clientUid);
+
+		delete playerDic[client.clientUid];
+	};
+
+	client.on("disconnect", disconnect);
 	
 	uid++;
 
@@ -45,11 +75,6 @@ function connection(client){
 
 		client.on(tag, delegate);
 	}
-}
-
-function disconnect(client){
-
-	console.log("disconnect:" + client);
 }
 
 function getData(client, tag, data){
@@ -71,34 +96,65 @@ function getData(client, tag, data){
 	}
 }
 
-let command = {index:0, arr:[]};
-
-let index = 0;
-
 function getDataReal(client, tag, data){
 
 	if(tag == "tag_join"){
 		
 		console.log("user join:" + client.clientUid);
+
+		let roomUid;
+
+		if(data == 0){
+
+			roomUid = "room" + roomId;
+
+			roomId++;
+		}
+		else{
+
+			roomUid = "room" + data;
+		}
 		
-		client.join("room");
+		client.join(roomUid);
 		
-		arr.push(client.clientUid);
+		client.roomUid = roomUid;
 
-		sendDataToRoom("room", "tag_refresh", {arr:arr});
+		let room;
 
-		if(arr.length == 2){
+		if(roomDic[roomUid]){
 
-			sendDataToRoom("room", "tag_start");
+			room = roomDic[roomUid];
+		}
+		else{
 
-			setInterval(update, 16);
+			room = {uid:roomUid, player:[], index:-1, command:[]};
+
+			roomDic[roomUid] = room;
+		}
+
+		room.player.push(client.clientUid);
+
+		console.log("roomUid:" + roomUid);
+
+		sendDataToRoom(roomUid, "tag_refresh", {arr:room.player});
+
+		if(room.player.length == 1){
+
+			room.index = 0;
+
+			sendDataToRoom(roomUid, "tag_start");
 		}
 	}
 	else if(tag == "tag_command"){
 
-		console.log("user command:" + client.clientUid + "  time:" + command.index);
+		let room = roomDic[client.roomUid];
 
-		command.arr.push(client.clientUid);
+		if(room.command.indexOf(client.clientUid) == -1){
+
+			console.log("user command:" + client.clientUid + "  time:" + room.index);
+
+			room.command.push(client.clientUid);
+		}
 	}
 	else if(tag == "tag_getLag"){
 
@@ -108,13 +164,21 @@ function getDataReal(client, tag, data){
 
 function update(){
 
-	command.index = index;
+	for(let key in roomDic){
 
-	sendDataToRoom("room", "tag_command", command);
+		let room = roomDic[key];
 
-	command.arr.length = 0;
+		if(room.index > -1){
 
-	index++;
+			let command = {index:room.index, arr:room.command};
+
+			sendDataToRoom(key, "tag_command", command);
+
+			room.command.length = 0;
+
+			room.index++;
+		}
+	}
 }
 
 function sendDataToRoom(room, tag, data){
