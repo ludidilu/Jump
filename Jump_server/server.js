@@ -2,11 +2,11 @@ let messageTag = ["tag_join","tag_command","tag_getLag"];
 
 let player = [];
 
-let lagTest = false;
+let lagTest = true;
 
-let lagMin = 50;
+let lagMin = 8;
 
-let lagMax = 100;
+let lagMax = 12;
 
 let lagList = [];
 
@@ -26,7 +26,18 @@ let playerDic = {};
 
 let roomDic = {};
 
-setInterval(update, 16);
+setInterval(update, 1000 / 60);
+
+let num;
+
+if(process.argv.length == 2){
+
+	num = 1;
+}
+else{
+
+	num = parseInt(process.argv[2]);
+}
 
 
 function connection(client){
@@ -138,7 +149,7 @@ function getDataReal(client, tag, data){
 
 		sendDataToRoom(roomUid, "tag_refresh", {arr:room.player});
 
-		if(room.player.length == 1){
+		if(room.player.length == num){
 
 			room.index = 0;
 
@@ -151,7 +162,7 @@ function getDataReal(client, tag, data){
 
 		if(room.command.indexOf(client.clientUid) == -1){
 
-			console.log("user command:" + client.clientUid + "  time:" + room.index);
+			//console.log("user command:" + client.clientUid + "  time:" + room.index);
 
 			room.command.push(client.clientUid);
 		}
@@ -170,7 +181,16 @@ function update(){
 
 		if(room.index > -1){
 
-			let command = {index:room.index, arr:room.command};
+			let arr = [];
+
+			for(let i = 0 ; i < room.command.length ; i++){
+
+				arr.push(room.command[i]);
+			}
+
+			//let command = {index:room.index, arr:room.command};
+
+			let command = {index:room.index, arr:arr};
 
 			sendDataToRoom(key, "tag_command", command);
 

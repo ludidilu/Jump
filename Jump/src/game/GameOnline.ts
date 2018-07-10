@@ -89,8 +89,6 @@ class GameOnline{
 
         if(_data.index == this.commandArr.length){
 
-            // console.log("getCommand:" + _data.index);
-
             this.commandArr.push(_data);
         }
         else{
@@ -126,41 +124,74 @@ class GameOnline{
             this.pingTime -= 1000;
         }
 
-        this.index++;
-
         let index:number = this.index - this.COMMAND_LAG;
 
-        if(index >= this.commandArr.length){
+        if(index < this.commandArr.length){
+
+            if(index > -1){
+
+                let command:Data_command = this.commandArr[index];
+
+                if(command.arr.length > 0){
+
+                    for(let key in command.arr){
+
+                        let uid = command.arr[key];
+
+                        if(uid == this.uid){
+
+                            this.main.Jump2(Human.human);
+                        }
+                        else{
+
+                            this.main.Jump2(this.other[uid]);
+                        }
+                    }
+                }
+
+                this.main.update(16);
+            }
+
+            index++;
+
+            this.index++;
+        }
+        else{
 
             console.log("late:" + index);
-
-            this.index--;
 
             return;
         }
 
-        if(index > -1){
+        while(index < this.commandArr.length - this.COMMAND_LAG){
 
-            let command:Data_command = this.commandArr[index];
+            if(index > -1){
 
-            if(command.arr.length > 0){
+                let command:Data_command = this.commandArr[index];
 
-                for(let key in command.arr){
+                if(command.arr.length > 0){
 
-                    let uid = command.arr[key];
+                    for(let key in command.arr){
 
-                    if(uid == this.uid){
+                        let uid = command.arr[key];
 
-                        this.main.Jump2(Human.human);
-                    }
-                    else{
+                        if(uid == this.uid){
 
-                        this.main.Jump2(this.other[uid]);
+                            this.main.Jump2(Human.human);
+                        }
+                        else{
+
+                            this.main.Jump2(this.other[uid]);
+                        }
                     }
                 }
+
+                this.main.update(16);
             }
 
-            this.main.update(16);
+            index++;
+
+            this.index++;
         }
     }
 
