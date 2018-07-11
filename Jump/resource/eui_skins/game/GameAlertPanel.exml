@@ -2,11 +2,11 @@
 <e:Skin class="AlertPanelSkin" width="1200" height="1920" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
 	<w:Config id="163d9496570" ></w:Config>
 	<e:Rect anchorOffsetX="0" anchorOffsetY="0" left="0" right="0" top="0" bottom="0" fillAlpha="0.5"/>
-	<e:Panel left="300" right="300" top="600" bottom="600">
+	<e:Group left="300" right="300" top="600" bottom="600">
 		<e:Rect anchorOffsetX="0" anchorOffsetY="0" fillColor="0x124768" touchEnabled="false" top="0" bottom="0" left="0" right="0" scaleX="1" scaleY="1"/>
 		<e:Label id="message" text="Label" anchorOffsetX="0" anchorOffsetY="0" textColor="0x000000" textAlign="center" verticalAlign="middle" bold="true" touchEnabled="false" scaleX="1" scaleY="1" top="0" bottom="300" left="0" right="0"/>
 		<e:Button id="bt" label="Button" scaleX="1" scaleY="1" width="100" bottom="100" horizontalCenter="0"/>
-	</e:Panel>
+	</e:Group>
 
 
 

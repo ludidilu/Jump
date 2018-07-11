@@ -20,5 +20,11 @@ class GameMainPanel extends eui.Component implements  eui.UIComponent {
 
 	public money:eui.Label;
 
-	public shareBt:eui.Button;
+	public onlineGroup:eui.Group;
+
+	public createBt:eui.Button;
+
+	public joinBt:eui.Button;
+
+	public playerNum:eui.EditableText;
 }

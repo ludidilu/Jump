@@ -42,7 +42,7 @@ class Game extends egret.DisplayObjectContainer {
 
     private uiContainer:egret.DisplayObjectContainer;
 
-    private mainPanel:GameMainPanel;
+    public mainPanel:GameMainPanel;
 
     private alertPanel:GameAlertPanel;
 
@@ -238,28 +238,19 @@ class Game extends egret.DisplayObjectContainer {
 
         this.alertPanel.bt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.btClick, this);
 
-        this.mainPanel.shareBt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.clickShareBt, this);
+        this.mainPanel.createBt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.clickCreateBt, this);
+
+        this.mainPanel.joinBt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.clickJoinBt, this);
     }
 
-    private clickShareBt(e:egret.TouchEvent):void{
+    private clickCreateBt(e:egret.TouchEvent):void{
 
-        GameOnline.start();
+        GameOnline.start(0, parseInt(this.mainPanel.playerNum.text));
     }
 
-    private shareSuccess(v):void{
-        console.log("shareSuccess:" + v);
-    }
+    private clickJoinBt(e:egret.TouchEvent):void{
 
-    private shareFail(v):void{
-        console.log("shareFail:" + v);
-
-        for(let key in v){
-            console.log("key:" + key + "  value:" + v[key]);
-        }
-    }
-
-    private shareComplete(v):void{
-        console.log("shareComplete");
+        GameOnline.start(parseInt(this.mainPanel.playerNum.text), 1);
     }
 
     private createHint():void{

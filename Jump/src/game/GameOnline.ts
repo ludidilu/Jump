@@ -1,6 +1,8 @@
 class Data_refresh{
 
     public arr:number[];
+
+    public roomUid:number;
 }
 
 class Data_command{
@@ -34,7 +36,7 @@ class GameOnline{
 
     private static index:number;
 
-    public static async start(){
+    public static async start(_roomUid:number, _playerNum:number){
 
         this.main.bg.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.main.touchBg, this.main);
 
@@ -50,10 +52,16 @@ class GameOnline{
 
         Connection.listen(this.TAG_LAG, this.getLag.bind(this));
 
-        Connection.emit(this.TAG_JOIN, 0);
+        Connection.emit(this.TAG_JOIN, {roomUid:_roomUid, playerNum:_playerNum});
     }
 
     private static getRefresh(_data:Data_refresh):void{
+
+        this.main.mainPanel.playerNum.text = "room:" + _data.roomUid;
+
+        this.main.mainPanel.createBt.visible = false;
+
+        this.main.mainPanel.joinBt.visible = false;
 
         for(let i:number = 0, m:number = _data.arr.length ; i < m ; i++){
 
@@ -98,6 +106,8 @@ class GameOnline{
     }
 
     private static getStart():void{
+
+        this.main.mainPanel.onlineGroup.visible = false;
 
         this.main.bg.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBg, this);
 

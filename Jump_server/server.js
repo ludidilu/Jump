@@ -2,7 +2,7 @@ let messageTag = ["tag_join","tag_command","tag_getLag"];
 
 let player = [];
 
-let lagTest = true;
+let lagTest = false;
 
 let lagMin = 8;
 
@@ -27,18 +27,6 @@ let playerDic = {};
 let roomDic = {};
 
 setInterval(update, 1000 / 60);
-
-let num;
-
-if(process.argv.length == 2){
-
-	num = 1;
-}
-else{
-
-	num = parseInt(process.argv[2]);
-}
-
 
 function connection(client){
 
@@ -115,41 +103,52 @@ function getDataReal(client, tag, data){
 
 		let roomUid;
 
-		if(data == 0){
+		let roomOid;
+
+		if(data.roomUid == 0){
 
 			roomUid = "room" + roomId;
+
+			roomOid = roomId;
 
 			roomId++;
 		}
 		else{
 
-			roomUid = "room" + data;
+			roomUid = "room" + data.roomUid;
+
+			roomOid = data.roomUid;
+		}
+		
+		let room;
+
+		if(roomDic[roomUid]){
+
+			room = roomDic[roomUid];
+
+			if(room.index != -1){
+
+				return;
+			}
+		}
+		else{
+
+			room = {uid:roomUid, player:[], index:-1, command:[], playerNum:data.playerNum};
+
+			roomDic[roomUid] = room;
 		}
 		
 		client.join(roomUid);
 		
 		client.roomUid = roomUid;
 
-		let room;
-
-		if(roomDic[roomUid]){
-
-			room = roomDic[roomUid];
-		}
-		else{
-
-			room = {uid:roomUid, player:[], index:-1, command:[]};
-
-			roomDic[roomUid] = room;
-		}
-
 		room.player.push(client.clientUid);
 
 		console.log("roomUid:" + roomUid);
 
-		sendDataToRoom(roomUid, "tag_refresh", {arr:room.player});
+		sendDataToRoom(roomUid, "tag_refresh", {arr:room.player, roomUid:roomOid});
 
-		if(room.player.length == num){
+		if(room.player.length == room.playerNum){
 
 			room.index = 0;
 
