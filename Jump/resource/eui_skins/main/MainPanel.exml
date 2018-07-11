@@ -8,10 +8,14 @@
 	<e:Image width="1188" height="334" x="6" y="90" anchorOffsetX="0" anchorOffsetY="0" source="main_json.logo"/>
 	<e:Image width="594" height="277" x="303" y="1640" anchorOffsetX="0" anchorOffsetY="0" source="main_json.diyijiekou_bg"/>
 	<e:Image width="494" height="140" x="353" y="1700" anchorOffsetX="0" anchorOffsetY="0" source="main_json.diyijiekou"/>
-	<e:Image width="421" height="230" x="65" y="1330" anchorOffsetX="0" anchorOffsetY="0" source="main_json.guozi"/>
-	<e:Image width="421" height="230" x="710" y="1330" anchorOffsetX="0" anchorOffsetY="0" source="main_json.guozi"/>
+	<e:Group id="guoLeft" width="421" x="65" height="230" y="1330">
+		<e:Image width="421" height="230" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0" source="main_json.guozi"/>
+	</e:Group>
+	<e:Group id="guoRight" width="421" x="710" height="230" y="1330">
+		<e:Image width="421" height="230" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0" source="main_json.guozi"/>
+	</e:Group>
 	<e:Button id="challengeBt" label="Button" x="125" y="1445" skinName="GuanqiaButtonSkin"/>
-	<e:Button id="endlessBt" label="Button" x="770" y="1445" skinName="WujinButtonSkin"/>
+	<e:Button id="endlessBt" label="Button" x="780" y="1445" skinName="WujinButtonSkin"/>
 	<e:Image id="guagou_ji" width="37" height="167" x="240" y="415" anchorOffsetX="0" anchorOffsetY="0" source="main_json.guagou"/>
 	<e:Image id="ji" width="207" height="457" x="140" y="500" source="main_json.ji" anchorOffsetX="0" anchorOffsetY="0"/>
 	<e:Button id="genhuanjuese" label="Button" x="200" y="650" skinName="GenhuanjueseButtonSkin" width="61"/>

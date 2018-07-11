@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "button_down_png,button_up_png,description_json,config_json,yu_png,main_json,bg_png,counter_png,gameEui_json",
+			"keys": "button_down_png,button_up_png,description_json,config_json,yu_png,main_json,bg_png,counter_png,gameEui_json,kaoya_json,kaoya_png,guo_json,guo_png",
 			"name": "preload"
 		}
 	],
@@ -51,6 +51,26 @@
 			"name": "gameEui_json",
 			"type": "json",
 			"url": "gameEui.json"
+		},
+		{
+			"name": "kaoya_json",
+			"type": "json",
+			"url": "character/kaoya/kaoya.json"
+		},
+		{
+			"name": "kaoya_png",
+			"type": "image",
+			"url": "character/kaoya/kaoya.png"
+		},
+		{
+			"name": "guo_json",
+			"type": "json",
+			"url": "mc/guo/guo.json"
+		},
+		{
+			"name": "guo_png",
+			"type": "image",
+			"url": "mc/guo/guo.png"
 		}
 	]
 }

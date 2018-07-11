@@ -113,6 +113,16 @@ class Main extends egret.DisplayObjectContainer {
         this.refreshMainPanel();
 
         this.initRankPanel();
+
+        var data = RES.getRes("kaoya_json");
+        var txtr = RES.getRes("kaoya_png");
+        var mcFactory:egret.MovieClipDataFactory = new egret.MovieClipDataFactory( data, txtr );
+
+        let mc:egret.MovieClip = new egret.MovieClip(mcFactory.generateMovieClipData("kaoya"));
+
+        this.addChild(mc);
+
+        mc.play(-1);
     }
 
     private promiseCatch(reason):void{
