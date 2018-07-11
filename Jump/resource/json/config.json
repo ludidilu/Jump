@@ -28,7 +28,7 @@
 
             "itemJumpHeight": 2.4,
 
-            "enemyPropProbability": 1000,
+            "enemyPropProbability": 0,
 
             "maxEnemyNum":  5,
 
@@ -58,7 +58,7 @@
 
             "itemJumpHeight": 2.4,
 
-            "enemyPropProbability": 1000,
+            "enemyPropProbability": 0,
 
             "maxEnemyNum":  5,
 
@@ -88,9 +88,9 @@
 
         "unitHeight":  2.4,
 
-        "unitWidth":  2,
+        "unitWidth":  2.4,
 
-        "triangleWidth":  0.2,
+        "triangleWidth":  0.4,
 
         "triangleHeight":  0.4,
 

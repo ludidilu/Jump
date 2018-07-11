@@ -10,13 +10,21 @@ class Ladder extends BodyObj{
 
         let factor:number;
 
+        let container:egret.DisplayObjectContainer;
+
+        let tex:egret.Texture;
+
         if(_mapContainer){
+
+            container = new egret.DisplayObjectContainer();
+
+            tex = RES.getRes("game_json.taijie");
 
             conDisplay = new egret.Shape();
 
-            conDisplay.graphics.beginFill(0xff0000);
+            conDisplay.graphics.beginFill(0xff0000, 0.5);
 
-            factorFix = 0.2;
+            factorFix = 1;
 
             factor = Main.config.gameConfig.factor * factorFix;
 
@@ -60,6 +68,20 @@ class Ladder extends BodyObj{
 
                 vertices.push(arr2);
             }
+
+            if(_mapContainer){
+
+                let bp:egret.Bitmap = new egret.Bitmap(tex);
+
+                bp.x = m * Main.config.gameConfig.unitWidth * Main.config.gameConfig.factor;
+
+                bp.y = -(m + 1) * Main.config.gameConfig.unitHeight * Main.config.gameConfig.factor;
+
+                bp.scaleX = bp.scaleY = Main.config.gameConfig.factor / 80;
+
+                container.addChild(bp);  
+
+            }
         }
 
         let ladder:Ladder = new Ladder();
@@ -74,9 +96,9 @@ class Ladder extends BodyObj{
 
             conDisplay.graphics.endFill();
 
-            let container:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();
+            // let container:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();
 
-            container.addChild(conDisplay);
+            // container.addChild(conDisplay);
             
             conDisplay.scaleX = 1 / factorFix;
 
@@ -84,7 +106,19 @@ class Ladder extends BodyObj{
 
             _mapContainer.addChild(container);
 
+            tex = RES.getRes("game_json.001");
+            
+            let bp:egret.Bitmap = new egret.Bitmap(tex);
+
+            bp.y = -(Main.config.gameConfig.unitNum + 1.2) * Main.config.gameConfig.factor * 2;
+
+            bp.scaleX = bp.scaleY = Main.config.gameConfig.factor / 80;
+
+            container.addChild(bp);
+
             ladder.displays = [container];
+
+            container.cacheAsBitmap = true;
         }
         else{
 
