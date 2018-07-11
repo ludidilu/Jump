@@ -237,12 +237,43 @@ class MoveBodyObj extends BodyObj{
         // humanDisplay.graphics.drawRect(0,0,width,height);
         // humanDisplay.graphics.endFill();
 
+        let data = RES.getRes("kaoya_json");
+        let txtr:egret.Texture = RES.getRes("kaoya_png");
+        let mcFactory:egret.MovieClipDataFactory = new egret.MovieClipDataFactory( data, txtr );
+
+        let mc:egret.MovieClip = new egret.MovieClip(mcFactory.generateMovieClipData("kaoya"));
+
+        mc.play(-1);
+
+        mc.rotation = 90;
+
+
+        mc.scaleX = width / mc.height;
+
+        mc.scaleY = height / mc.width;
+
+        mc.x += width;
+
+        mc.y -= 10;//hard code
+
+        let humanDisplay:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();
+
+        humanDisplay.addChild(mc);
+
         let tex:egret.Texture = RES.getRes("yu_png");
 
-        let humanDisplay:egret.Bitmap = new egret.Bitmap(tex);
+        let humanDisplay2:egret.Bitmap = new egret.Bitmap(tex);
 
-        humanDisplay.width = width;
-        humanDisplay.height = height;
+        humanDisplay2.scaleX = width / humanDisplay2.width;
+
+        humanDisplay2.scaleY = height / humanDisplay2.height;
+
+        humanDisplay2.alpha = 0.5;
+
+        // humanDisplay.addChild(humanDisplay2);
+
+        // humanDisplay.width = width;
+        // humanDisplay.height = height;
 
         humanDisplay.anchorOffsetX = width / 2;
         humanDisplay.anchorOffsetY = height / 2;

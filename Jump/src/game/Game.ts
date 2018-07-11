@@ -20,7 +20,7 @@ class Game extends egret.DisplayObjectContainer {
 
     public humanMat:p2.Material;
 
-    public bg:egret.Shape;
+    public bg:egret.Bitmap;
 
     private itemBt:ItemBt;
 
@@ -192,13 +192,17 @@ class Game extends egret.DisplayObjectContainer {
 
     private createBg():void{
 
-        this.bg = new egret.Shape();
+        let tex:egret.Texture = RES.getRes("kitchenBg_png");
 
-        this.bg.graphics.beginFill(0x666666);
+        this.bg = new egret.Bitmap(tex);
 
-        this.bg.graphics.drawRect(0,0,this.stage.stageWidth, this.stage.stageHeight);
+        // this.bg = new egret.Shape();
 
-        this.bg.graphics.endFill();
+        // this.bg.graphics.beginFill(0x666666);
+
+        // this.bg.graphics.drawRect(0,0,this.stage.stageWidth, this.stage.stageHeight);
+
+        // this.bg.graphics.endFill();
 
         this.bgContainer.addChild(this.bg);
 
