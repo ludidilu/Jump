@@ -38,7 +38,7 @@
         },
 
         {
-            "maxLevel": 30,
+            "maxLevel": 20,
 
             "heightAddSpeed": 0.625,
 
@@ -94,11 +94,9 @@
 
         "triangleHeight":  0.4,
 
-        "unitNum":  6,
+        "unitNum":  7,
 
-        "ladderChangeUnitNum":  1,
-
-        "ladderChangeUnitFix": 2,
+        "ladderChangeUnitFix": 3,
 
         "humanLength":  0.7,
 

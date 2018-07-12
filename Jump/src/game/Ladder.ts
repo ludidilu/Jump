@@ -80,7 +80,6 @@ class Ladder extends BodyObj{
                 bp.scaleX = bp.scaleY = Main.config.gameConfig.factor / 80;
 
                 container.addChild(bp);  
-
             }
         }
 
@@ -110,11 +109,27 @@ class Ladder extends BodyObj{
             
             let bp:egret.Bitmap = new egret.Bitmap(tex);
 
-            bp.y = -(Main.config.gameConfig.unitNum + 1.2) * Main.config.gameConfig.factor * 2;
+            bp.y = -Main.config.gameConfig.unitNum * Main.config.gameConfig.unitHeight * Main.config.gameConfig.factor;
 
-            bp.scaleX = bp.scaleY = Main.config.gameConfig.factor / 80;
+            bp.x = 50 * Main.config.gameConfig.factor / 40;//hard code
+
+            bp.scaleY = Main.config.gameConfig.unitNum * Main.config.gameConfig.unitHeight * Main.config.gameConfig.factor / bp.height;
+
+            bp.scaleX = bp.scaleY * Main.config.gameConfig.unitWidth / Main.config.gameConfig.unitHeight;
 
             container.addChild(bp);
+
+            tex = RES.getRes("game_json.terminal1");
+
+            ladder.terminal = new egret.Bitmap(tex);
+
+            ladder.terminal.scaleX = ladder.terminal.scaleY = Main.config.gameConfig.factor / 160;
+
+            ladder.terminal.x = ((Main.config.gameConfig.unitNum - 1) * Main.config.gameConfig.unitWidth + Main.config.gameConfig.finalLadderXFix) * Main.config.gameConfig.factor - ladder.terminal.width * ladder.terminal.scaleX * 0.5;
+
+            ladder.terminal.y = -Main.config.gameConfig.unitNum * Main.config.gameConfig.unitHeight * Main.config.gameConfig.factor - ladder.terminal.height * ladder.terminal.scaleY;
+
+            container.addChild(ladder.terminal);
 
             ladder.displays = [container];
 
@@ -169,6 +184,8 @@ class Ladder extends BodyObj{
 
         return ladder;
     }
+
+    public terminal:egret.Bitmap;
 
     public update(_x:number):void{
 

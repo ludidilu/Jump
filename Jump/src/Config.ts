@@ -71,8 +71,6 @@ class GameConfig{
 
     public unitNum:number = 20;
 
-    public ladderChangeUnitNum:number = 1;
-
     public ladderChangeUnitFix:number = 2;
 
     public humanLength:number = 0.7;

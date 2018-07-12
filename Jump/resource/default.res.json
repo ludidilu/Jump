@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "button_down_png,button_up_png,description_json,config_json,yu_png,main_json,bg_png,counter_png,gameEui_json,kaoya_json,kaoya_png,guo_json,guo_png,game_json,kitchenBg_png",
+			"keys": "button_down_png,button_up_png,description_json,config_json,yu_png,main_json,bg_png,counter_png,gameEui_json,kaoya_json,kaoya_png,guo_json,guo_png,kitchenBg_png,game_json",
 			"name": "preload"
 		}
 	],
@@ -73,15 +73,15 @@
 			"url": "mc/guo/guo.png"
 		},
 		{
-			"name": "game_json",
-			"type": "sheet",
-			"url": "spriteSheet/game.json",
-			"subkeys": "001,taijie"
-		},
-		{
 			"name": "kitchenBg_png",
 			"type": "image",
 			"url": "assets/kitchenBg.png"
+		},
+		{
+			"name": "game_json",
+			"type": "sheet",
+			"url": "spriteSheet/game.json",
+			"subkeys": "taijie,001,terminal1"
 		}
 	]
 }

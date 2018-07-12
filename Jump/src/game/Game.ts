@@ -118,10 +118,10 @@ class Game extends egret.DisplayObjectContainer {
 
         this.overCallBack = _overCallBack;
 
-        if(Game.stageConfig.maxLevel > 0){
+        // if(Game.stageConfig.maxLevel > 0){
 
-            Terminal.create(this.otherContainer, Game.stageConfig.maxLevel);
-        }
+        //     Terminal.create(this.otherContainer, Game.stageConfig.maxLevel);
+        // }
     }
 
     private pause():void{
@@ -406,10 +406,10 @@ class Game extends egret.DisplayObjectContainer {
 
         Item.update(_dt);
 
-        if(Game.stageConfig.maxLevel > 0){
+        // if(Game.stageConfig.maxLevel > 0){
 
-            Terminal.update();
-        }
+        //     Terminal.update();
+        // }
 
         if(Enemy.enemies.length < Game.stageConfig.maxEnemyNum && Math.random() < Game.stageConfig.enemyPropProbability * dt * 0.001){
 
@@ -524,7 +524,7 @@ class Game extends egret.DisplayObjectContainer {
 
         Item.reset();
 
-        Terminal.reset();
+        // Terminal.reset();
 
         this.bestScore = 0;
 
