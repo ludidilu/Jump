@@ -247,14 +247,11 @@ class MoveBodyObj extends BodyObj{
 
         mc.rotation = 90;
 
+        mc.scaleX = height / mc.width;
 
-        mc.scaleX = width / mc.height;
-
-        mc.scaleY = height / mc.width;
+        mc.scaleY = width / mc.height;
 
         mc.x += width;
-
-        mc.y -= 10;//hard code
 
         let humanDisplay:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();
 
@@ -268,7 +265,7 @@ class MoveBodyObj extends BodyObj{
 
         humanDisplay2.scaleY = height / humanDisplay2.height;
 
-        humanDisplay2.alpha = 0.5;
+        humanDisplay2.alpha = 0.2;
 
         // humanDisplay.addChild(humanDisplay2);
 
