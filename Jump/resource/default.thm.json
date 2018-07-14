@@ -4,23 +4,25 @@
 		"MainPanel": "resource/eui_skins/MainPanel.exml",
 		"AlertPanel": "resource/eui_skins/AlertPanel.exml",
 		"RankPanel": "resource/eui_skins/main/RankPanel.exml",
-		"RankCell": "resource/eui_skins/main/RankCell.exml"
+		"RankCell": "resource/eui_skins/main/RankCell.exml",
+		"ChangeClothMainPanel": "resource/eui_skins/ChangeClothMainPanel.exml"
 	},
 	"autoGenerateExmlsList": true,
 	"exmls": [
 		"resource/eui_skins/ButtonSkin.exml",
+		"resource/eui_skins/changeCloth/ChangeClothMainPanel.exml",
 		"resource/eui_skins/game/GameAlertPanel.exml",
 		"resource/eui_skins/game/GameMainPanel.exml",
 		"resource/eui_skins/main/FenxiangButton.exml",
 		"resource/eui_skins/main/GenhuanjueseButton.exml",
 		"resource/eui_skins/main/GuanqiaButton.exml",
 		"resource/eui_skins/main/LeftButton.exml",
-		"resource/eui_skins/main/MainPanel.exml",
-		"resource/eui_skins/main/PaihangButton.exml",
-		"resource/eui_skins/main/RankCell.exml",
-		"resource/eui_skins/main/RankPanel.exml",
+		"resource/eui_skins/main/WujinButton.exml",
 		"resource/eui_skins/main/RightButton.exml",
-		"resource/eui_skins/main/WujinButton.exml"
+		"resource/eui_skins/main/PaihangButton.exml",
+		"resource/eui_skins/main/MainPanel.exml",
+		"resource/eui_skins/main/RankCell.exml",
+		"resource/eui_skins/main/RankPanel.exml"
 	],
 	"path": "resource/default.thm.json"
 }

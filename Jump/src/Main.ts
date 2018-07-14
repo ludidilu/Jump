@@ -123,6 +123,10 @@ class Main extends egret.DisplayObjectContainer {
         this.addChild(mc);
 
         mc.play(-1);
+
+        // let kk:ChangeClothMainPanel = new ChangeClothMainPanel();
+
+        // this.addChild(kk);
     }
 
     private promiseCatch(reason):void{

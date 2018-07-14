@@ -1,0 +1,33 @@
+{
+    "options": {
+        "useExtension": 0,
+        "layoutGap": 1,
+        "extend": 0,
+        "layoutMath": "4",
+        "sizeMode": "2n"
+    },
+    "files": [
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/xiaolongxia.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/xianyu_an.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/xianyu.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/xiangjiao_an.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/xiangjiao.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/xiangchang_an.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/xiangchang.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/wumaoji_an.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/wumaoji.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/regou_an.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/regou.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/qiezi_an.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/qiezi.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/peigen_an.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/peigen.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/kaoya_an.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/kaoya.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/huotui_an.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/huotui.png",
+        "../../../../../Users/ludid/Desktop/夜市大逃亡切图/ui/换装界面/xiaolongxia_an.png"
+    ],
+    "version": 5,
+    "projectName": "cloth"
+}
