@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin class="ChangeClothMainPanelSkin" width="1200" height="1920" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
 	<w:Config id="16495c03cda" ></w:Config>
-	<e:Rect id="bg" top="0" bottom="0" left="0" right="0"/>
-	<e:Group id="main" width="0" height="0" y="0" x="0" touchChildren="false" touchEnabled="false"/>
+	<e:Image top="0" bottom="0" left="0" right="0" source="bg_png"/>
+	<e:Image width="951" height="441" source="cloth_json.huanfu_di" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" top="0"/>
+	<e:Image width="473" height="129" source="cloth_json.huanfu" horizontalCenter="0" top="200"/>
+	<e:Image height="33" y="540" source="cloth_json.hengliang" left="1" right="-1"/>
+	<e:Image height="519" source="cloth_json.di" left="0" right="0" bottom="0"/>
+	<e:Image x="25" y="1550" source="cloth_json.pricebg" anchorOffsetX="0" anchorOffsetY="0"/>
+	<e:Image width="547" height="79" y="1430" source="cloth_json.ceng" horizontalCenter="0"/>
+	<e:Image width="547" height="79" y="1430" source="cloth_json.ceng" x="-225"/>
+	<e:Image width="547" height="79" y="1430" source="cloth_json.ceng" x="878"/>
+	<e:Image y="1550" source="cloth_json.pricebg" anchorOffsetX="0" anchorOffsetY="0" x="850"/>
+	<e:Button label="Button" y="1540" skinName="BuyButtonSkin" x="367"/>
+	<e:Rect id="bg" height="870" y="540" fillAlpha="0" scaleX="1" scaleY="1" width="1200" x="0"/>
+
+	<e:Group id="main" height="0" y="540" touchChildren="false" touchEnabled="false" width="0" x="0">
+	</e:Group>
+	<e:Image y="1424.5" source="cloth_json.pifuname" horizontalCenter="0"/>
+
+
+
+
 </e:Skin>

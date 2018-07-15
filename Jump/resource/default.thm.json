@@ -5,11 +5,13 @@
 		"AlertPanel": "resource/eui_skins/AlertPanel.exml",
 		"RankPanel": "resource/eui_skins/main/RankPanel.exml",
 		"RankCell": "resource/eui_skins/main/RankCell.exml",
-		"ChangeClothMainPanel": "resource/eui_skins/ChangeClothMainPanel.exml"
+		"ChangeClothMainPanel": "resource/eui_skins/ChangeClothMainPanel.exml",
+		"BuyButton": "resource/eui_skins/BuyButton.exml"
 	},
 	"autoGenerateExmlsList": true,
 	"exmls": [
 		"resource/eui_skins/ButtonSkin.exml",
+		"resource/eui_skins/changeCloth/BuyButton.exml",
 		"resource/eui_skins/changeCloth/ChangeClothMainPanel.exml",
 		"resource/eui_skins/game/GameAlertPanel.exml",
 		"resource/eui_skins/game/GameMainPanel.exml",

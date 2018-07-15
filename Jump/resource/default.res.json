@@ -87,7 +87,7 @@
 			"name": "cloth_json",
 			"type": "sheet",
 			"url": "spriteSheet/cloth.json",
-			"subkeys": "xiaolongxia_an,huotui,huotui_an,kaoya,kaoya_an,peigen,peigen_an,qiezi,qiezi_an,regou,regou_an,wumaoji,wumaoji_an,xiangchang,xiangchang_an,xiangjiao,xiangjiao_an,xianyu,xianyu_an,xiaolongxia"
+			"subkeys": "xianyu_an,xiaolongxia,xiaolongxia_an,adfrme,buy,buy_down,buy_text,ceng,di,hengliang,guagou,huanfu,huanfu_di,huotui,huotui_an,kaoya,kaoya_an,locker,peigen,peigen_an,pifuname,pricebg,qiezi,qiezi_an,regou,regou_an,wumaoji,wumaoji_an,xiangchang,xiangchang_an,xiangjiao,xiangjiao_an,xianyu"
 		}
 	]
 }

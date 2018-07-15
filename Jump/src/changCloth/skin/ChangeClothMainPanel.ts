@@ -2,9 +2,9 @@ class ChangeClothMainPanel extends eui.Component implements  eui.UIComponent {
 
 	private readonly NAME_ARR:string[] = ["huotui", "kaoya", "peigen", "qiezi", "regou", "wumaoji", "xiangchang", "xiangjiao", "xianyu", "xiaolongxia"];
 
-	private readonly UNIT_WIDTH:number = 300;
+	private readonly UNIT_WIDTH:number = 250;
 
-	private readonly SCALE_CHANGE:number = 1.5;
+	private readonly SCALE_CHANGE:number = 1.3;
 
 	private readonly TWEEN_TIME:number = 1;
 
@@ -67,17 +67,39 @@ class ChangeClothMainPanel extends eui.Component implements  eui.UIComponent {
 
 		for(let i:number = 0 ; i < this.NAME_ARR.length ; i++){
 
-			let tex:egret.Texture = RES.getRes("cloth_json." + this.NAME_ARR[i]);
+			let container:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();
+
+			container.width = this.UNIT_WIDTH;
+
+			container.anchorOffsetX = 0.5 * this.UNIT_WIDTH;
+
+			container.x = this.UNIT_WIDTH * i;
+
+			let tex:egret.Texture = RES.getRes("cloth_json.guagou");
 
 			let bp:egret.Bitmap = new egret.Bitmap(tex);
 
-			bp.anchorOffsetX = 0.5 * bp.width;
+			bp.x = 0.5 * this.UNIT_WIDTH - 0.5 * bp.width;
 
-			bp.x = this.UNIT_WIDTH * i;
+			container.addChild(bp);
 
-			this.main.addChild(bp);
+			let tex2:egret.Texture = RES.getRes("cloth_json." + this.NAME_ARR[i]);
 
-			this.bpArr.push(bp);
+			let bp2:egret.Bitmap = new egret.Bitmap(tex2);
+
+			// bp.anchorOffsetX = 0.5 * bp.width;
+
+			// bp.x = this.UNIT_WIDTH * i;
+
+			bp2.x = 0.5 * this.UNIT_WIDTH - 0.5 * bp2.width;
+
+			bp2.y = bp.height - 80;
+
+			container.addChild(bp2);
+
+			this.main.addChild(container);
+
+			this.bpArr.push(container);
 		}
 
 		this.nowX = 0;
