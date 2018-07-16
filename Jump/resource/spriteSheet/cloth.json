@@ -9,7 +9,7 @@
 "ceng":{"x":1330,"y":1683,"w":547,"h":79,"offX":0,"offY":0,"sourceW":547,"sourceH":79},
 "di":{"x":1,"y":1,"w":1200,"h":519,"offX":0,"offY":0,"sourceW":1200,"sourceH":519},
 "hengliang":{"x":705,"y":1935,"w":1200,"h":33,"offX":0,"offY":0,"sourceW":1200,"sourceH":33},
-"guagou":{"x":1104,"y":1099,"w":37,"h":200,"offX":0,"offY":0,"sourceW":37,"sourceH":200},
+"cloth_guagou":{"x":1104,"y":1099,"w":37,"h":200,"offX":0,"offY":0,"sourceW":37,"sourceH":200},
 "huanfu":{"x":1330,"y":1552,"w":473,"h":129,"offX":0,"offY":0,"sourceW":473,"sourceH":129},
 "huanfu_di":{"x":1,"y":522,"w":951,"h":440,"offX":0,"offY":0,"sourceW":951,"sourceH":440},
 "huotui":{"x":1780,"y":1,"w":266,"h":397,"offX":0,"offY":0,"sourceW":266,"sourceH":397},

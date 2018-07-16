@@ -75,7 +75,7 @@ class ChangeClothMainPanel extends eui.Component implements  eui.UIComponent {
 
 			container.x = this.UNIT_WIDTH * i;
 
-			let tex:egret.Texture = RES.getRes("cloth_json.guagou");
+			let tex:egret.Texture = RES.getRes("cloth_json.cloth_guagou");
 
 			let bp:egret.Bitmap = new egret.Bitmap(tex);
 

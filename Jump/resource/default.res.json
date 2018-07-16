@@ -32,62 +32,62 @@
 			"name": "yu_png"
 		},
 		{
-			"name": "main_json",
-			"type": "sheet",
 			"url": "spriteSheet/main.json",
-			"subkeys": "logo,arrow_right_up,arrow_right_down,diyijiekou,arrow_left_down,arrow_left_up,fenxiang_up,fenxiang_bg,fenxiang_down,genhuanjuese_down,genhuanjuese_up,guanqiamoshi_down,guanqiamoshi_up,guagou,guozi,diyijiekou_bg,genhuanjuese_bg,paihang_up,paihang_bg,paihang_down,tufu,rou,yu,wujin_down,wujin_up,ji"
-		},
-		{
-			"name": "bg_png",
-			"type": "image",
-			"url": "assets/bg.png"
-		},
-		{
-			"name": "counter_png",
-			"type": "image",
-			"url": "assets/counter.png"
-		},
-		{
-			"name": "gameEui_json",
-			"type": "json",
-			"url": "gameEui.json"
-		},
-		{
-			"name": "kaoya_json",
-			"type": "json",
-			"url": "character/kaoya/kaoya.json"
-		},
-		{
-			"name": "kaoya_png",
-			"type": "image",
-			"url": "character/kaoya/kaoya.png"
-		},
-		{
-			"name": "guo_json",
-			"type": "json",
-			"url": "mc/guo/guo.json"
-		},
-		{
-			"name": "guo_png",
-			"type": "image",
-			"url": "mc/guo/guo.png"
-		},
-		{
-			"name": "kitchenBg_png",
-			"type": "image",
-			"url": "assets/kitchenBg.png"
-		},
-		{
-			"name": "game_json",
 			"type": "sheet",
+			"name": "main_json",
+			"subkeys": "arrow_left_down,arrow_left_up,arrow_right_down,arrow_right_up,diyijiekou,diyijiekou_bg,fenxiang_bg,fenxiang_down,fenxiang_up,genhuanjuese_bg,genhuanjuese_down,genhuanjuese_up,guagou,guanqiamoshi_down,guanqiamoshi_up,guozi,ji,logo,paihang_bg,paihang_down,paihang_up,rou,tufu,wujin_down,wujin_up,yu"
+		},
+		{
+			"url": "assets/bg.png",
+			"type": "image",
+			"name": "bg_png"
+		},
+		{
+			"url": "assets/counter.png",
+			"type": "image",
+			"name": "counter_png"
+		},
+		{
+			"url": "gameEui.json",
+			"type": "json",
+			"name": "gameEui_json"
+		},
+		{
+			"url": "character/kaoya/kaoya.json",
+			"type": "json",
+			"name": "kaoya_json"
+		},
+		{
+			"url": "character/kaoya/kaoya.png",
+			"type": "image",
+			"name": "kaoya_png"
+		},
+		{
+			"url": "mc/guo/guo.json",
+			"type": "json",
+			"name": "guo_json"
+		},
+		{
+			"url": "mc/guo/guo.png",
+			"type": "image",
+			"name": "guo_png"
+		},
+		{
+			"url": "assets/kitchenBg.png",
+			"type": "image",
+			"name": "kitchenBg_png"
+		},
+		{
 			"url": "spriteSheet/game.json",
-			"subkeys": "taijie,001,terminal1"
+			"type": "sheet",
+			"name": "game_json",
+			"subkeys": "001,taijie,terminal1"
 		},
 		{
-			"name": "cloth_json",
-			"type": "sheet",
 			"url": "spriteSheet/cloth.json",
-			"subkeys": "xianyu_an,xiaolongxia,xiaolongxia_an,adfrme,buy,buy_down,buy_text,ceng,di,hengliang,guagou,huanfu,huanfu_di,huotui,huotui_an,kaoya,kaoya_an,locker,peigen,peigen_an,pifuname,pricebg,qiezi,qiezi_an,regou,regou_an,wumaoji,wumaoji_an,xiangchang,xiangchang_an,xiangjiao,xiangjiao_an,xianyu"
+			"type": "sheet",
+			"name": "cloth_json",
+			"subkeys": "adfrme,buy,buy_down,buy_text,ceng,cloth_guagou,di,hengliang,huanfu,huanfu_di,huotui,huotui_an,kaoya,kaoya_an,locker,peigen,peigen_an,pifuname,pricebg,qiezi,qiezi_an,regou,regou_an,wumaoji,wumaoji_an,xiangchang,xiangchang_an,xiangjiao,xiangjiao_an,xianyu,xianyu_an,xiaolongxia,xiaolongxia_an"
 		}
 	]
 }

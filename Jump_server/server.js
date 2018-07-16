@@ -26,7 +26,7 @@ let playerDic = {};
 
 let roomDic = {};
 
-setInterval(update, 1000 / 60);
+setInterval(update, 16);
 
 function connection(client){
 
