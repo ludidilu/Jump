@@ -49,12 +49,16 @@ class Main extends egret.DisplayObjectContainer {
         // RES.addEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
         // RES.loadConfig("resource/default.res.json", "resource/");
 
+        egret.ImageLoader.crossOrigin = "anonymous";
+
         this.loadResources();
     }
 
     private async loadResources():Promise<void>{
 
-        await RES.loadConfig("resource/default.res.json", "resource/");
+        // await RES.loadConfig("resource/default.res.json", "resource/");
+
+        await RES.loadConfig("http://106.75.222.192:8081/resource/default.res.json", "http://106.75.222.192:8081/resource/");
 
         await this.loadTheme();
 
@@ -69,7 +73,7 @@ class Main extends egret.DisplayObjectContainer {
         return new Promise((resolve, reject) => {
             // load skin theme configuration file, you can manually modify the file. And replace the default skin.
             //加载皮肤主题配置文件,可以手动修改这个文件。替换默认皮肤。
-            let theme = new eui.Theme("resource/default.thm.json", this.stage);
+            let theme = new eui.Theme("http://106.75.222.192:8081/resource/default.thm.json", this.stage);
             theme.addEventListener(eui.UIEvent.COMPLETE, () => {
                 resolve();
             }, this);
