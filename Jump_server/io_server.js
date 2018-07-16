@@ -1,7 +1,5 @@
 let messageTag = ["tag_join","tag_command","tag_getLag"];
 
-let player = [];
-
 let lagTest = false;
 
 let lagMin = 8;
