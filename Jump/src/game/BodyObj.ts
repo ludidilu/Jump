@@ -70,10 +70,16 @@ class BodyObj extends p2.Body{
     }
 
     public fixFloat():void{
+        
+        this.position[0] = BodyObj.fixNumber(this.position[0]);
+
+        this.position[1] = BodyObj.fixNumber(this.position[1]);
 
         this.velocity[0] = BodyObj.fixNumber(this.velocity[0]);
 
         this.velocity[1] = BodyObj.fixNumber(this.velocity[1]);
+
+        this.angle = BodyObj.fixNumber(this.angle);
 
         this.force[0] = BodyObj.fixNumber(this.force[0]);
 
@@ -94,11 +100,5 @@ class BodyObj extends p2.Body{
         this.vlambda[1] = BodyObj.fixNumber(this.vlambda[1]);
 
         this.wlambda = BodyObj.fixNumber(this.wlambda);
-
-        this.position[0] = BodyObj.fixNumber(this.position[0]);
-
-        this.position[1] = BodyObj.fixNumber(this.position[1]);
-
-        this.angle = BodyObj.fixNumber(this.angle);
     }
 }

@@ -24,6 +24,8 @@ class GameOnline{
 
     private static TAG_LAG:string = "tag_getLag";
 
+    private static TAG_CHECK_SYNC:string = "tag_check_sync";
+
     private static COMMAND_LAG:number = 0;
 
     public static commandArr:Data_command[] = [];
@@ -160,6 +162,8 @@ class GameOnline{
                 }
 
                 this.main.update(16);
+
+                this.checkSync(index);
             }
 
             index++;
@@ -168,7 +172,7 @@ class GameOnline{
         }
         else{
 
-            console.log("late:" + index);
+            // console.log("late:" + index);
 
             return;
         }
@@ -197,6 +201,10 @@ class GameOnline{
                 }
 
                 this.main.update(16);
+
+                this.checkSync(index);
+
+                // console.log("catch up:" + index);
             }
 
             index++;
@@ -205,12 +213,28 @@ class GameOnline{
         }
     }
 
+    private static checkSync(_index:number):void{
+
+        let obj = {};
+
+        obj[this.uid] = {x:Human.human.position[0], y:Human.human.position[1]};
+
+        for(let key in this.other){
+
+            let human:Human = this.other[key];
+
+            obj[key] = {x:human.position[0], y:human.position[1]};
+        }
+
+        Connection.emit(this.TAG_CHECK_SYNC, {index:_index, obj:obj});
+    }
+
     private static getLag(_v:number):void{
 
         let nowTime:number = new Date().getTime();
 
         let lag:number = nowTime - _v;
 
-        console.log("ping:" + lag);
+        // console.log("ping:" + lag);
     }
 }

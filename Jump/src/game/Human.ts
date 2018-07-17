@@ -116,9 +116,9 @@ class Human extends MoveBodyObj{
             }
         }
 
-        let p:egret.Point = Human.main.gameContainer.localToGlobal(this.displays[0].x, this.displays[0].y);
+        let py:number = this.containerY + this.displays[0].y;
 
-        if(p.y > Game.STAGE_HEIGHT + (Main.config.gameConfig.humanLength * 0.5 + Main.config.gameConfig.humanRadius) * this.sizeFix * Main.config.gameConfig.factor){
+        if(py > Game.STAGE_HEIGHT + (Main.config.gameConfig.humanLength * 0.5 + Main.config.gameConfig.humanRadius) * this.sizeFix * Main.config.gameConfig.factor){
 
             if(this.isMain){
 

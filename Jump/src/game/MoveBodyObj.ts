@@ -57,8 +57,6 @@ class MoveBodyObj extends BodyObj{
             shape.collisionMask = shape.collisionMask & ~Math.pow(2, this.uid);
         }
 
-        this.fixFloat();
-
         // let str:string = "uid:" + this.uid + "  pos:" + this.position[0] + "," + this.position[1];
 
         // Game.log(str);
@@ -82,9 +80,9 @@ class MoveBodyObj extends BodyObj{
             this.jumpDisableTime = 0;
         }
 
-        this.updateDisplaysPosition();
-
         this.updateLadder();
+        
+        this.fixFloat();
     }
     
     public updateLadder():void{

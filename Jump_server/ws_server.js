@@ -67,13 +67,16 @@ function disconnect(client){
 			
 		let room = roomDic[client.roomUid];
 
-		room.player.splice(room.player.indexOf(client.clientUid), 1);
+		if(room){
 
-		if(room.player.length == 0){
+			room.player.splice(room.player.indexOf(client.clientUid), 1);
 
-			console.log("remove room:" + room.uid);
+			if(room.player.length == 0){
 
-			delete roomDic[room.uid];
+				console.log("remove room:" + room.uid);
+
+				delete roomDic[room.uid];
+			}
 		}
 	}
 
@@ -139,7 +142,7 @@ function getDataReal(client, tag, data){
 		}
 		else{
 
-			room = {uid:roomUid, player:[], index:-1, command:[], playerNum:data.playerNum};
+			room = {uid:roomUid, player:[], index:-1, command:[], playerNum:data.playerNum, sync:[]};
 
 			roomDic[roomUid] = room;
 		}
@@ -147,6 +150,8 @@ function getDataReal(client, tag, data){
 		client.roomUid = roomUid;
 
 		room.player.push(client.clientUid);
+
+		room.sync.push({});
 
 		sendDataToRoom(room, "tag_refresh", {arr:room.player, roomUid:roomOid});
 
@@ -161,7 +166,7 @@ function getDataReal(client, tag, data){
 
 		let room = roomDic[client.roomUid];
 
-		if(room.command.indexOf(client.clientUid) == -1){
+		if(room && room.command.indexOf(client.clientUid) == -1){
 
 			room.command.push(client.clientUid);
 		}
@@ -169,6 +174,43 @@ function getDataReal(client, tag, data){
 	else if(tag == "tag_getLag"){
 
 		sendData(client, "tag_getLag", data);
+	}
+	else if(tag == "tag_check_sync"){
+
+		let room = roomDic[client.roomUid];
+
+		if(room){
+
+			let index = room.player.indexOf(client.clientUid);
+
+			room.sync[index][data.index] = data.obj;
+
+			for(let i = 0 ; i < room.sync.length ; i++){
+
+				if(i != index){
+
+					let dd = room.sync[i];
+
+					if(dd[data.index]){
+
+						let ddd = dd[data.index];
+
+						for(let key in ddd){
+
+							if(ddd[key].x != data.obj[key].x || ddd[key].y != data.obj[key].y){
+
+								throw "sync error    index:" + data.index + "  uid:" + key + "   x:" + ddd[key].x + "," + data.obj[key].x + "   y:" + ddd[key].y + "," + data.obj[key].y;
+							}
+						}
+
+						//for(let key in ddd){
+
+							//console.log("sync ok    index:" + data.index + "  uid:" + key + "   x:" + ddd[key].x + "   y:" + ddd[key].y);
+						//}
+					}
+				}
+			}
+		}
 	}
 }
 
