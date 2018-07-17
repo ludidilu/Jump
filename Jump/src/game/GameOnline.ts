@@ -235,6 +235,6 @@ class GameOnline{
 
         let lag:number = nowTime - _v;
 
-        // console.log("ping:" + lag);
+        console.log("ping:" + lag);
     }
 }
