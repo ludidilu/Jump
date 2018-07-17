@@ -62,7 +62,7 @@ class Main extends egret.DisplayObjectContainer {
 
         await this.loadTheme();
 
-        await RES.loadGroup("preload");
+        await RES.loadGroup("preload", 0, {onProgress:this.loadProgress.bind(this)});
 
         await this.loadConfig();
 
@@ -110,27 +110,13 @@ class Main extends egret.DisplayObjectContainer {
             await WeixinData.init().catch(this.promiseCatch);
         }
 
-        this.initGame();
+        // this.initGame();
 
         this.initMainPanel();
 
         this.refreshMainPanel();
 
         this.initRankPanel();
-
-        var data = RES.getRes("kaoya_json");
-        var txtr = RES.getRes("kaoya_png");
-        var mcFactory:egret.MovieClipDataFactory = new egret.MovieClipDataFactory( data, txtr );
-
-        let mc:egret.MovieClip = new egret.MovieClip(mcFactory.generateMovieClipData("kaoya"));
-
-        this.addChild(mc);
-
-        mc.play(-1);
-
-        // let kk:ChangeClothMainPanel = new ChangeClothMainPanel();
-
-        // this.addChild(kk);
     }
 
     private promiseCatch(reason):void{
@@ -240,22 +226,25 @@ class Main extends egret.DisplayObjectContainer {
         this.rankPanel.visible = false;
     }
 
-    private initGame():void{
+    private async initGame(){
+
+        await RES.loadGroup("game", 0, {onProgress:this.loadProgress.bind(this)});
 
         this.game = new Game();
 
         this.addChild(this.game);
-
-        this.game.visible = false;
     }
 
-    private challengeBtClick(e:egret.TouchEvent):void{
+    private loadProgress(_num:number, _total:number):void{
+
+        console.log("loadProgress:" + _num + "/" + _total);
+    }
+
+    private async challengeBtClick(e:egret.TouchEvent){
 
         let self:Main = this;
 
         self.mainPanel.visible = false;
-
-        self.game.visible = true;
 
         if(Main.isWeixin){
 
@@ -332,23 +321,39 @@ class Main extends egret.DisplayObjectContainer {
                 }
             };
 
+            if(!self.game){
+
+                await self.initGame();
+            }
+            else{
+
+                self.game.visible = true;
+            }
+
             self.game.start(stageConfig, cb);
         }
         else{
 
             let stageConfig:StageConfig = Main.config.stageConfig[1];
 
+            if(!self.game){
+
+                await self.initGame();
+            }
+            else{
+                
+                self.game.visible = true;
+            }
+
             self.game.start(stageConfig, this.gameOver.bind(this));
         }
     }
 
-    private endlessBtClick(e:egret.TouchEvent):void{
+    private async endlessBtClick(e:egret.TouchEvent){
 
         let self:Main = this;
 
         self.mainPanel.visible = false;
-
-        self.game.visible = true;
 
         if(Main.isWeixin){
 
@@ -406,9 +411,27 @@ class Main extends egret.DisplayObjectContainer {
                 }
             };
 
+            if(!self.game){
+
+                await self.initGame();
+            }
+            else{
+
+                self.game.visible = true;
+            }
+
             self.game.start(Main.config.stageConfig[0], cb);
         }
         else{
+
+            if(!self.game){
+
+                await self.initGame();
+            }
+            else{
+
+                self.game.visible = true;
+            }
 
             self.game.start(Main.config.stageConfig[0], this.gameOver.bind(this));
         }

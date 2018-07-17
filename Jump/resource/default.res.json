@@ -1,8 +1,16 @@
 {
 	"groups": [
 		{
-			"keys": "button_down_png,button_up_png,description_json,config_json,yu_png,main_json,bg_png,counter_png,gameEui_json,kaoya_json,kaoya_png,guo_json,guo_png,kitchenBg_png,game_json,cloth_json",
+			"keys": "button_down_png,button_up_png,description_json,config_json,main_json,bg_png,counter_png,guo_json,guo_png",
 			"name": "preload"
+		},
+		{
+			"keys": "game_json,kaoya_json,kaoya_png,kitchenBg_png",
+			"name": "game"
+		},
+		{
+			"keys": "cloth_json",
+			"name": "cloth"
 		}
 	],
 	"resources": [

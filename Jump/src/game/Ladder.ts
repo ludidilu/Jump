@@ -133,7 +133,7 @@ class Ladder extends BodyObj{
 
             ladder.displays = [container];
 
-            container.cacheAsBitmap = true;
+            // container.cacheAsBitmap = true;
         }
         else{
 
