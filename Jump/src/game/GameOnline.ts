@@ -26,8 +26,6 @@ class GameOnline{
 
     private static TAG_CHECK_SYNC:string = "tag_check_sync";
 
-    private static COMMAND_LAG:number = 0;
-
     public static commandArr:Data_command[] = [];
 
     public static main:Game;
@@ -38,11 +36,15 @@ class GameOnline{
 
     private static index:number;
 
+    private static recordStartIndex:number = -1;
+
+    private static recordData:{worldTime:number, accumulator:number, recordData:{[key:number]:Human_recordData}}[] = [];
+
     public static async start(_roomUid:number, _playerNum:number){
 
         this.main.bg.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.main.touchBg, this.main);
 
-        this.uid = await Connection.init();
+        this.uid = await Connection.init(this.close.bind(this));
 
         console.log("uid:" + this.uid);
 
@@ -55,6 +57,11 @@ class GameOnline{
         Connection.listen(this.TAG_LAG, this.getLag.bind(this));
 
         Connection.emit(this.TAG_JOIN, {roomUid:_roomUid, playerNum:_playerNum});
+    }
+
+    private static close():void{
+
+        SuperTicker.getInstance().removeEventListener(this.update, this);
     }
 
     private static getRefresh(_data:Data_refresh):void{
@@ -99,11 +106,57 @@ class GameOnline{
 
         if(_data.index == this.commandArr.length){
 
+            if(this.recordStartIndex != -1){
+
+                if(_data.arr.length > 0){
+
+                    //roll back
+
+                    console.log("!!!!!!!!!!!!!!!!roll back:" + this.recordStartIndex);
+
+                    this.index = this.recordStartIndex;
+
+                    let obj:{worldTime:number, accumulator:number, recordData:{[key:number]:Human_recordData}} = this.recordData[0];
+
+                    this.main.world.time = obj.worldTime;
+
+                    this.main.world.accumulator = obj.accumulator;
+
+                    Human.human.useRecordData(obj.recordData[this.uid]);
+
+                    for(let key in this.other){
+
+                        let human:Human = this.other[key];
+
+                        human.useRecordData(obj.recordData[key]);
+                    }
+
+                    this.recordStartIndex = -1;
+
+                    this.recordData.length = 0;
+                }
+                else{
+
+                    // console.log("useRecord success:" + _data.index);
+
+                    this.recordData.shift();
+
+                    if(this.recordData.length > 0){
+
+                        this.recordStartIndex++;
+                    }
+                    else{
+
+                        this.recordStartIndex = -1;
+                    }
+                }
+            }
+
             this.commandArr.push(_data);
         }
         else{
 
-            throw new Error("get command error");
+            throw new Error("get command error   _data.index:" + _data.index + "   this.commandArr.length:" + this.commandArr.length);
         }
     }
 
@@ -136,94 +189,153 @@ class GameOnline{
             this.pingTime -= 1000;
         }
 
-        let index:number = this.index - this.COMMAND_LAG;
+        if(this.index < this.commandArr.length){
 
-        if(index < this.commandArr.length){
+            this.main.update(16);
+            
+            let command:Data_command = this.commandArr[this.index];
 
-            if(index > -1){
+            if(command.arr.length > 0){
 
-                let command:Data_command = this.commandArr[index];
+                for(let key in command.arr){
 
-                if(command.arr.length > 0){
+                    let uid = command.arr[key];
 
-                    for(let key in command.arr){
+                    console.log("jump  index:" + this.index + "  uid:" + uid);
 
-                        let uid = command.arr[key];
+                    if(uid == this.uid){
 
-                        if(uid == this.uid){
+                        this.main.Jump2(Human.human);
+                    }
+                    else{
 
-                            this.main.Jump2(Human.human);
-                        }
-                        else{
-
-                            this.main.Jump2(this.other[uid]);
-                        }
+                        this.main.Jump2(this.other[uid]);
                     }
                 }
-
-                this.main.update(16);
-
-                this.checkSync(index);
             }
 
-            index++;
+            this.fixFloat();
+
+            this.checkSync(this.index);
 
             this.index++;
         }
         else{
 
-            // console.log("late:" + index);
+            // console.log("late:" + this.index);
+
+            if(this.recordStartIndex == -1){
+
+                this.recordStartIndex = this.index;
+            }
+
+            let obj:{[key:number]:Human_recordData} = {};
+
+            let recData:{worldTime:number, accumulator:number, recordData:{[key:number]:Human_recordData}} = {worldTime:this.main.world.time, accumulator:this.main.world.accumulator, recordData:obj};
+
+            let recordData:Human_recordData = new Human_recordData();
+
+            Human.human.recordData(recordData);
+
+            obj[this.uid] = recordData;
+
+            for(let key in this.other){
+
+                recordData = new Human_recordData();
+
+                this.other[key].recordData(recordData);
+
+                obj[key] = recordData;
+            }
+
+            this.recordData.push(recData);
+
+            this.main.update(16);
+
+            this.fixFloat();
+
+            // console.log("simulate  index:" + this.index + "-----------");
+
+            // console.log("uid:" + this.uid + "  x:" + Human.human.position[0] + "  y:" + Human.human.position[1]);
+
+            // for(let key in this.other){
+
+            //     let human:Human = this.other[key];
+
+            //     console.log("uid:" + key + "  x:" + human.position[0] + "  y:" + human.position[1]);
+            // }
+            
+            this.index++;
 
             return;
         }
 
-        while(index < this.commandArr.length - this.COMMAND_LAG){
+        while(this.index < this.commandArr.length){
 
-            if(index > -1){
+            console.log("catch up:" + this.index);
 
-                let command:Data_command = this.commandArr[index];
+            this.main.update(16);
+            
+            let command:Data_command = this.commandArr[this.index];
 
-                if(command.arr.length > 0){
+            if(command.arr.length > 0){
 
-                    for(let key in command.arr){
+                for(let key in command.arr){
 
-                        let uid = command.arr[key];
+                    let uid = command.arr[key];
 
-                        if(uid == this.uid){
+                    console.log("jump  index:" + this.index + "  uid:" + uid);
 
-                            this.main.Jump2(Human.human);
-                        }
-                        else{
+                    if(uid == this.uid){
 
-                            this.main.Jump2(this.other[uid]);
-                        }
+                        this.main.Jump2(Human.human);
+                    }
+                    else{
+
+                        this.main.Jump2(this.other[uid]);
                     }
                 }
-
-                this.main.update(16);
-
-                this.checkSync(index);
-
-                // console.log("catch up:" + index);
             }
 
-            index++;
+            this.fixFloat();
+
+            this.checkSync(this.index);
 
             this.index++;
         }
     }
 
+    private static fixFloat():void{
+
+        Human.human.fixFloat();
+
+        for(let key in this.other){
+
+            this.other[key].fixFloat();
+        }
+
+        this.main.world.accumulator = BodyObj.fixNumber(this.main.world.accumulator);
+
+        this.main.world.time = BodyObj.fixNumber(this.main.world.time);
+    }
+
     private static checkSync(_index:number):void{
+
+        console.log("sync  index:" + _index + "-----------");
 
         let obj = {};
 
-        obj[this.uid] = {x:Human.human.position[0], y:Human.human.position[1]};
+        obj[this.uid] = {x:Human.human.position[0], y:Human.human.position[1], forceX:Human.human.force[0], forceY:Human.human.force[1]};
+
+        console.log("uid:" + this.uid + "  x:" + Human.human.position[0] + "  y:" + Human.human.position[1] + "  forceX:" + Human.human.force[0] + "  forceY:" + Human.human.force[1]);
 
         for(let key in this.other){
 
             let human:Human = this.other[key];
 
-            obj[key] = {x:human.position[0], y:human.position[1]};
+            obj[key] = {x:human.position[0], y:human.position[1], forceX:human.force[0], forceY:human.force[1]};
+
+            console.log("uid:" + key + "  x:" + human.position[0] + "  y:" + human.position[1] + "  forceX:" + human.force[0] + "  forceY:" + human.force[1]);
         }
 
         Connection.emit(this.TAG_CHECK_SYNC, {index:_index, obj:obj});

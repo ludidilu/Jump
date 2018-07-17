@@ -4,6 +4,29 @@ enum BodyObjType{
     LADDER
 }
 
+class RecordData{
+
+    public rec_position:number[] = [0, 0];
+
+    public rec_velocity:number[] = [0, 0];
+
+    public rec_angle:number;
+
+    public rec_force:number[] = [0, 0];
+
+    public rec_angularForce:number;
+
+    public rec_angularVelocity:number;
+
+    public rec_previousAngle:number;
+
+    public rec_previousPosition:number[] = [0, 0];
+
+    public rec_vlambda:number[] = [0, 0];
+
+    public rec_wlambda:number;
+}
+
 class BodyObj extends p2.Body{
 
     public static zeroPoint:number[] = [0,0];
@@ -60,7 +83,7 @@ class BodyObj extends p2.Body{
         this.setAngle(0);
     }
     
-    private static fixNumber(_v:number):number{
+    public static fixNumber(_v:number):number{
 
         let str:string = _v.toFixed(4);
 
@@ -100,5 +123,71 @@ class BodyObj extends p2.Body{
         this.vlambda[1] = BodyObj.fixNumber(this.vlambda[1]);
 
         this.wlambda = BodyObj.fixNumber(this.wlambda);
+    }
+
+    public recordData(_recordData:RecordData):void{
+
+        _recordData.rec_position[0] = this.position[0];
+
+        _recordData.rec_position[1] = this.position[1];
+
+        _recordData.rec_velocity[0] = this.velocity[0];
+
+        _recordData.rec_velocity[1] = this.velocity[1];
+
+        _recordData.rec_angle = this.angle;
+
+        _recordData.rec_force[0] = this.force[0];
+
+        _recordData.rec_force[1] = this.force[1];
+
+        _recordData.rec_angularForce = this.angularForce;
+
+        _recordData.rec_angularVelocity = this.angularVelocity;
+
+        _recordData.rec_previousAngle = this.previousAngle;
+
+        _recordData.rec_previousPosition[0] = this.previousPosition[0];
+
+        _recordData.rec_previousPosition[1] = this.previousPosition[1];
+
+        _recordData.rec_vlambda[0] = this.vlambda[0];
+
+        _recordData.rec_vlambda[1] = this.vlambda[1];
+
+        _recordData.rec_wlambda = this.wlambda;
+    }
+
+    public useRecordData(_recordData:RecordData):void{
+
+        this.position[0] = _recordData.rec_position[0];
+
+        this.position[1] = _recordData.rec_position[1];
+
+        this.velocity[0] = _recordData.rec_velocity[0];
+
+        this.velocity[1] = _recordData.rec_velocity[1];
+
+        this.angle = _recordData.rec_angle;
+
+        this.force[0] = _recordData.rec_force[0];
+
+        this.force[1] = _recordData.rec_force[1];
+
+        this.angularForce = _recordData.rec_angularForce;
+
+        this.angularVelocity = _recordData.rec_angularVelocity;
+
+        this.previousAngle = _recordData.rec_previousAngle;
+
+        this.previousPosition[0] = _recordData.rec_previousPosition[0];
+
+        this.previousPosition[1] = _recordData.rec_previousPosition[1];
+
+        this.vlambda[0] = _recordData.rec_vlambda[0];
+
+        this.vlambda[1] = _recordData.rec_vlambda[1];
+
+        this.wlambda = _recordData.rec_wlambda;
     }
 }

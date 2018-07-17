@@ -4,7 +4,11 @@ class Connection{
 
     private static cbDic:{[key:string]:(data:any)=>void} = {};
 
-    public static async init(){
+    private static closeCallBack:()=>void;
+
+    public static async init(_closeCallBack:()=>void){
+
+        Connection.closeCallBack = _closeCallBack;
 
         if(!Main.isWeixin){
 
@@ -25,9 +29,13 @@ class Connection{
 
                 wx.onSocketMessage(Connection.socketGetMessage);
 
+                wx.onSocketClose(Connection.socketClose);
+
                 Connection.listen("connectOver", _resolve);
 
-                wx.connectSocket({url: "ws://192.168.0.101:1999"});
+                // wx.connectSocket({url: "ws://192.168.0.101:1999"});
+
+                wx.connectSocket({url: "ws://192.168.0.102:1999"});
             }
 
             return new Promise<number>(fun);
@@ -43,6 +51,14 @@ class Connection{
         if(cb){
 
             cb(msg.data);
+        }
+    }
+
+    private static socketClose():void{
+
+        if(Connection.closeCallBack){
+
+            Connection.closeCallBack();
         }
     }
 

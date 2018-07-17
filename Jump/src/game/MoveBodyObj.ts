@@ -10,7 +10,7 @@ class MoveBodyObj extends BodyObj{
 
     public uid:number;
 
-    private jumpDisableTime:number = 0;
+    protected jumpDisableTime:number = 0;
 
     private ladder:Ladder;
 
@@ -81,11 +81,9 @@ class MoveBodyObj extends BodyObj{
         }
 
         this.updateLadder();
-        
-        this.fixFloat();
     }
     
-    public updateLadder():void{
+    protected updateLadder():void{
 
         this.ladder.update(this.position[0]);
     }
@@ -110,6 +108,8 @@ class MoveBodyObj extends BodyObj{
                     }
                 }
             }
+
+            console.log("checkJump   x:" + this.ladder.position[0] + "   y:" + this.ladder.position[1] + "   accumulator:" + this.world.accumulator + "   time:" + this.world.time + "   a:" + this.world.overlapKeeper.overlappingShapesCurrentState.keys.length);
             
             if(this.overlaps(this.ladder)){
 

@@ -1,10 +1,10 @@
 let messageTag = ["tag_join","tag_command","tag_getLag"];
 
-let lagTest = false;
+let lagTest = true;
 
-let lagMin = 8;
+let lagMin = 20;
 
-let lagMax = 12;
+let lagMax = 80;
 
 let lagList = [];
 
@@ -197,9 +197,9 @@ function getDataReal(client, tag, data){
 
 						for(let key in ddd){
 
-							if(ddd[key].x != data.obj[key].x || ddd[key].y != data.obj[key].y){
+							if(ddd[key].x != data.obj[key].x || ddd[key].y != data.obj[key].y || ddd[key].forceX != data.obj[key].forceX || ddd[key].forceY != data.obj[key].forceY){
 
-								throw "sync error    index:" + data.index + "  uid:" + key + "   x:" + ddd[key].x + "," + data.obj[key].x + "   y:" + ddd[key].y + "," + data.obj[key].y;
+								throw "sync error    index:" + data.index + "  uid:" + key + "   x:" + ddd[key].x + "," + data.obj[key].x + "   y:" + ddd[key].y + "," + data.obj[key].y + "   forceX:" + ddd[key].forceX + "," + data.obj[key].forceX + "   forceY:" + ddd[key].forceY + "," + data.obj[key].forceY;
 							}
 						}
 

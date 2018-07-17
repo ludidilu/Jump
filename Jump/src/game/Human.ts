@@ -7,6 +7,21 @@ enum HumanJumpResult{
     RLINE
 }
 
+class Human_recordData extends RecordData{
+
+    public rec_firstJump:boolean;
+
+    public rec_firstCameraFollowTime:number;
+
+    public rec_containerX:number;
+
+    public rec_containerY:number;
+
+    public rec_gravityScale:number;
+
+    public rec_jumpDisableTime:number;
+}
+
 class Human extends MoveBodyObj{
 
     public static main:Game;
@@ -347,5 +362,39 @@ class Human extends MoveBodyObj{
 
             human.reset();
         }
+    }
+
+    public recordData(_recordData:Human_recordData):void{
+
+        super.recordData(_recordData);
+
+        _recordData.rec_firstJump = this.firstJump;
+
+        _recordData.rec_firstCameraFollowTime = this.firstCameraFollowTime;
+
+        _recordData.rec_containerX = this.containerX;
+
+        _recordData.rec_containerY = this.containerY;
+
+        _recordData.rec_gravityScale = this.gravityScale;
+
+        _recordData.rec_jumpDisableTime = this.jumpDisableTime;
+    }
+
+    public useRecordData(_recordData:Human_recordData):void{
+
+        super.useRecordData(_recordData);
+
+        this.firstJump = _recordData.rec_firstJump;
+
+        this.firstCameraFollowTime = _recordData.rec_firstCameraFollowTime;
+
+        this.containerX = _recordData.rec_containerX;
+
+        this.containerY = _recordData.rec_containerY;
+
+        this.gravityScale = _recordData.rec_gravityScale;
+
+        this.jumpDisableTime = _recordData.rec_jumpDisableTime;
     }
 }

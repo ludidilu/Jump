@@ -1402,6 +1402,7 @@ declare module p2 {
         setOverlapping(bodyA: Body, shapeA: Body, bodyB: Body, shapeB: Body): void;
         bodiesAreOverlapping(bodyA: Body, bodyB: Body): boolean;
 
+				overlappingShapesCurrentState:{keys:number[]};
     }
 
     export class OverlapKeeperRecord {
@@ -1754,6 +1755,12 @@ declare module p2 {
          * @type {Number}
          */
         time: number;
+        /**
+         * 累积时间
+         * @property accumulator
+         * @type {Number}
+         */
+        accumulator: number;
         /**
          * 是否正在 step 阶段
          * @property {Boolean} stepping

@@ -329,51 +329,10 @@ class Game extends egret.DisplayObjectContainer {
         Human.create(this.world, Main.config.gameConfig.humanLength, Main.config.gameConfig.humanRadius, Main.config.gameConfig.humanStartPos[0][0], Main.config.gameConfig.humanStartPos[0][1]);
     }
 
-    public static data:{arr:number[]} = {arr:[]};
-
-    public static tick:number = 0;
-
-    public static strstr:string[] = [];
-
-    public static log(str:string):void{
-
-        this.strstr.push(str);
-    }
-
-    private data2:{arr:number[]} = {"arr":[0,180,220,360,515,566,943,1087,1127,1269,1313,1438,1483,1624,1668,1788,1995]};
-
     public update(_dt:number):void{
-
-        // if(this.data2.arr.indexOf(Game.tick) != -1){
-
-        //     this.touchBg2(Human.humanArr[0]);
-        // }
-
-        // Game.tick++;
-
-        if (_dt < 10) {
-            return;
-        }
-        if (_dt > 1000) {
-            return;
-        }
-
-        if(Main.isWeixin && !WeixinTalk.isTalking()){
-
-            // if(Math.random() < 0.01){
-
-            //     console.log("sendTalk!");
-
-            //     this.sendTalk({command:Math.random().toString()});
-            // }
-        }
-
-        let worldRealDt:number = _dt * 0.001 * Main.config.gameConfig.physicalTimeFix;
-
-        this.world.step(this.worldDt, worldRealDt * this.worldDtFix * Main.config.gameConfig.worldTimeFix, 10);
-
+        
         let dt = _dt * this.worldDtFix * Main.config.gameConfig.worldTimeFix;
-
+        
         let humanDisplay:egret.DisplayObject = Human.human.displays[0];
 
         if(humanDisplay.x + this.gameContainer.x < 0){
@@ -468,6 +427,10 @@ class Game extends egret.DisplayObjectContainer {
                 Item.create(this.humanContainer, Game.stageConfig.itemXSpeed, Game.stageConfig.itemJumpHeight, x);
             }
         }
+        
+        let worldRealDt:number = _dt * 0.001 * Main.config.gameConfig.physicalTimeFix;
+
+        this.world.step(this.worldDt, worldRealDt * this.worldDtFix * Main.config.gameConfig.worldTimeFix, 10);
     }
 
     public setScore(_score:number):void{
@@ -578,7 +541,7 @@ class Game extends egret.DisplayObjectContainer {
             }
             else{
 
-                // console.log("no jump!");
+                console.log("no jump!");
             }
         }
     }
@@ -617,7 +580,7 @@ class Game extends egret.DisplayObjectContainer {
             }
             else{
 
-                // console.log("no jump!");
+                console.log("no jump!");
             }
         }
     }
