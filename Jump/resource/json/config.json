@@ -136,7 +136,7 @@
 
         "physicsEngineFps": 30,
 
-        "humanStartPos": [[-4,9],[-6,11]],
+        "humanStartPos": [[-4,9],[-4.5,10]],
 
         "firstJumpAngle": 0.7,
 
