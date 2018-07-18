@@ -38,7 +38,7 @@ class GameOnline{
 
     private static recordStartIndex:number = -1;
 
-    private static recordData:{worldTime:number, accumulator:number, recordData:{[key:number]:Human_recordData}}[] = [];
+    private static recordData:{worldTime:number, accumulator:number, recordData:{[key:number]:Human_recordData}, overlapKeeper:{bodyA:p2.Body, bodyB:p2.Body, shapeA:p2.Shape, shapeB:p2.Shape}[]}[] = [];
 
     public static async start(_roomUid:number, _playerNum:number){
 
@@ -116,11 +116,20 @@ class GameOnline{
 
                     this.index = this.recordStartIndex;
 
-                    let obj:{worldTime:number, accumulator:number, recordData:{[key:number]:Human_recordData}} = this.recordData[0];
+                    let obj:{worldTime:number, accumulator:number, recordData:{[key:number]:Human_recordData}, overlapKeeper:{bodyA:p2.Body, bodyB:p2.Body, shapeA:p2.Shape, shapeB:p2.Shape}[]} = this.recordData[0];
 
                     this.main.world.time = obj.worldTime;
 
                     this.main.world.accumulator = obj.accumulator;
+
+                    this.main.world.overlapKeeper.tick();
+
+                    for(let key in obj.overlapKeeper){
+
+                        let tmp:{bodyA:p2.Body, bodyB:p2.Body, shapeA:p2.Shape, shapeB:p2.Shape} = obj.overlapKeeper[key];
+
+                        this.main.world.overlapKeeper.setOverlapping(tmp.bodyA, tmp.shapeA, tmp.bodyB, tmp.shapeB);
+                    }
 
                     Human.human.useRecordData(obj.recordData[this.uid]);
 
@@ -231,7 +240,18 @@ class GameOnline{
 
             let obj:{[key:number]:Human_recordData} = {};
 
-            let recData:{worldTime:number, accumulator:number, recordData:{[key:number]:Human_recordData}} = {worldTime:this.main.world.time, accumulator:this.main.world.accumulator, recordData:obj};
+            let overlapKeeper:{bodyA:p2.Body, bodyB:p2.Body, shapeA:p2.Shape, shapeB:p2.Shape}[] = [];
+
+            for(let key in this.main.world.overlapKeeper.overlappingShapesCurrentState.keys){
+
+                let value:number = this.main.world.overlapKeeper.overlappingShapesCurrentState.keys[key];
+
+                let targetObj = this.main.world.overlapKeeper.overlappingShapesCurrentState.data[value];
+
+                overlapKeeper.push({bodyA:targetObj.bodyA, bodyB:targetObj.bodyB, shapeA:targetObj.shapeA, shapeB:targetObj.shapeB});
+            }
+
+            let recData:{worldTime:number, accumulator:number, recordData:{[key:number]:Human_recordData}, overlapKeeper:{bodyA:p2.Body, bodyB:p2.Body, shapeA:p2.Shape, shapeB:p2.Shape}[]} = {worldTime:this.main.world.time, accumulator:this.main.world.accumulator, recordData:obj, overlapKeeper:overlapKeeper};
 
             let recordData:Human_recordData = new Human_recordData();
 

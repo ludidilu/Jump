@@ -13,6 +13,10 @@ class Faaa implements RES.PromiseTaskReporter{
 
 class Main extends egret.DisplayObjectContainer {
 
+    public static readonly RESOURCE_PATH:string = "http://106.75.222.192:8081/";
+
+    // public static readonly RESOURCE_PATH:string = "/";
+
     public static readonly CHALLENGE_SCORE:string = "challengeScore";
 
     public static readonly ENDLESS_SCORE:string = "endlessScore";
@@ -58,7 +62,7 @@ class Main extends egret.DisplayObjectContainer {
 
         // await RES.loadConfig("resource/default.res.json", "resource/");
 
-        await RES.loadConfig("http://106.75.222.192:8081/resource/default.res.json", "http://106.75.222.192:8081/resource/");
+        await RES.loadConfig(Main.RESOURCE_PATH + "resource/default.res.json", Main.RESOURCE_PATH + "resource/");
 
         await this.loadTheme();
 
@@ -73,7 +77,7 @@ class Main extends egret.DisplayObjectContainer {
         return new Promise((resolve, reject) => {
             // load skin theme configuration file, you can manually modify the file. And replace the default skin.
             //加载皮肤主题配置文件,可以手动修改这个文件。替换默认皮肤。
-            let theme = new eui.Theme("http://106.75.222.192:8081/resource/default.thm.json", this.stage);
+            let theme = new eui.Theme(Main.RESOURCE_PATH + "resource/default.thm.json", this.stage);
             theme.addEventListener(eui.UIEvent.COMPLETE, () => {
                 resolve();
             }, this);

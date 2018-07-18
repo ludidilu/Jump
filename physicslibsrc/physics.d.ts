@@ -1399,10 +1399,10 @@ declare module p2 {
         recordPool: OverlapKeeperRecordPool;
 
         tick(): void;
-        setOverlapping(bodyA: Body, shapeA: Body, bodyB: Body, shapeB: Body): void;
+        setOverlapping(bodyA: Body, shapeA: Shape, bodyB: Body, shapeB: Shape): void;
         bodiesAreOverlapping(bodyA: Body, bodyB: Body): boolean;
 
-				overlappingShapesCurrentState:{keys:number[]};
+        overlappingShapesCurrentState:{keys:number[], data:{}};
     }
 
     export class OverlapKeeperRecord {
