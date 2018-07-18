@@ -44,7 +44,19 @@ class GameOnline{
 
         this.main.bg.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.main.touchBg, this.main);
 
-        this.uid = await Connection.init(this.close.bind(this));
+        SuperEvent.removeEventListener("iWin", this.main.win, this.main);
+
+        SuperEvent.removeEventListener("iLose", this.main.lose, this.main);
+
+        SuperEvent.addEventListener("iWin", this.iWin, this);
+
+        SuperEvent.addEventListener("iLose", this.iLose, this);
+
+        SuperEvent.addEventListener("oWin", this.oWin, this);
+
+        SuperEvent.addEventListener("oLose", this.oLose, this);
+
+        this.uid = await Connection.init(this.disconnect.bind(this));
 
         console.log("uid:" + this.uid);
 
@@ -59,9 +71,9 @@ class GameOnline{
         Connection.emit(this.TAG_JOIN, {roomUid:_roomUid, playerNum:_playerNum});
     }
 
-    private static close():void{
+    private static disconnect():void{
 
-        SuperTicker.getInstance().removeEventListener(this.update, this);
+        console.log("socket disconnect!");
     }
 
     private static getRefresh(_data:Data_refresh):void{
@@ -102,6 +114,8 @@ class GameOnline{
                 if(!this.other[uid]){
 
                     let human:Human = Human.createOther(this.main.world, Main.config.gameConfig.humanLength, Main.config.gameConfig.humanRadius, Main.config.gameConfig.humanStartPos[i][0], Main.config.gameConfig.humanStartPos[i][1]);
+
+                    human.initContainerPos();
 
                     this.other[uid] = human;
 
@@ -214,6 +228,11 @@ class GameOnline{
         if(this.index < this.commandArr.length){
 
             this.main.update(16);
+
+            if(!SuperTicker.getInstance().hasEventListener(this.update, this)){
+
+                return;
+            }
             
             let command:Data_command = this.commandArr[this.index];
 
@@ -308,6 +327,11 @@ class GameOnline{
             // console.log("catch up:" + this.index);
 
             this.main.update(16);
+
+            if(!SuperTicker.getInstance().hasEventListener(this.update, this)){
+
+                return;
+            }
             
             let command:Data_command = this.commandArr[this.index];
 
@@ -350,6 +374,123 @@ class GameOnline{
         this.main.world.accumulator = BodyObj.fixNumber(this.main.world.accumulator);
 
         this.main.world.time = BodyObj.fixNumber(this.main.world.time);
+    }
+
+    private static iWin():void{
+
+        if(this.recordData.length == 0){
+
+            this.over();
+
+            this.main.win();
+        }
+    }
+
+    private static iLose():void{
+
+        if(this.recordData.length == 0){
+
+            this.over();
+
+            this.main.lose();
+        }
+    }
+
+    private static oWin(_human:Human):void{
+
+        if(this.recordData.length == 0){
+
+            _human.reset();
+
+            this.over();
+
+            this.main.lose();
+        }
+    }
+
+    private static oLose(_human:Human):void{
+
+        console.log("online olose:" + this.recordData.length);
+
+        if(this.recordData.length == 0){
+
+            _human.reset();
+
+            for(let key in this.other){
+
+                let human:Human = this.other[key];
+
+                if(human == _human){
+
+                    console.log("online olose delete");
+
+                    delete this.other[key];
+
+                    break;
+                }
+            }
+
+            let hasOther:boolean = false;
+
+            for(let key in this.other){
+
+                hasOther = true;
+
+                break;
+            }
+
+            console.log("online olose  hasOther:" + hasOther);
+
+            if(!hasOther){
+
+                this.over();
+
+                this.main.win();
+            }
+        }
+    }
+
+    private static over():void{
+
+        console.log("online over!");
+
+        wx.closeSocket({});
+
+        SuperTicker.getInstance().removeEventListener(this.update, this);
+
+        SuperEvent.removeEventListener("iWin", this.iWin, this);
+
+        SuperEvent.removeEventListener("iLose", this.iLose, this);
+
+        SuperEvent.removeEventListener("oWin", this.oWin, this);
+
+        SuperEvent.removeEventListener("oLose", this.oLose, this);
+
+        this.main.bg.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBg, this);
+
+        Connection.removeListen(this.TAG_REFRESH);
+
+        Connection.removeListen(this.TAG_COMMAND);
+
+        Connection.removeListen(this.TAG_START);
+
+        Connection.removeListen(this.TAG_LAG);
+
+        this.other = {};
+
+        this.commandArr.length = 0;
+
+        this.recordData.length = 0;
+
+        this.recordStartIndex = -1;
+
+        this.main.mainPanel.onlineGroup.visible = true;
+
+        this.main.mainPanel.playerNum.text = "data";
+
+        this.main.mainPanel.createBt.visible = true;
+
+        this.main.mainPanel.joinBt.visible = true;
     }
 
     private static checkSync(_index:number):void{

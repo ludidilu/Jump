@@ -78,7 +78,19 @@ class BodyObj extends p2.Body{
 
         this.velocity[1] = 0;
 
+        this.force[0] = 0;
+
+        this.force[1] = 0;
+
+        this.angularForce = 0;
+
         this.angularVelocity = 0;
+
+        this.vlambda[0] = 0;
+
+        this.vlambda[1] = 0;
+
+        this.wlambda = 0;
 
         this.setAngle(0);
     }

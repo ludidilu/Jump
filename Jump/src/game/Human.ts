@@ -54,7 +54,7 @@ class Human extends MoveBodyObj{
 
     public firstJump:boolean = false;
 
-    public updateContainerPosition(_dt:number):void{
+    private updateContainerPosition(_dt:number):void{
 
         if(!this.firstJump){
 
@@ -103,11 +103,13 @@ class Human extends MoveBodyObj{
 
                     // console.log("a:" + Game.strstr);
 
-                    Human.main.win();
+                    SuperEvent.dispatchEvent("iWin");
+
+                    // Human.main.win();
                 }
                 else{
 
-                    this.reset();
+                    SuperEvent.dispatchEvent("oWin", this);
                 }
 
                 return;
@@ -137,13 +139,15 @@ class Human extends MoveBodyObj{
 
             if(this.isMain){
 
-                Human.main.lose();
+                SuperEvent.dispatchEvent("iLose");
+
+                // Human.main.lose();
 
                 // console.log("a:" + Game.strstr);
             }
             else{
 
-                this.reset();
+                SuperEvent.dispatchEvent("oLose", this);
             }
         }
     }
@@ -317,17 +321,15 @@ class Human extends MoveBodyObj{
 
         this.firstJump = false;
 
+        this.firstCameraFollowTime = 0;
+
         this.setPosition(Main.config.gameConfig.humanStartPos[0][0], Main.config.gameConfig.humanStartPos[0][1]);
 
         super.reset();
 
         this.updateDisplaysPosition();
 
-        this.firstCameraFollowTime = 0;
-
-        this.containerX = -this.displays[0].x + Game.STAGE_WIDTH * 0.5;
-
-        this.containerY = -this.displays[0].y + Game.STAGE_HEIGHT * 0.5;
+        this.initContainerPos();
 
         if(!this.isMain){
 
@@ -339,6 +341,13 @@ class Human extends MoveBodyObj{
 
             Human.humanPool.push(this);
         }
+    }
+
+    public initContainerPos():void{
+
+        this.containerX = -this.displays[0].x + Game.STAGE_WIDTH * 0.5;
+
+        this.containerY = -this.displays[0].y + Game.STAGE_HEIGHT * 0.5;
     }
 
     public static update(_dt:number):void{
@@ -396,5 +405,14 @@ class Human extends MoveBodyObj{
         this.gravityScale = _recordData.rec_gravityScale;
 
         this.jumpDisableTime = _recordData.rec_jumpDisableTime;
+    }
+
+    public fixFloat():void{
+
+        super.fixFloat();
+
+        this.containerX = BodyObj.fixNumber(this.containerX);
+
+        this.containerY = BodyObj.fixNumber(this.containerY);
     }
 }

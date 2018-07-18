@@ -118,6 +118,12 @@ class Game extends egret.DisplayObjectContainer {
 
         this.overCallBack = _overCallBack;
 
+        SuperEvent.addEventListener("iWin", this.win, this);
+
+        SuperEvent.addEventListener("iLose", this.lose, this);
+
+        this.bg.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBg, this);
+
         // if(Game.stageConfig.maxLevel > 0){
 
         //     Terminal.create(this.otherContainer, Game.stageConfig.maxLevel);
@@ -208,7 +214,7 @@ class Game extends egret.DisplayObjectContainer {
 
         this.bg.touchEnabled = true;
 
-        this.bg.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBg, this);
+        
     }
 
     private createItemBt():void{
@@ -283,6 +289,18 @@ class Game extends egret.DisplayObjectContainer {
     }
 
     private gameOver():void{
+
+        this.hint.visible = false;
+
+        this.world.accumulator = 0;
+
+        this.world.time = 0;
+
+        SuperEvent.removeEventListener("iWin", this.win, this);
+
+        SuperEvent.removeEventListener("iLose", this.win, this);
+
+        this.bg.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBg, this);
 
         this.overCallBack(this.bestScore, this.nowMoney);
     }

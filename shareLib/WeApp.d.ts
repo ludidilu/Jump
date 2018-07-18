@@ -53,4 +53,6 @@ declare class wx{
     public static onSocketMessage(cb:(data:{data:string})=>void):void;
 
     public static onSocketClose(cb:()=>void):void;
+
+    public static closeSocket(data:{code?:number, reason?:string}):void;
 }

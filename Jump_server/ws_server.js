@@ -68,14 +68,19 @@ function disconnect(client){
 		let room = roomDic[client.roomUid];
 
 		if(room){
+			
+			let index = room.player.indexOf(client.clientUid);
+			
+			if(index != -1){
+				
+				room.player.splice(index, 1);
 
-			room.player.splice(room.player.indexOf(client.clientUid), 1);
-
-			if(room.player.length == 0){
-
-				console.log("remove room:" + room.uid);
-
-				delete roomDic[room.uid];
+				if(room.player.length == 0){
+	
+					console.log("remove room:" + room.uid);
+	
+					delete roomDic[room.uid];
+				}
 			}
 		}
 	}

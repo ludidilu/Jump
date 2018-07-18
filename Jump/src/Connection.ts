@@ -62,7 +62,19 @@ class Connection{
         }
     }
 
-    public static listen<T>(_tag:string, _cb:(_data:T)=>void):void{
+    public static removeListen(_tag:string):void{
+
+        if(!Main.isWeixin){
+
+            Connection.socket.removeListener(_tag);
+        }
+        else{
+
+            delete Connection.cbDic[_tag];
+        }
+    }
+
+    public static listen(_tag:string, _cb:(_data)=>void):void{
 
         if(!Main.isWeixin){
 
@@ -74,7 +86,7 @@ class Connection{
         }
     }
 
-    public static emit<T>(_tag:string, _data:T):void{
+    public static emit(_tag:string, _data):void{
 
         if(!Main.isWeixin){
 
