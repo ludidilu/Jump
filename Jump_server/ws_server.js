@@ -183,30 +183,33 @@ function getDataReal(client, tag, data){
 
 			let index = room.player.indexOf(client.clientUid);
 
-			room.sync[index][data.index] = data.obj;
+			if(index != -1){
 
-			for(let i = 0 ; i < room.sync.length ; i++){
+				room.sync[index][data.index] = data.obj;
 
-				if(i != index){
+				for(let i = 0 ; i < room.sync.length ; i++){
 
-					let dd = room.sync[i];
+					if(i != index){
 
-					if(dd[data.index]){
+						let dd = room.sync[i];
 
-						let ddd = dd[data.index];
+						if(dd[data.index]){
 
-						for(let key in ddd){
+							let ddd = dd[data.index];
 
-							if(ddd[key].x != data.obj[key].x || ddd[key].y != data.obj[key].y || ddd[key].forceX != data.obj[key].forceX || ddd[key].forceY != data.obj[key].forceY){
+							for(let key in ddd){
 
-								throw "sync error    index:" + data.index + "  uid:" + key + "   x:" + ddd[key].x + "," + data.obj[key].x + "   y:" + ddd[key].y + "," + data.obj[key].y + "   forceX:" + ddd[key].forceX + "," + data.obj[key].forceX + "   forceY:" + ddd[key].forceY + "," + data.obj[key].forceY;
+								if(ddd[key].x != data.obj[key].x || ddd[key].y != data.obj[key].y || ddd[key].forceX != data.obj[key].forceX || ddd[key].forceY != data.obj[key].forceY){
+
+									throw "sync error    index:" + data.index + "  uid:" + key + "   x:" + ddd[key].x + "," + data.obj[key].x + "   y:" + ddd[key].y + "," + data.obj[key].y + "   forceX:" + ddd[key].forceX + "," + data.obj[key].forceX + "   forceY:" + ddd[key].forceY + "," + data.obj[key].forceY;
+								}
 							}
+
+							//for(let key in ddd){
+
+								//console.log("sync ok    index:" + data.index + "  uid:" + key + "   x:" + ddd[key].x + "   y:" + ddd[key].y);
+							//}
 						}
-
-						//for(let key in ddd){
-
-							//console.log("sync ok    index:" + data.index + "  uid:" + key + "   x:" + ddd[key].x + "   y:" + ddd[key].y);
-						//}
 					}
 				}
 			}
