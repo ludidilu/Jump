@@ -72,6 +72,13 @@ class GameOnline{
 
         this.main.mainPanel.joinBt.visible = false;
 
+        Human.human.remove();
+
+        for(let key in this.other){
+
+            this.other[key].remove();
+        }
+
         for(let i:number = 0, m:number = _data.arr.length ; i < m ; i++){
 
             let uid = _data.arr[i];
@@ -87,6 +94,8 @@ class GameOnline{
                 this.main.gameContainer.y = Human.human.containerY = -Human.human.displays[0].y + Game.STAGE_HEIGHT * 0.5;
 
                 Human.human.gravityScale = 0;
+
+                Human.human.add(this.main.world);
             }
             else{
 
@@ -97,6 +106,10 @@ class GameOnline{
                     this.other[uid] = human;
 
                     human.gravityScale = 0;
+                }
+                else{
+
+                    this.other[uid].add(this.main.world);
                 }
             }
         }
@@ -292,7 +305,7 @@ class GameOnline{
 
         while(this.index < this.commandArr.length){
 
-            console.log("catch up:" + this.index);
+            // console.log("catch up:" + this.index);
 
             this.main.update(16);
             
@@ -341,13 +354,13 @@ class GameOnline{
 
     private static checkSync(_index:number):void{
 
-        console.log("sync  index:" + _index + "-----------");
+        // console.log("sync  index:" + _index + "-----------");
 
         let obj = {};
 
         obj[this.uid] = {x:Human.human.position[0], y:Human.human.position[1], forceX:Human.human.force[0], forceY:Human.human.force[1]};
 
-        console.log("uid:" + this.uid + "  x:" + Human.human.position[0] + "  y:" + Human.human.position[1] + "  forceX:" + Human.human.force[0] + "  forceY:" + Human.human.force[1]);
+        // console.log("uid:" + this.uid + "  x:" + Human.human.position[0] + "  y:" + Human.human.position[1] + "  forceX:" + Human.human.force[0] + "  forceY:" + Human.human.force[1]);
 
         for(let key in this.other){
 
@@ -355,7 +368,7 @@ class GameOnline{
 
             obj[key] = {x:human.position[0], y:human.position[1], forceX:human.force[0], forceY:human.force[1]};
 
-            console.log("uid:" + key + "  x:" + human.position[0] + "  y:" + human.position[1] + "  forceX:" + human.force[0] + "  forceY:" + human.force[1]);
+            // console.log("uid:" + key + "  x:" + human.position[0] + "  y:" + human.position[1] + "  forceX:" + human.force[0] + "  forceY:" + human.force[1]);
         }
 
         Connection.emit(this.TAG_CHECK_SYNC, {index:_index, obj:obj});
