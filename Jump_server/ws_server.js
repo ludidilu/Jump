@@ -62,32 +62,35 @@ function connection(client){
 }
 
 function disconnect(client){
-	
-	if(client.roomUid){
-			
-		let room = roomDic[client.roomUid];
 
-		if(room){
+	if(playerDic[client.clientUid]){
+
+		if(client.roomUid){
 			
-			let index = room.player.indexOf(client.clientUid);
-			
-			if(index != -1){
+			let room = roomDic[client.roomUid];
+
+			if(room){
 				
-				room.player.splice(index, 1);
+				let index = room.player.indexOf(client.clientUid);
+				
+				if(index != -1){
+					
+					room.player.splice(index, 1);
 
-				if(room.player.length == 0){
-	
-					console.log("remove room:" + room.uid);
-	
-					delete roomDic[room.uid];
+					if(room.player.length == 0){
+		
+						console.log("remove room:" + room.uid);
+		
+						delete roomDic[room.uid];
+					}
 				}
 			}
 		}
+
+		console.log("remove player:" + client.clientUid);
+
+		delete playerDic[client.clientUid];
 	}
-
-	console.log("remove player:" + client.clientUid);
-
-	delete playerDic[client.clientUid];
 }
 
 function getData(client, tag, data){
