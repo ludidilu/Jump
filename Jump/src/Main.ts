@@ -323,6 +323,8 @@ class Main extends egret.DisplayObjectContainer {
 
                     self.mainPanel.visible = true;
                 }
+
+                setTimeout(self.challengeBtClick.bind(self), 2000);
             };
 
             if(!self.game){

@@ -2,9 +2,9 @@ let messageTag = ["tag_join","tag_command","tag_getLag"];
 
 let lagTest = true;
 
-let lagMin = 20;
+let lagMin = 100;
 
-let lagMax = 80;
+let lagMax = 200;
 
 let lagList = [];
 
@@ -27,6 +27,15 @@ const WebSocketServer = ws.Server;
 let wsServer = new WebSocketServer({port:1999});
 
 wsServer.on("connection", connection);
+
+let cc = [{"index":192,"arr":[0]},{"index":326,"arr":[1]},{"index":338,"arr":[0]},{"index":359,"arr":[0]},{"index":455,"arr":[1]},{"index":474,"arr":[0]},{"index":486,"arr":[0]},{"index":489,"arr":[1]},{"index":689,"arr":[1]},{"index":724,"arr":[1]},{"index":828,"arr":[0]},{"index":946,"arr":[1]},{"index":1050,"arr":[0]},{"index":1078,"arr":[1]},{"index":1185,"arr":[1]},{"index":1188,"arr":[0]},{"index":1199,"arr":[0]},{"index":1200,"arr":[1]},{"index":1219,"arr":[1]},{"index":253,"arr":[0]},{"index":305,"arr":[1]},{"index":419,"arr":[0]},{"index":433,"arr":[1]},{"index":428,"arr":[0]},{"index":130,"arr":[0]},{"index":265,"arr":[0]},{"index":299,"arr":[0]},{"index":398,"arr":[1]},{"index":534,"arr":[1]},{"index":646,"arr":[1]},{"index":667,"arr":[1]},{"index":759,"arr":[0]},{"index":892,"arr":[1]},{"index":990,"arr":[0]},{"index":1101,"arr":[1]},{"index":1212,"arr":[0]},{"index":1314,"arr":[1]},{"index":1420,"arr":[0]},{"index":1548,"arr":[1]},{"index":1656,"arr":[0]},{"index":1721,"arr":[1]},{"index":1806,"arr":[1]},{"index":1823,"arr":[1]},{"index":1833,"arr":[1]},{"index":1841,"arr":[1]},{"index":1868,"arr":[1]},{"index":1926,"arr":[0]},{"index":2075,"arr":[1]},{"index":2176,"arr":[0]}];
+
+let dic = {};
+
+for(let v of cc){
+
+	dic[v.index] = v.arr;
+}
 
 function connection(client){
 	
@@ -115,6 +124,8 @@ function getData(client, tag, data){
 function getDataReal(client, tag, data){
 
 	if(tag == "tag_join"){
+
+		console.log("fff:" + JSON.stringify(data));
 		
 		console.log("user join:" + client.clientUid);
 
@@ -136,6 +147,8 @@ function getDataReal(client, tag, data){
 
 			roomOid = data.roomUid;
 		}
+
+		console.log("rrr:" + roomOid);
 		
 		let room;
 
@@ -225,6 +238,8 @@ function getDataReal(client, tag, data){
 	}
 }
 
+let command_arr = [61,185,363,390,403,411,525,546,566,577,584,687,712,733,740,825,859];
+
 function update(){
 
 	for(let key in roomDic){
@@ -235,12 +250,25 @@ function update(){
 
 			let arr = [];
 
+			if(dic[room.index]){
+
+				for(let v of dic[room.index]){
+
+					arr.push(room.player[v]);
+				}
+			}
+
+//			if(command_arr.indexOf(room.index) != -1){
+//
+//				arr.push(room.player[0]);
+//			}
+
 			for(let i = 0 ; i < room.command.length ; i++){
 
 				arr.push(room.command[i]);
 			}
 
-			//let command = {index:room.index, arr:room.command};
+//			let command = {index:room.index, arr:room.command};
 
 			let command = {index:room.index, arr:arr};
 

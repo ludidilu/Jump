@@ -110,6 +110,8 @@ class Game extends egret.DisplayObjectContainer {
         }
     }
 
+    private roomID:number = 1;
+
     public start(_stageConfig:StageConfig, _overCallBack:(_level:number, _money:number)=>void):void{
 
         this.reset();
@@ -128,6 +130,21 @@ class Game extends egret.DisplayObjectContainer {
 
         //     Terminal.create(this.otherContainer, Game.stageConfig.maxLevel);
         // }
+
+        let self = this;
+
+        let ss = function():void{
+
+            console.log("request roomID  real:" + self.roomID);
+
+            GameOnline.start(self.roomID, 2);
+
+            self.roomID++;
+        };
+
+        console.log("request roomID:" + this.roomID);
+
+        setTimeout(ss, 2000);
     }
 
     private pause():void{
@@ -281,7 +298,7 @@ class Game extends egret.DisplayObjectContainer {
         this.hint.visible = false;
     }
 
-    private btClick(e:egret.TouchEvent):void{
+    public btClick(e:egret.TouchEvent):void{
 
         this.alertPanel.visible = false;
 

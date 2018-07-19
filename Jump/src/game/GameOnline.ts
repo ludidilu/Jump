@@ -42,6 +42,8 @@ class GameOnline{
 
     public static async start(_roomUid:number, _playerNum:number){
 
+        console.log("before request join   _roomUid:" + _roomUid + "   _playerNum:" + _playerNum);
+
         this.main.bg.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.main.touchBg, this.main);
 
         SuperEvent.removeEventListener("iWin", this.main.win, this.main);
@@ -68,6 +70,8 @@ class GameOnline{
 
         Connection.listen(this.TAG_LAG, this.getLag.bind(this));
 
+        console.log("request join   _roomUid:" + _roomUid + "   _playerNum:" + _playerNum);
+
         Connection.emit(this.TAG_JOIN, {roomUid:_roomUid, playerNum:_playerNum});
     }
 
@@ -75,6 +79,8 @@ class GameOnline{
 
         console.log("socket disconnect!");
     }
+
+    private static uidArr:number[];
 
     private static getRefresh(_data:Data_refresh):void{
 
@@ -90,6 +96,8 @@ class GameOnline{
 
             this.other[key].remove();
         }
+
+        this.uidArr = _data.arr;
 
         for(let i:number = 0, m:number = _data.arr.length ; i < m ; i++){
 
@@ -128,6 +136,8 @@ class GameOnline{
             }
         }
     }
+
+    private static arr:{}[] = [];
 
     private static getCommand(_data:Data_command):void{
 
@@ -186,6 +196,25 @@ class GameOnline{
                         this.recordStartIndex = -1;
                     }
                 }
+            }
+
+            if(_data.arr.length > 0){
+
+                let arr:number[] = [];
+
+                for(let v of _data.arr){
+
+                    if(this.uidArr[0] == v){
+
+                        arr.push(0);
+                    }
+                    else{
+
+                        arr.push(1);
+                    }
+                }
+
+                this.arr.push({index:_data.index, arr:arr});
             }
 
             this.commandArr.push(_data);
@@ -383,6 +412,10 @@ class GameOnline{
             this.over();
 
             this.main.win();
+
+
+
+            
         }
     }
 
@@ -452,6 +485,10 @@ class GameOnline{
 
     private static over():void{
 
+        let str = JSON.stringify(this.arr);
+
+        console.log("v:" + str);
+
         console.log("online over!");
 
         wx.closeSocket({});
@@ -491,6 +528,8 @@ class GameOnline{
         this.main.mainPanel.createBt.visible = true;
 
         this.main.mainPanel.joinBt.visible = true;
+
+        setTimeout(this.main.btClick.bind(this.main), 2000);
     }
 
     private static checkSync(_index:number):void{
