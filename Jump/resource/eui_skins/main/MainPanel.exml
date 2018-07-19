@@ -10,8 +10,8 @@
 	<e:Image width="494" height="140" x="353" y="1700" anchorOffsetX="0" anchorOffsetY="0" source="main_json.diyijiekou"/>
 
 
-	<ns1:GuoButton id="challengeBt" label="Button" x="65" y="1330" skinName="GuanqiaButtonSkin"/>
-	<ns1:GuoButton id="endlessBt" label="Button" x="710" y="1330" skinName="WujinButtonSkin"/>
+	<e:Button id="challengeBt" label="Button" x="65" y="1330" skinName="GuanqiaButtonSkin"/>
+	<e:Button id="endlessBt" label="Button" x="710" y="1330" skinName="WujinButtonSkin"/>
 
 
 	<e:Image id="guagou_ji" width="37" height="167" x="240" y="415" anchorOffsetX="0" anchorOffsetY="0" source="main_json.guagou"/>

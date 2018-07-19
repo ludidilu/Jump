@@ -16,6 +16,31 @@ class MainPanel extends eui.Component implements  eui.UIComponent {
 		super.childrenCreated();
 
 		this.rightBt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.click, this);
+
+		let data = RES.getRes("guo_json");
+        let txtr:egret.Texture = RES.getRes("guo_png");
+
+
+        let mcFactory:egret.MovieClipDataFactory = new egret.MovieClipDataFactory( data, txtr );
+
+		let mcData:egret.MovieClipData = mcFactory.generateMovieClipData("guo");
+		
+
+        let mc:egret.MovieClip = new egret.MovieClip(mcData);
+
+        this.challengeBt.addChild(mc);
+
+		mc.y = -140;
+
+        mc.play(-1);
+
+		mc = new egret.MovieClip(mcData);
+
+        this.endlessBt.addChild(mc);
+
+		mc.y = -140;
+
+		mc.gotoAndPlay(Math.floor(mcData.numFrames / 2), -1);
 	}
 
 	private click(e:egret.TouchEvent):void{

@@ -9,7 +9,10 @@ class RankCell extends eui.ItemRenderer {
 	public endlessLabel:eui.Label;
 
 	public constructor() {
+
 		super();
+
+		this.skinName = "resource/eui_skins/main/RankCell.exml";
 	}
 
 	protected partAdded(partName:string,instance:any):void

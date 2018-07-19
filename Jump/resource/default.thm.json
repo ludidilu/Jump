@@ -1,12 +1,6 @@
 {
 	"skins": {
-		"eui.Button": "resource/eui_skins/ButtonSkin.exml",
-		"MainPanel": "resource/eui_skins/MainPanel.exml",
-		"AlertPanel": "resource/eui_skins/AlertPanel.exml",
-		"RankPanel": "resource/eui_skins/main/RankPanel.exml",
-		"RankCell": "resource/eui_skins/main/RankCell.exml",
-		"ChangeClothMainPanel": "resource/eui_skins/ChangeClothMainPanel.exml",
-		"BuyButton": "resource/eui_skins/BuyButton.exml"
+		"eui.Button": "resource/eui_skins/ButtonSkin.exml"
 	},
 	"autoGenerateExmlsList": true,
 	"exmls": [

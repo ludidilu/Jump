@@ -10,6 +10,7 @@ class RankPanel extends eui.Component implements  eui.UIComponent {
 
 		super();
 
+		this.skinName = "resource/eui_skins/main/RankPanel.exml";
 	}
 
 	private close(e:egret.TouchEvent):void{
