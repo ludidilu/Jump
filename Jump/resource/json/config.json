@@ -94,9 +94,9 @@
 
         "triangleHeight":  0.4,
 
-        "unitNum":  7,
+        "unitNum":  9,
 
-        "ladderChangeUnitFix": 3,
+        "ladderChangeUnitFix": 4,
 
         "humanLength":  0.7,
 
