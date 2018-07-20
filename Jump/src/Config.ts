@@ -69,9 +69,13 @@ class GameConfig{
 
     public triangleHeight:number = 0.4;
 
-    public unitNum:number = 20;
+    public ladderNum:number = 3;
 
-    public ladderChangeUnitFix:number = 2;
+    public ladderFix:number = 1;
+
+    public ladderShowNum:number = 9;
+
+    public ladderShowFix:number = 4;
 
     public humanLength:number = 0.7;
 
