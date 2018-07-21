@@ -1,4 +1,7 @@
 {"file":"game.png","frames":{
-"taijie":{"x":1,"y":1282,"w":471,"h":378,"offX":0,"offY":0,"sourceW":471,"sourceH":378},
 "001":{"x":1,"y":1,"w":1997,"h":1279,"offX":0,"offY":0,"sourceW":1997,"sourceH":1279},
-"terminal1":{"x":474,"y":1282,"w":193,"h":469,"offX":0,"offY":0,"sourceW":193,"sourceH":469}}}
+"terminal1":{"x":474,"y":1282,"w":193,"h":469,"offX":0,"offY":0,"sourceW":193,"sourceH":469},
+"taijie":{"x":1,"y":1282,"w":471,"h":378,"offX":0,"offY":0,"sourceW":471,"sourceH":378},
+"xiao-03":{"x":1,"y":1662,"w":227,"h":170,"offX":0,"offY":0,"sourceW":227,"sourceH":170},
+"xiao-04":{"x":1,"y":1834,"w":185,"h":174,"offX":0,"offY":0,"sourceW":185,"sourceH":174},
+"xiao-05":{"x":230,"y":1662,"w":165,"h":196,"offX":0,"offY":0,"sourceW":165,"sourceH":196}}}

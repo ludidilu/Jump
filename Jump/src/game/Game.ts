@@ -20,11 +20,9 @@ class Game extends egret.DisplayObjectContainer {
 
     public humanMat:p2.Material;
 
-    public bg:egret.Bitmap;
-
     private itemBt:ItemBt;
 
-    private bgContainer:egret.DisplayObjectContainer;
+    public bgContainer:BgContainer;
 
     public gameContainer:egret.DisplayObjectContainer;
 
@@ -78,8 +76,6 @@ class Game extends egret.DisplayObjectContainer {
 
         this.createContainers();
 
-        this.createBg();
-
         this.createItemBt();
 
         this.createUi();
@@ -122,7 +118,7 @@ class Game extends egret.DisplayObjectContainer {
 
         SuperEvent.addEventListener("iLose", this.lose, this);
 
-        this.bg.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBg, this);
+        this.bgContainer.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBg, this);
 
         // if(Game.stageConfig.maxLevel > 0){
 
@@ -155,7 +151,7 @@ class Game extends egret.DisplayObjectContainer {
 
     private createContainers():void{
 
-        this.bgContainer = new egret.DisplayObjectContainer();
+        this.bgContainer = new BgContainer();
 
         this.addChild(this.bgContainer);
 
@@ -164,6 +160,8 @@ class Game extends egret.DisplayObjectContainer {
         this.gameContainer.touchChildren = false;
 
         this.addChild(this.gameContainer);
+        
+        this.bgContainer.init(this.gameContainer);
 
         this.mapContainer = new egret.DisplayObjectContainer();
 
@@ -194,27 +192,6 @@ class Game extends egret.DisplayObjectContainer {
         this.uiContainer = new egret.DisplayObjectContainer();
 
         this.addChild(this.uiContainer);
-    }
-
-    private createBg():void{
-
-        let tex:egret.Texture = RES.getRes("kitchenBg_png");
-
-        this.bg = new egret.Bitmap(tex);
-
-        // this.bg = new egret.Shape();
-
-        // this.bg.graphics.beginFill(0x666666);
-
-        // this.bg.graphics.drawRect(0,0,this.stage.stageWidth, this.stage.stageHeight);
-
-        // this.bg.graphics.endFill();
-
-        this.bgContainer.addChild(this.bg);
-
-        this.bg.touchEnabled = true;
-
-        
     }
 
     private createItemBt():void{
@@ -300,7 +277,7 @@ class Game extends egret.DisplayObjectContainer {
 
         SuperEvent.removeEventListener("iLose", this.win, this);
 
-        this.bg.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBg, this);
+        this.bgContainer.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBg, this);
 
         this.overCallBack(this.bestScore, this.nowMoney);
     }
@@ -367,6 +344,8 @@ class Game extends egret.DisplayObjectContainer {
         if(Human.human.firstJump){
 
             Human.human.update(dt);
+
+            this.bgContainer.update();
 
             this.gameContainer.x = Human.human.containerX;
 
@@ -520,6 +499,8 @@ class Game extends egret.DisplayObjectContainer {
         this.gameContainer.x = Human.human.containerX;
 
         this.gameContainer.y = Human.human.containerY;
+
+        this.bgContainer.reset();
     }
 
     public touchBg(e: egret.TouchEvent): void {

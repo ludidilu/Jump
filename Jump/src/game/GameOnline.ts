@@ -42,7 +42,7 @@ class GameOnline{
 
     public static async start(_roomUid:number, _playerNum:number){
 
-        this.main.bg.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.main.touchBg, this.main);
+        this.main.bgContainer.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.main.touchBg, this.main);
 
         SuperEvent.removeEventListener("iWin", this.main.win, this.main);
 
@@ -200,7 +200,7 @@ class GameOnline{
 
         this.main.mainPanel.onlineGroup.visible = false;
 
-        this.main.bg.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBg, this);
+        this.main.bgContainer.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBg, this);
 
         SuperTicker.getInstance().addEventListener(this.update, this);
 
@@ -466,7 +466,7 @@ class GameOnline{
 
         SuperEvent.removeEventListener("oLose", this.oLose, this);
 
-        this.main.bg.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBg, this);
+        this.main.bgContainer.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBg, this);
 
         Connection.removeListen(this.TAG_REFRESH);
 

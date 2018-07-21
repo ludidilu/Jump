@@ -5,7 +5,7 @@
 			"name": "preload"
 		},
 		{
-			"keys": "game_json,kaoya_json,kaoya_png,kitchenBg_png",
+			"keys": "kaoya_json,kaoya_png,kitchenBg_png,game_json,game_bg_png",
 			"name": "game"
 		},
 		{
@@ -86,16 +86,21 @@
 			"name": "kitchenBg_png"
 		},
 		{
-			"url": "spriteSheet/game.json",
-			"type": "sheet",
-			"name": "game_json",
-			"subkeys": "001,taijie,terminal1"
-		},
-		{
 			"url": "spriteSheet/cloth.json",
 			"type": "sheet",
 			"name": "cloth_json",
 			"subkeys": "adfrme,buy,buy_down,buy_text,ceng,cloth_guagou,di,hengliang,huanfu,huanfu_di,huotui,huotui_an,kaoya,kaoya_an,locker,peigen,peigen_an,pifuname,pricebg,qiezi,qiezi_an,regou,regou_an,wumaoji,wumaoji_an,xiangchang,xiangchang_an,xiangjiao,xiangjiao_an,xianyu,xianyu_an,xiaolongxia,xiaolongxia_an"
+		},
+		{
+			"url": "assets/game_bg.png",
+			"type": "image",
+			"name": "game_bg_png"
+		},
+		{
+			"url": "spriteSheet/game.json",
+			"type": "sheet",
+			"name": "game_json",
+			"subkeys": "001,taijie,terminal1,xiao-03,xiao-04,xiao-05"
 		}
 	]
 }
