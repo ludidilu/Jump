@@ -109,7 +109,7 @@ class MoveBodyObj extends BodyObj{
                 }
             }
 
-            console.log("checkJump   x:" + this.ladder.position[0] + "   y:" + this.ladder.position[1] + "   accumulator:" + this.world.accumulator + "   time:" + this.world.time + "   a:" + this.world.overlapKeeper.overlappingShapesCurrentState.keys.length);
+            // console.log("checkJump   x:" + this.ladder.position[0] + "   y:" + this.ladder.position[1] + "   accumulator:" + this.world.accumulator + "   time:" + this.world.time + "   a:" + this.world.overlapKeeper.overlappingShapesCurrentState.keys.length);
             
             if(this.overlaps(this.ladder)){
 

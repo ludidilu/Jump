@@ -540,7 +540,7 @@ class Game extends egret.DisplayObjectContainer {
             }
             else{
 
-                console.log("no jump!");
+                // console.log("no jump!");
             }
         }
     }
