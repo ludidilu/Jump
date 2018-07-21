@@ -81,8 +81,6 @@ class BgContainer extends egret.DisplayObjectContainer{
                 this.objPool.push(showObj);
 
                 this.showObjArr.splice(i, 1);
-
-                console.log("remove!");
             }
         }
 
