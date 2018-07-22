@@ -60,8 +60,6 @@ class WeixinData{
 
         WeixinData.userInfo = data.data[0];
 
-        WeixinData.getPic(WeixinData.userInfo.avatarUrl);
-
         str = await WeixinTalk.Talk({command:"getUserCloudStorage", data:[Main.ENDLESS_SCORE, Main.CHALLENGE_SCORE, Main.MONEY]});
 
         let data2:{KVDataList:KVData[]} = JSON.parse(str);
@@ -87,11 +85,6 @@ class WeixinData{
         }
 
         WeixinData.friendData = data3.data;
-
-        for(let v of WeixinData.friendData){
-
-            WeixinData.getPic(v.avatarUrl);
-        }
     }
 
     public static async setUserData(_data:KVData[]):Promise<void>{
@@ -129,7 +122,7 @@ class WeixinData{
 
     public static getPic(_str:string, _cb?:(_tex:egret.Texture)=>void):void{
 
-        let tex:egret.Texture = this.picPool[_str];
+        let tex:egret.Texture = WeixinData.picPool[_str];
         
         if(!tex){
 
@@ -143,7 +136,7 @@ class WeixinData{
                 }
             };
 
-            RES.getResByUrl(_str, fun, this, RES.ResourceItem.TYPE_IMAGE);
+            RES.getResByUrl(_str, fun, WeixinData, RES.ResourceItem.TYPE_IMAGE);
         }
         else{
 
@@ -152,5 +145,31 @@ class WeixinData{
                 _cb(tex);
             }
         }
+    }
+
+    public static async getPicAsync(_str:string):Promise<egret.Texture>{
+
+        let cb:(resolve:(_data:egret.Texture)=>void)=>void = function(resolve:(_data:egret.Texture)=>void):void{
+
+            let tex:egret.Texture = WeixinData.picPool[_str];
+        
+            if(!tex){
+
+                let fun:Function = function(_tex:egret.Texture):void{
+
+                    WeixinData.picPool[_str] = _tex;
+
+                    resolve(_tex);
+                };
+
+                RES.getResByUrl(_str, fun, WeixinData, RES.ResourceItem.TYPE_IMAGE);
+            }
+            else{
+
+                resolve(tex);
+            }
+        }
+
+        return new Promise<egret.Texture>(cb);
     }
 }
