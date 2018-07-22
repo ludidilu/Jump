@@ -86,7 +86,7 @@ declare module particle {
          * 当前粒子数
          * @member {number} particle.ParticleSystem#numParticles
          */
-        private numParticles;
+        numParticles;
         /**
          * 表示粒子类，如果设置创建粒子时将创建该类
          * @member {number} particle.ParticleSystem#particleClass

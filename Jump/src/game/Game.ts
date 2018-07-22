@@ -24,6 +24,8 @@ class Game extends egret.DisplayObjectContainer {
 
     public bgContainer:BgContainer;
 
+    public particleContainer:egret.DisplayObjectContainer;
+
     public gameContainer:egret.DisplayObjectContainer;
 
     public mapContainer:egret.DisplayObjectContainer;
@@ -43,6 +45,8 @@ class Game extends egret.DisplayObjectContainer {
     public mainPanel:GameMainPanel;
 
     private alertPanel:GameAlertPanel;
+
+    private moneyShow:MoneyShow;
 
     private hint:egret.Shape;
 
@@ -76,6 +80,8 @@ class Game extends egret.DisplayObjectContainer {
 
         this.createContainers();
 
+        this.createMoneyShow();
+
         this.createItemBt();
 
         this.createUi();
@@ -91,6 +97,8 @@ class Game extends egret.DisplayObjectContainer {
         Coin.init(this);
 
         Item.init(this.itemBt.show.bind(this.itemBt));
+
+        this.mainPanel.testBt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.moneyShow.start, this.moneyShow);
 
         if(Main.isWeixin){
 
@@ -155,6 +163,10 @@ class Game extends egret.DisplayObjectContainer {
 
         this.addChild(this.bgContainer);
 
+        this.particleContainer = new egret.DisplayObjectContainer();
+
+        this.addChild(this.particleContainer);
+
         this.gameContainer = new egret.DisplayObjectContainer();
 
         this.gameContainer.touchChildren = false;
@@ -203,6 +215,13 @@ class Game extends egret.DisplayObjectContainer {
         this.itemBt.x = 80;
 
         this.itemBt.y = this.stage.stageHeight - 80;
+    }
+
+    private createMoneyShow():void{
+
+        this.moneyShow = new MoneyShow();
+
+        this.moneyShow.init(this.particleContainer);
     }
 
     private createUi():void{

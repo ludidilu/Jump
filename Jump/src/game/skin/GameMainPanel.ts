@@ -27,4 +27,6 @@ class GameMainPanel extends eui.Component implements  eui.UIComponent {
 	public joinBt:eui.Button;
 
 	public playerNum:eui.EditableText;
+
+	public testBt:eui.Button;
 }

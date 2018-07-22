@@ -4,7 +4,7 @@ class BgContainer extends egret.DisplayObjectContainer{
 
     private readonly OBJ_SHOW_GAP:number = 100;
 
-    private readonly OBJ_SHOW_PROBABILITY:number = 0.005;
+    private readonly OBJ_SHOW_PROBABILITY:number = 0.01;
 
     private readonly OBJ_SHOW_AGAIN_PROBABILITY:number = 0.5;
 
@@ -101,6 +101,8 @@ class BgContainer extends egret.DisplayObjectContainer{
                     this.addChild(showObj);
 
                     if(showX === null){
+
+                        this.lastShowY = this.y;
 
                         showObj.x = this.bg.x + this.stage.stageWidth + Math.random() * 1200;
                     }

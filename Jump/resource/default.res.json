@@ -5,7 +5,7 @@
 			"name": "preload"
 		},
 		{
-			"keys": "kaoya_json,kaoya_png,kitchenBg_png,game_json,game_bg_png",
+			"keys": "kaoya_json,kaoya_png,kitchenBg_png,game_json,game_bg_png,particle_json",
 			"name": "game"
 		},
 		{
@@ -100,7 +100,12 @@
 			"url": "spriteSheet/game.json",
 			"type": "sheet",
 			"name": "game_json",
-			"subkeys": "001,taijie,terminal1,xiao-03,xiao-04,xiao-05"
+			"subkeys": "001,dollar,taijie,terminal1,xiao-03,xiao-04,xiao-05"
+		},
+		{
+			"url": "json/particle.json",
+			"type": "json",
+			"name": "particle_json"
 		}
 	]
 }

@@ -7,6 +7,7 @@
 	<e:Group id="onlineGroup" left="0" right="0" top="0" bottom="0" touchEnabled="false">
 		<e:Button id="createBt" label="Create" y="142" horizontalCenter="0" scaleX="2" scaleY="2"/>
 		<e:Button id="joinBt" label="Join" y="300" scaleX="2" scaleY="2" x="500"/>
+		<e:Button id="testBt" label="Test" y="300" scaleX="2" scaleY="2" x="802"/>
 		<e:EditableText id="playerNum" width="404" height="140" text="data" x="398" y="456" anchorOffsetX="0" anchorOffsetY="0" textAlign="center" verticalAlign="middle" size="60"/>
 	</e:Group>
 
