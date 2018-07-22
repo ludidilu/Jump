@@ -93,7 +93,7 @@ class SuperTween{
         this.tmpList.length = 0;
     }
 
-    public async to(_start:number, _end:number, _time:number, _cb:(_v:number)=>void){
+    public async toAsync(_start:number, _end:number, _time:number, _cb:(_v:number)=>void){
 
         let index:number = this.getIndex();
 
@@ -109,7 +109,7 @@ class SuperTween{
         return new Promise(fun);
     }
 
-     public to2(_start:number, _end:number, _time:number, _cb:(_v:number)=>void, _endCb:()=>void):number{
+     public to(_start:number, _end:number, _time:number, _cb:(_v:number)=>void, _endCb:()=>void):number{
 
         let index:number = this.getIndex();
 

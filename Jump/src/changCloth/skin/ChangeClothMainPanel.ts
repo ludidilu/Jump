@@ -48,7 +48,7 @@ class ChangeClothMainPanel extends eui.Component implements  eui.UIComponent {
 
 		this.bg.touchEnabled = false;
 
-		await SuperTween.getInstance().to(this.nowX, tx, Math.abs(tx - this.nowX) * this.TWEEN_TIME, this.tween.bind(this));
+		await SuperTween.getInstance().toAsync(this.nowX, tx, Math.abs(tx - this.nowX) * this.TWEEN_TIME, this.tween.bind(this));
 
 		this.bg.touchEnabled = true;
 	}

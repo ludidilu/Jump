@@ -95,7 +95,7 @@ class SuperTicker{
 
                 if(index != -1){
 
-                    fun.bind(this.eventTargetList[index])(dt);
+                    fun.call(this.eventTargetList[index], dt);
                 }
             }
 

@@ -15,7 +15,9 @@ class Main extends egret.DisplayObjectContainer {
 
     // public static readonly RESOURCE_PATH:string = "http://106.75.222.192:8081/";
 
-    public static readonly RESOURCE_PATH:string = "/";
+    public static readonly RESOURCE_PATH:string = "http://106.75.214.90/jump/";
+
+    // public static readonly RESOURCE_PATH:string = "/";
 
     public static readonly CHALLENGE_SCORE:string = "challengeScore";
 
