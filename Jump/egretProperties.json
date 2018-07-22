@@ -32,7 +32,11 @@
 		},
 		{
 			"name": "physics",
-			"path": "../physicslibsrc"
+			"path": "../physicsLib"
+		},
+		{
+			"name": "particle",
+			"path": "../particleLib"
 		},
 		{
 			"name": "socket.io",
