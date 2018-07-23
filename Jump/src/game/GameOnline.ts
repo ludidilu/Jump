@@ -42,8 +42,6 @@ class GameOnline{
 
     public static async start(_roomUid:number, _playerNum:number){
 
-        console.log("before request join   _roomUid:" + _roomUid + "   _playerNum:" + _playerNum);
-
         this.main.bg.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.main.touchBg, this.main);
 
         SuperEvent.removeEventListener("iWin", this.main.win, this.main);
@@ -69,8 +67,6 @@ class GameOnline{
         Connection.listen(this.TAG_START, this.getStart.bind(this));
 
         Connection.listen(this.TAG_LAG, this.getLag.bind(this));
-
-        console.log("request join   _roomUid:" + _roomUid + "   _playerNum:" + _playerNum);
 
         Connection.emit(this.TAG_JOIN, {roomUid:_roomUid, playerNum:_playerNum});
     }
@@ -136,8 +132,6 @@ class GameOnline{
             }
         }
     }
-
-    private static arr:{}[] = [];
 
     private static getCommand(_data:Data_command):void{
 
@@ -213,8 +207,6 @@ class GameOnline{
                         arr.push(1);
                     }
                 }
-
-                this.arr.push({index:_data.index, arr:arr});
             }
 
             this.commandArr.push(_data);
@@ -252,6 +244,11 @@ class GameOnline{
             Connection.emit(this.TAG_LAG, new Date().getTime());
 
             this.pingTime -= 1000;
+        }
+
+        if(Math.random() < 1 / 20){
+
+            this.touchBg(null);
         }
 
         if(this.index < this.commandArr.length){
@@ -443,8 +440,6 @@ class GameOnline{
 
     private static oLose(_human:Human):void{
 
-        console.log("online olose:" + this.recordData.length);
-
         if(this.recordData.length == 0){
 
             _human.reset();
@@ -454,8 +449,6 @@ class GameOnline{
                 let human:Human = this.other[key];
 
                 if(human == _human){
-
-                    console.log("online olose delete");
 
                     delete this.other[key];
 
@@ -472,8 +465,6 @@ class GameOnline{
                 break;
             }
 
-            console.log("online olose  hasOther:" + hasOther);
-
             if(!hasOther){
 
                 this.over();
@@ -484,10 +475,6 @@ class GameOnline{
     }
 
     private static over():void{
-
-        let str = JSON.stringify(this.arr);
-
-        console.log("v:" + str);
 
         console.log("online over!");
 

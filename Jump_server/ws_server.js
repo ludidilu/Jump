@@ -250,13 +250,13 @@ function update(){
 
 			let arr = [];
 
-			if(dic[room.index]){
-
-				for(let v of dic[room.index]){
-
-					arr.push(room.player[v]);
-				}
-			}
+//			if(dic[room.index]){
+//
+//				for(let v of dic[room.index]){
+//
+//					arr.push(room.player[v]);
+//				}
+//			}
 
 //			if(command_arr.indexOf(room.index) != -1){
 //
