@@ -14,9 +14,9 @@ class Connection{
 
             Connection.socket = new egret.WebSocket();
 
-            Connection.socket.addEventListener( egret.ProgressEvent.SOCKET_DATA, Connection.socketGetMessage, this );
+            Connection.socket.addEventListener(egret.ProgressEvent.SOCKET_DATA, Connection.onSocketGetMessage, this);
 
-            Connection.socket.addEventListener( egret.ProgressEvent.CLOSE, Connection.socketClose, this );
+            Connection.socket.addEventListener(egret.ProgressEvent.CLOSE, Connection.onSocketClose, this);
 
             Connection.listen("connectOver", _resolve);
 
@@ -26,19 +26,22 @@ class Connection{
         return new Promise<number>(fun);
     }
 
-    private static socketGetMessage(e:egret.Event):void{
+    private static onSocketGetMessage(e:egret.Event):void{
 
-        let msg:{tag:string, data:any} = JSON.parse(Connection.socket.readUTF());
+        if(Connection.socket){
 
-        let cb:(data:any)=>void = Connection.cbDic[msg.tag];
+            let msg:{tag:string, data:any} = JSON.parse(Connection.socket.readUTF());
 
-        if(cb){
+            let cb:(data:any)=>void = Connection.cbDic[msg.tag];
 
-            cb(msg.data);
+            if(cb){
+
+                cb(msg.data);
+            }
         }
     }
 
-    private static socketClose():void{
+    private static onSocketClose():void{
 
         if(Connection.closeCallBack){
 
@@ -58,11 +61,25 @@ class Connection{
 
     public static emit(_tag:string, _data):void{
 
-        Connection.socket.writeUTF(JSON.stringify({tag:_tag, data:_data}));
+        if(Connection.socket){
+
+            Connection.socket.writeUTF(JSON.stringify({tag:_tag, data:_data}));
+        }
     }
 
     public static close():void{
 
-        Connection.socket.close();
+        if(Connection.socket){
+
+            Connection.socket.close();
+
+            Connection.socket.removeEventListener(egret.ProgressEvent.SOCKET_DATA, Connection.onSocketGetMessage, this);
+
+            Connection.socket.removeEventListener(egret.ProgressEvent.CLOSE, Connection.onSocketClose, this);
+
+            Connection.socket = null;
+
+            Connection.cbDic = {};
+        }
     }
 }
