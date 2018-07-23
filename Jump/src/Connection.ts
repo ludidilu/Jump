@@ -1,6 +1,6 @@
 class Connection{
 
-    private static socket:SocketIOClient.Socket;
+    private static socket:egret.WebSocket;
 
     private static cbDic:{[key:string]:(data:any)=>void} = {};
 
@@ -10,41 +10,25 @@ class Connection{
 
         Connection.closeCallBack = _closeCallBack;
 
-        if(!Main.isWeixin){
+        let fun:(_resolve:(_uid:number)=>void)=>void = function(_resolve:(_uid:number)=>void):void{
 
-            let fun:(_resolve:(_uid:number)=>void)=>void = function(_resolve:(_uid:number)=>void):void{
+            Connection.socket = new egret.WebSocket();
 
-                Connection.socket = io.connect("106.75.222.192:1999");
+            Connection.socket.addEventListener( egret.ProgressEvent.SOCKET_DATA, Connection.socketGetMessage, this );
 
-                // Connection.socket = io.connect("127.0.0.1:1999");
-                
-                Connection.socket.on("connectOver", _resolve);
-            }
+            Connection.socket.addEventListener( egret.ProgressEvent.CLOSE, Connection.socketClose, this );
 
-            return new Promise<number>(fun);
+            Connection.listen("connectOver", _resolve);
+
+            Connection.socket.connect("1.1.1.115", 1999);
         }
-        else{
 
-            let fun:(_resolve:(_uid:number)=>void)=>void = function(_resolve:(_uid:number)=>void):void{
-
-                wx.onSocketMessage(Connection.socketGetMessage);
-
-                wx.onSocketClose(Connection.socketClose);
-
-                Connection.listen("connectOver", _resolve);
-
-                // wx.connectSocket({url: "ws://192.168.0.101:1999"});
-
-                wx.connectSocket({url: "ws://192.168.0.102:1999"});
-            }
-
-            return new Promise<number>(fun);
-        }
+        return new Promise<number>(fun);
     }
 
-    private static socketGetMessage(data:{data:string}):void{
+    private static socketGetMessage(e:egret.Event):void{
 
-        let msg:{tag:string, data:any} = JSON.parse(data.data);
+        let msg:{tag:string, data:any} = JSON.parse(Connection.socket.readUTF());
 
         let cb:(data:any)=>void = Connection.cbDic[msg.tag];
 
@@ -64,37 +48,21 @@ class Connection{
 
     public static removeListen(_tag:string):void{
 
-        if(!Main.isWeixin){
-
-            Connection.socket.removeListener(_tag);
-        }
-        else{
-
-            delete Connection.cbDic[_tag];
-        }
+        delete Connection.cbDic[_tag];
     }
 
     public static listen(_tag:string, _cb:(_data)=>void):void{
 
-        if(!Main.isWeixin){
-
-            Connection.socket.on(_tag, _cb);
-        }
-        else{
-
-            Connection.cbDic[_tag] = _cb;
-        }
+        Connection.cbDic[_tag] = _cb;
     }
 
     public static emit(_tag:string, _data):void{
 
-        if(!Main.isWeixin){
+        Connection.socket.writeUTF(JSON.stringify({tag:_tag, data:_data}));
+    }
 
-            Connection.socket.emit(_tag, _data);
-        }
-        else{
+    public static close():void{
 
-            wx.sendSocketMessage({data:JSON.stringify({tag:_tag, data:_data})});
-        }
+        Connection.socket.close();
     }
 }

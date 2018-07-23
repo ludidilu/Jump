@@ -43,16 +43,4 @@ declare class wx{
     public static getGroupCloudStorage(object: {shareTicket:string,success:(res:{data:userGameData[]})=>void,fail:(res:any)=>void,complete:(res:any)=>void}):void;
 
     public static shareAppMessage(object:{title?:string, imageUrl?:string, query?:string}):void;
-
-    public static connectSocket(object:{url:string}):void;
-
-    public static onSocketOpen(cb:(header:any)=>void):void;
-
-    public static sendSocketMessage(data:{data:string}):void;
-
-    public static onSocketMessage(cb:(data:{data:string})=>void):void;
-
-    public static onSocketClose(cb:()=>void):void;
-
-    public static closeSocket(data:{code?:number, reason?:string}):void;
 }

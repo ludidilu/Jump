@@ -31,16 +31,15 @@
 			"name": "promise"
 		},
 		{
+			"name": "socket"
+		},
+		{
 			"name": "physics",
 			"path": "../physicsLib"
 		},
 		{
 			"name": "particle",
 			"path": "../particleLib"
-		},
-		{
-			"name": "socket.io",
-			"path": "../socket.io"
 		}
 	]
 }

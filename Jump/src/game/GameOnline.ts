@@ -242,7 +242,7 @@ class GameOnline{
 
                     let uid = command.arr[key];
 
-                    console.log("jump  index:" + this.index + "  uid:" + uid);
+                    // console.log("jump  index:" + this.index + "  uid:" + uid);
 
                     if(uid == this.uid){
 
@@ -341,7 +341,7 @@ class GameOnline{
 
                     let uid = command.arr[key];
 
-                    console.log("jump  index:" + this.index + "  uid:" + uid);
+                    // console.log("jump  index:" + this.index + "  uid:" + uid);
 
                     if(uid == this.uid){
 
@@ -454,7 +454,7 @@ class GameOnline{
 
         console.log("online over!");
 
-        wx.closeSocket({});
+        Connection.close();
 
         SuperTicker.getInstance().removeEventListener(this.update, this);
 
